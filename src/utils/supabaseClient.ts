@@ -10,8 +10,8 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 // Retrieve config from environment variables, localStorage, or hardcoded constants above
 export function getSupabaseConfig() {
-  const url = SUPABASE_URL || ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "";
-  const key = SUPABASE_ANON_KEY || ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "";
+  const url = SUPABASE_URL || ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "https://tdzdmzermurikloydpxb.supabase.co";
+  const key = SUPABASE_ANON_KEY || ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkendtemVybXVyaWtsb3lkcHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTUxODQsImV4cCI6MjA5ODM5MTE4NH0.Cn5lwhF1UNnGCkxIFK-fXvzyg2AG2XwjATxHtcd_sXA";
   return { url: url.trim(), key: key.trim() };
 }
 
@@ -61,12 +61,19 @@ export interface UserSyncData {
   onboarded: boolean;
 }
 
+export interface SyncResult {
+  success: boolean;
+  error?: string;
+}
+
 /**
  * Sync user study progress and credentials to Supabase
  */
-export async function syncToSupabase(data: UserSyncData): Promise<boolean> {
+export async function syncToSupabase(data: UserSyncData): Promise<SyncResult> {
   const supabase = getSupabase();
-  if (!supabase) return false;
+  if (!supabase) {
+    return { success: false, error: "Supabase client is not initialized. Please paste your URL and Anon Key first." };
+  }
 
   const emailClean = data.email.trim().toLowerCase();
   
@@ -92,12 +99,12 @@ export async function syncToSupabase(data: UserSyncData): Promise<boolean> {
 
     if (error) {
       console.error("Supabase upsert error:", error);
-      throw error;
+      return { success: false, error: `${error.code}: ${error.message} (${error.details || "No additional details"})` };
     }
-    return true;
-  } catch (err) {
+    return { success: true };
+  } catch (err: any) {
     console.error("Failed to sync data to Supabase:", err);
-    return false;
+    return { success: false, error: err?.message || String(err) };
   }
 }
 
