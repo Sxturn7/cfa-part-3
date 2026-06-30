@@ -2,16 +2,10 @@ import { createClient } from "@supabase/supabase-js";
 import { UserProfile, ModuleProgress, ActivityLog, AppNotification } from "../types";
 import { AppTheme } from "../theme";
 
-// Real, verified connection configuration extracted directly from your project parameters
-const HARDCODED_URL = "https://tdzdmzermurikloydpxb.supabase.co";
-const HARDCODED_KEY = "sb_publishable_myWONTqHHQbf_jA4C2EeXg_8SixKIzx";
-
-/**
- * Retrieve config with priority: Environment variables -> Hardcoded defaults -> localStorage fallback
- */
+// Retrieve config from environment variables or localStorage for maximum flexibility
 export function getSupabaseConfig() {
-  const url = ((import.meta as any).env?.VITE_SUPABASE_URL as string) || HARDCODED_URL || localStorage.getItem("cfa_supabase_url") || "";
-  const key = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || HARDCODED_KEY || localStorage.getItem("cfa_supabase_anon_key") || "";
+  const url = ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "";
+  const key = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "";
   return { url: url.trim(), key: key.trim() };
 }
 
@@ -71,8 +65,12 @@ export async function syncToSupabase(data: UserSyncData): Promise<boolean> {
   const emailClean = data.email.trim().toLowerCase();
   
   try {
+    const storedPassword = typeof window !== "undefined" ? localStorage.getItem(`cfa_auth_${emailClean}`) : null;
+    const activePassword = data.password || storedPassword || "cfa_secure_pass";
+
     const payload: any = {
       email: emailClean,
+      password: activePassword,
       profile: data.profile,
       progress: data.progress,
       logs: data.logs,
@@ -81,10 +79,6 @@ export async function syncToSupabase(data: UserSyncData): Promise<boolean> {
       onboarded: data.onboarded,
       updated_at: new Date().toISOString(),
     };
-
-    if (data.password) {
-      payload.password = data.password;
-    }
 
     const { error } = await supabase
       .from("cfa_users_sync")
@@ -142,13 +136,12 @@ export async function fetchFromSupabase(email: string): Promise<UserSyncData | n
 
 /**
  * SQL generation snippet for the user to execute inside their Supabase SQL editor
- * UPDATED WITH UNLOCKED SECURE RLS MATCHING CLAUSES
  */
 export const SUPABASE_SQL_SETUP = `-- Copy and run this inside your Supabase SQL Editor:
 
 CREATE TABLE IF NOT EXISTS cfa_users_sync (
   email text PRIMARY KEY,
-  password text NOT NULL,
+  password text,
   profile jsonb,
   progress jsonb,
   logs jsonb,
@@ -161,22 +154,10 @@ CREATE TABLE IF NOT EXISTS cfa_users_sync (
 -- Enable Row Level Security (RLS)
 ALTER TABLE cfa_users_sync ENABLE ROW LEVEL SECURITY;
 
--- Drop fallback rule if present
-DROP POLICY IF EXISTS "Allow public read and write" ON cfa_users_sync;
-
--- 1. Anyone can attempt to register (Insert a brand new row profile)
-CREATE POLICY "Allow public account registrations" 
-ON cfa_users_sync FOR INSERT 
-WITH CHECK (true);
-
--- 2. Candidates can search and retrieve their matching rows
-CREATE POLICY "Allow matching candidate select tracking" 
-ON cfa_users_sync FOR SELECT 
-USING (true);
-
--- 3. Candidates can update data targeting their specific record row
-CREATE POLICY "Allow matching candidate profile updates" 
-ON cfa_users_sync FOR UPDATE 
+-- Allow public access policy for easy synchronization
+CREATE POLICY "Allow public read and write"
+ON cfa_users_sync
+FOR ALL
 USING (true)
 WITH CHECK (true);
 `;
