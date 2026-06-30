@@ -5,12 +5,12 @@ import { AppTheme } from "../theme";
 // ==========================================
 // PASTE YOUR SUPABASE CREDENTIALS DIRECTLY HERE:
 // ==========================================
-const SUPABASE_URL = "https://tdzdmzermurikloydpxb.supabase.co"; // e.g. "https://xxxxxxxxxxxxxxxxxxxx.supabase.co"
+const SUPABASE_URL = "https://tdzwmzermurikloydpxb.supabase.co"; // e.g. "https://xxxxxxxxxxxxxxxxxxxx.supabase.co"
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkendtemVybXVyaWtsb3lkcHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTUxODQsImV4cCI6MjA5ODM5MTE4NH0.Cn5lwhF1UNnGCkxIFK-fXvzyg2AG2XwjATxHtcd_sXA"; // Your long alphanumeric anon public key
 
 // Retrieve config from environment variables, localStorage, or hardcoded constants above
 export function getSupabaseConfig() {
-  const url = SUPABASE_URL || ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "https://tdzdmzermurikloydpxb.supabase.co";
+  const url = SUPABASE_URL || ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "https://tdzwmzermurikloydpxb.supabase.co";
   const key = SUPABASE_ANON_KEY || ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkendtemVybXVyaWtsb3lkcHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTUxODQsImV4cCI6MjA5ODM5MTE4NH0.Cn5lwhF1UNnGCkxIFK-fXvzyg2AG2XwjATxHtcd_sXA";
   return { url: url.trim(), key: key.trim() };
 }
