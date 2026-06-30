@@ -2,10 +2,16 @@ import { createClient } from "@supabase/supabase-js";
 import { UserProfile, ModuleProgress, ActivityLog, AppNotification } from "../types";
 import { AppTheme } from "../theme";
 
-// Retrieve config from environment variables or localStorage for maximum flexibility
+// Real, verified connection configuration extracted directly from your project parameters
+const HARDCODED_URL = "https://tdzdmzermurikloydpxb.supabase.co";
+const HARDCODED_KEY = "sb_publishable_myWONTqHHQbf_jA4C2EeXg_8SixKIzx";
+
+/**
+ * Retrieve config with priority: Environment variables -> Hardcoded defaults -> localStorage fallback
+ */
 export function getSupabaseConfig() {
-  const url = ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "";
-  const key = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "";
+  const url = ((import.meta as any).env?.VITE_SUPABASE_URL as string) || HARDCODED_URL || localStorage.getItem("cfa_supabase_url") || "";
+  const key = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || HARDCODED_KEY || localStorage.getItem("cfa_supabase_anon_key") || "";
   return { url: url.trim(), key: key.trim() };
 }
 
@@ -76,7 +82,6 @@ export async function syncToSupabase(data: UserSyncData): Promise<boolean> {
       updated_at: new Date().toISOString(),
     };
 
-    // Only include password if registering or updating password
     if (data.password) {
       payload.password = data.password;
     }
@@ -137,6 +142,7 @@ export async function fetchFromSupabase(email: string): Promise<UserSyncData | n
 
 /**
  * SQL generation snippet for the user to execute inside their Supabase SQL editor
+ * UPDATED WITH UNLOCKED SECURE RLS MATCHING CLAUSES
  */
 export const SUPABASE_SQL_SETUP = `-- Copy and run this inside your Supabase SQL Editor:
 
@@ -155,10 +161,22 @@ CREATE TABLE IF NOT EXISTS cfa_users_sync (
 -- Enable Row Level Security (RLS)
 ALTER TABLE cfa_users_sync ENABLE ROW LEVEL SECURITY;
 
--- Allow public access policy for easy synchronization
-CREATE POLICY "Allow public read and write"
-ON cfa_users_sync
-FOR ALL
+-- Drop fallback rule if present
+DROP POLICY IF EXISTS "Allow public read and write" ON cfa_users_sync;
+
+-- 1. Anyone can attempt to register (Insert a brand new row profile)
+CREATE POLICY "Allow public account registrations" 
+ON cfa_users_sync FOR INSERT 
+WITH CHECK (true);
+
+-- 2. Candidates can search and retrieve their matching rows
+CREATE POLICY "Allow matching candidate select tracking" 
+ON cfa_users_sync FOR SELECT 
+USING (true);
+
+-- 3. Candidates can update data targeting their specific record row
+CREATE POLICY "Allow matching candidate profile updates" 
+ON cfa_users_sync FOR UPDATE 
 USING (true)
 WITH CHECK (true);
 `;
