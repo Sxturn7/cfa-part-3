@@ -81,10 +81,20 @@ export async function syncToSupabase(data: UserSyncData): Promise<SyncResult> {
     const storedPassword = typeof window !== "undefined" ? localStorage.getItem(`cfa_auth_${emailClean}`) : null;
     const activePassword = data.password || storedPassword || "cfa_secure_pass";
 
-    const payload: any = {
+    // Embed extra fields inside the profile JSON object so they are always saved,
+    // even if the table doesn't have custom columns for notifications, theme, or onboarded.
+    const enrichedProfile = {
+      ...data.profile,
+      _sync_onboarded: data.onboarded,
+      _sync_theme: data.theme,
+      _sync_notifications: data.notifications,
+    };
+
+    // Try full upsert first
+    const fullPayload: any = {
       email: emailClean,
       password: activePassword,
-      profile: data.profile,
+      profile: enrichedProfile,
       progress: data.progress,
       logs: data.logs,
       notifications: data.notifications,
@@ -93,14 +103,37 @@ export async function syncToSupabase(data: UserSyncData): Promise<SyncResult> {
       updated_at: new Date().toISOString(),
     };
 
-    const { error } = await supabase
+    const { error: fullError } = await supabase
       .from("cfa_users_sync")
-      .upsert(payload, { onConflict: "email" });
+      .upsert(fullPayload, { onConflict: "email" });
 
-    if (error) {
-      console.error("Supabase upsert error:", error);
-      return { success: false, error: `${error.code}: ${error.message} (${error.details || "No additional details"})` };
+    if (!fullError) {
+      return { success: true };
     }
+
+    console.warn("Full upsert failed, trying resilient fallback with 5 base columns...", fullError);
+
+    // Fallback: Use only the 5 columns visible in the database schema: email, password, profile, progress, logs
+    const fallbackPayload = {
+      email: emailClean,
+      password: activePassword,
+      profile: enrichedProfile,
+      progress: data.progress,
+      logs: data.logs,
+    };
+
+    const { error: fallbackError } = await supabase
+      .from("cfa_users_sync")
+      .upsert(fallbackPayload, { onConflict: "email" });
+
+    if (fallbackError) {
+      console.error("Resilient fallback upsert failed:", fallbackError);
+      return { 
+        success: false, 
+        error: `${fallbackError.code}: ${fallbackError.message} (${fallbackError.details || "No details"})` 
+      };
+    }
+
     return { success: true };
   } catch (err: any) {
     console.error("Failed to sync data to Supabase:", err);
@@ -131,15 +164,33 @@ export async function fetchFromSupabase(email: string): Promise<UserSyncData | n
 
     if (!data) return null;
 
+    // Parse columns safely
+    const profile = typeof data.profile === "string" ? JSON.parse(data.profile) : data.profile;
+    const progress = typeof data.progress === "string" ? JSON.parse(data.progress) : data.progress;
+    const logs = typeof data.logs === "string" ? JSON.parse(data.logs) : data.logs;
+
+    // Retrieve from embedded metadata inside profile if column is missing, null, or undefined
+    const theme = data.theme !== undefined && data.theme !== null 
+      ? (typeof data.theme === "string" ? JSON.parse(data.theme) : data.theme)
+      : (profile && profile._sync_theme ? profile._sync_theme : null);
+
+    const notifications = data.notifications !== undefined && data.notifications !== null 
+      ? (typeof data.notifications === "string" ? JSON.parse(data.notifications) : data.notifications)
+      : (profile && profile._sync_notifications ? profile._sync_notifications : null);
+
+    const onboarded = data.onboarded !== undefined && data.onboarded !== null 
+      ? data.onboarded 
+      : (profile && profile._sync_onboarded !== undefined ? profile._sync_onboarded : false);
+
     return {
       email: data.email,
       password: data.password,
-      profile: typeof data.profile === "string" ? JSON.parse(data.profile) : data.profile,
-      progress: typeof data.progress === "string" ? JSON.parse(data.progress) : data.progress,
-      logs: typeof data.logs === "string" ? JSON.parse(data.logs) : data.logs,
-      notifications: typeof data.notifications === "string" ? JSON.parse(data.notifications) : data.notifications,
-      theme: typeof data.theme === "string" ? JSON.parse(data.theme) : data.theme,
-      onboarded: data.onboarded,
+      profile: profile,
+      progress: progress || {},
+      logs: logs || [],
+      notifications: notifications || [],
+      theme: theme,
+      onboarded: onboarded,
     };
   } catch (err) {
     console.error("Failed to fetch data from Supabase:", err);
