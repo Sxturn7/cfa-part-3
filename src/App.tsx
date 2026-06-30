@@ -212,7 +212,8 @@ export default function App() {
     updatedProfile: UserProfile, 
     updatedProgress: Record<string, ModuleProgress>, 
     updatedLogs: ActivityLog[],
-    updatedNotifs?: AppNotification[]
+    updatedNotifs?: AppNotification[],
+    updatedTheme?: AppTheme
   ) => {
     if (!email) return;
     localStorage.setItem(`cfa_profile_${email}`, JSON.stringify(updatedProfile));
@@ -224,6 +225,8 @@ export default function App() {
       localStorage.setItem(`cfa_notifs_${email}`, JSON.stringify(updatedNotifs));
     }
 
+    const activeTheme = updatedTheme !== undefined ? updatedTheme : currentTheme;
+
     // Background Cloud Sync
     if (isSupabaseConfigured()) {
       syncToSupabase({
@@ -232,7 +235,7 @@ export default function App() {
         progress: updatedProgress,
         logs: updatedLogs,
         notifications: activeNotifs,
-        theme: currentTheme,
+        theme: activeTheme,
         onboarded: isOnboarded,
       }).catch((err) => console.error("Cloud auto sync failed:", err));
     }
@@ -401,6 +404,32 @@ export default function App() {
     setSignedIn(false);
   };
 
+  const handleSaveDbSettings = (url: string, key: string) => {
+    saveSupabaseConfig(url, key);
+    addNotification(
+      "achievement",
+      "🔗 Supabase Cloud Database Connected",
+      "Successfully linked your custom Supabase database! Uploading current study metrics, calendars, and logs to the cloud."
+    );
+    // Force immediate sync with the updated configuration!
+    setTimeout(() => {
+      saveData(userProfile, progress, activityLogs);
+    }, 100);
+    setIsDbSettingsOpen(false);
+  };
+
+  const handleDisconnectDb = () => {
+    clearSupabaseConfig();
+    addNotification(
+      "reminder",
+      "⚠️ Supabase Custom Database Disconnected",
+      "Switched to offline local storage mode. Credentials have been removed."
+    );
+    setDbUrl("");
+    setDbKey("");
+    setIsDbSettingsOpen(false);
+  };
+
   // State Modifiers
   const handleLogStudySession = (moduleId: string, durationMinutes: number, type: "study" | "quiz", score?: number) => {
     const modObj = FLAT_MODULES.find(m => m.id === moduleId);
@@ -548,6 +577,7 @@ export default function App() {
     setCurrentTheme(newTheme);
     if (email) {
       localStorage.setItem(`cfa_theme_${email}`, JSON.stringify(newTheme));
+      saveData(userProfile, progress, activityLogs, undefined, newTheme);
     }
   };
 
@@ -689,7 +719,7 @@ export default function App() {
             {/* Design Customizer Button */}
             <button
               onClick={() => setIsDesignCustomizerOpen(true)}
-              className="p-2 text-amber-500 hover:text-amber-400 bg-slate-800/30 hover:bg-slate-800 border border-slate-750 hover:border-slate-600 rounded-full transition flex items-center justify-center w-8 h-8 shrink-0 shadow-sm"
+              className="p-2 text-amber-500 hover:text-amber-400 bg-slate-800/30 hover:bg-slate-800 border border-slate-750 hover:border-slate-600 rounded-full transition flex items-center justify-center w-8 h-8 shrink-0 shadow-sm cursor-pointer"
               title="Runway Design Studio"
               aria-label="Design customizer"
             >
@@ -1213,6 +1243,157 @@ export default function App() {
               >
                 <CheckCircle size={12} />
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Supabase Database Settings Modal */}
+      {isDbSettingsOpen && (
+        <div className="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl animate-fadeIn space-y-4 my-8">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <Database size={16} className="text-blue-400" />
+                Supabase Cloud Database Settings
+              </h3>
+              <button
+                type="button"
+                onClick={() => setIsDbSettingsOpen(false)}
+                className="text-slate-400 hover:text-slate-200 bg-slate-800/60 p-1.5 rounded-lg transition cursor-pointer"
+              >
+                <X size={14} />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Durable Cloud Sync keeps your adaptive Study Planner, calendar deadlines, focus hours, quiz scores, custom flashcards, and revision schedules synchronized instantly in real-time across any device.
+            </p>
+
+            {isSupabaseConfigured() ? (
+              <div className="bg-emerald-950/40 border border-emerald-800/40 p-3.5 rounded-xl flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                  <div>
+                    <span className="text-xs font-semibold text-emerald-400 block">Cloud Database Linked</span>
+                    <span className="text-[10px] text-slate-400 block">Saving everything in real-time.</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 ml-auto">
+                  <button
+                    onClick={() => {
+                      saveData(userProfile, progress, activityLogs);
+                      addNotification(
+                        "achievement",
+                        "⚡ Force Sync Executed",
+                        "Manual override sync complete! All your curriculum, calendar dates, and focus logs have been pushed to the cloud."
+                      );
+                    }}
+                    className="bg-emerald-900/60 hover:bg-emerald-800 text-emerald-300 border border-emerald-700/50 text-[10px] font-mono font-bold px-3 py-1.5 rounded-lg transition cursor-pointer"
+                    title="Force cloud upload now"
+                  >
+                    Force Sync
+                  </button>
+                  <button
+                    onClick={handleDisconnectDb}
+                    className="bg-rose-950/40 hover:bg-rose-950/60 text-rose-400 border border-rose-900/50 text-[10px] font-bold px-3 py-1.5 rounded-lg transition cursor-pointer"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-slate-950 border border-slate-850 p-3.5 rounded-xl flex items-center gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-slate-600 shrink-0" />
+                <div>
+                  <span className="text-xs font-semibold text-slate-400 block">Local Offline Mode</span>
+                  <span className="text-[10px] text-slate-500 block">All details save to local storage only. Link below to prevent data loss.</span>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              <div>
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-450 mb-1.5">
+                  Supabase Project URL
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. https://xyzcompany.supabase.co"
+                  value={dbUrl}
+                  onChange={(e) => setDbUrl(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 outline-none placeholder:text-slate-700 font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-450 mb-1.5">
+                  Supabase Anon/Public Key
+                </label>
+                <input
+                  type="password"
+                  placeholder="Paste your anon/public key..."
+                  value={dbKey}
+                  onChange={(e) => setDbKey(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-200 outline-none placeholder:text-slate-700 font-mono"
+                />
+              </div>
+
+              <div className="flex gap-2 justify-end pt-1">
+                <button
+                  type="button"
+                  onClick={() => setIsDbSettingsOpen(false)}
+                  className="bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-350 text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={!dbUrl.trim() || !dbKey.trim()}
+                  onClick={() => handleSaveDbSettings(dbUrl, dbKey)}
+                  className="bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800/40 disabled:text-slate-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition cursor-pointer"
+                >
+                  Save & Connect Cloud
+                </button>
+              </div>
+            </div>
+
+            <div className="border-t border-slate-800 pt-3">
+              <button
+                type="button"
+                onClick={() => setIsDbCollapseOpen(!isDbCollapseOpen)}
+                className="w-full flex items-center justify-between text-[11px] font-mono font-bold text-slate-400 hover:text-slate-200 transition cursor-pointer"
+              >
+                <span>{isDbCollapseOpen ? "Hide" : "Show"} Supabase 1-Click SQL Setup Script</span>
+                <span>{isDbCollapseOpen ? "▲" : "▼"}</span>
+              </button>
+
+              {isDbCollapseOpen && (
+                <div className="mt-2.5 animate-fadeIn space-y-2">
+                  <p className="text-[10px] text-slate-550 leading-relaxed">
+                    Execute this exact query inside your Supabase project's <strong className="text-slate-400">SQL Editor</strong> to instantly generate the tables, security policies, and sync triggers needed.
+                  </p>
+                  <div className="relative">
+                    <pre className="text-[10px] font-mono bg-slate-950 p-3 rounded-lg overflow-x-auto text-slate-400 max-h-48 border border-slate-850 leading-relaxed select-all">
+                      {SUPABASE_SQL_SETUP}
+                    </pre>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(SUPABASE_SQL_SETUP);
+                        addNotification(
+                          "completed",
+                          "📋 SQL Code Copied",
+                          "Copied the SQL Table setup script to your clipboard. Run it in your Supabase SQL editor!"
+                        );
+                      }}
+                      className="absolute top-2 right-2 bg-slate-800 hover:bg-slate-700 text-[9px] font-mono font-bold px-2 py-1 rounded text-slate-350 border border-slate-700 transition cursor-pointer"
+                    >
+                      Copy SQL
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
