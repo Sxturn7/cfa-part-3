@@ -2,10 +2,16 @@ import { createClient } from "@supabase/supabase-js";
 import { UserProfile, ModuleProgress, ActivityLog, AppNotification } from "../types";
 import { AppTheme } from "../theme";
 
-// Retrieve config from environment variables or localStorage for maximum flexibility
+// ==========================================
+// PASTE YOUR SUPABASE CREDENTIALS DIRECTLY HERE:
+// ==========================================
+const SUPABASE_URL = "https://tdzdmzermurikloydpxb.supabase.co"; // e.g. "https://xxxxxxxxxxxxxxxxxxxx.supabase.co"
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkendtemVybXVyaWtsb3lkcHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTUxODQsImV4cCI6MjA5ODM5MTE4NH0.Cn5lwhF1UNnGCkxIFK-fXvzyg2AG2XwjATxHtcd_sXA"; // Your long alphanumeric anon public key
+
+// Retrieve config from environment variables, localStorage, or hardcoded constants above
 export function getSupabaseConfig() {
-  const url = ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "";
-  const key = ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "";
+  const url = SUPABASE_URL || ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "";
+  const key = SUPABASE_ANON_KEY || ((import.meta as any).env?.VITE_SUPABASE_ANON_KEY as string) || localStorage.getItem("cfa_supabase_anon_key") || "";
   return { url: url.trim(), key: key.trim() };
 }
 
