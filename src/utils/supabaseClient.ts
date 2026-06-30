@@ -8,6 +8,13 @@ import { AppTheme } from "../theme";
 const SUPABASE_URL = "https://tdzwmzermurikloydpxb.supabase.co"; // e.g. "https://xxxxxxxxxxxxxxxxxxxx.supabase.co"
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkendtemVybXVyaWtsb3lkcHhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MTUxODQsImV4cCI6MjA5ODM5MTE4NH0.Cn5lwhF1UNnGCkxIFK-fXvzyg2AG2XwjATxHtcd_sXA"; // Your long alphanumeric anon public key
 
+// Where Supabase should send the user after they click the email verification link.
+// This is the v0-provisioned redirect proxy, which is allow-listed in Supabase and
+// bounces the candidate back to this app with an active session in the URL.
+const SUPABASE_REDIRECT_URL =
+  ((import.meta as any).env?.VITE_SUPABASE_REDIRECT_URL as string) ||
+  "https://v0.app/chat/api/supabase/redirect/dwiLy17sWBc";
+
 // Retrieve config from environment variables, localStorage, or hardcoded constants above
 export function getSupabaseConfig() {
   const url = SUPABASE_URL || ((import.meta as any).env?.VITE_SUPABASE_URL as string) || localStorage.getItem("cfa_supabase_url") || "https://tdzwmzermurikloydpxb.supabase.co";
@@ -59,11 +66,107 @@ export interface UserSyncData {
   notifications: AppNotification[];
   theme: AppTheme;
   onboarded: boolean;
+  verified?: boolean;
 }
 
 export interface SyncResult {
   success: boolean;
   error?: string;
+}
+
+/**
+ * Send an email verification link to the candidate. They must click it to prove
+ * ownership of the address before they can sign in. Uses Supabase Auth's built-in
+ * mailer (magic link) purely as an email-ownership check.
+ */
+export async function sendVerificationEmail(email: string): Promise<SyncResult> {
+  const supabase = getSupabase();
+  if (!supabase) {
+    return { success: false, error: "Supabase is not configured, so verification email cannot be sent." };
+  }
+  const emailClean = email.trim().toLowerCase();
+  try {
+    const { error } = await supabase.auth.signInWithOtp({
+      email: emailClean,
+      options: {
+        emailRedirectTo: SUPABASE_REDIRECT_URL,
+        shouldCreateUser: true,
+      },
+    });
+    if (error) {
+      console.error("Verification email error:", error);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    console.error("Failed to send verification email:", err);
+    return { success: false, error: err?.message || String(err) };
+  }
+}
+
+/**
+ * Mark an account as verified in the database (called after the user returns
+ * from clicking the email link).
+ */
+export async function setEmailVerified(email: string): Promise<SyncResult> {
+  const supabase = getSupabase();
+  if (!supabase) return { success: false, error: "Supabase not configured." };
+  const emailClean = email.trim().toLowerCase();
+  try {
+    const { error } = await supabase
+      .from("cfa_users_sync")
+      .update({ verified: true })
+      .eq("email", emailClean);
+    if (error) {
+      console.error("setEmailVerified error:", error);
+      return { success: false, error: error.message };
+    }
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || String(err) };
+  }
+}
+
+/**
+ * Read whether an account has verified its email.
+ */
+export async function getVerifiedStatus(email: string): Promise<boolean> {
+  const supabase = getSupabase();
+  if (!supabase) return true; // No cloud => no verification gate (local-only mode)
+  const emailClean = email.trim().toLowerCase();
+  try {
+    const { data, error } = await supabase
+      .from("cfa_users_sync")
+      .select("verified")
+      .eq("email", emailClean)
+      .maybeSingle();
+    if (error || !data) return false;
+    return !!data.verified;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * After the user clicks the email link and is bounced back to the app, Supabase
+ * leaves an active auth session in the URL. This returns the verified email (if any)
+ * and then clears that temporary session — we only use it to confirm ownership.
+ */
+export async function consumeVerificationRedirect(): Promise<string | null> {
+  const supabase = getSupabase();
+  if (!supabase) return null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    const sessionEmail = data?.session?.user?.email?.toLowerCase() || null;
+    if (sessionEmail) {
+      // We have what we need; drop the temporary auth session.
+      await supabase.auth.signOut();
+    }
+    return sessionEmail;
+  } catch (err) {
+    console.error("consumeVerificationRedirect error:", err);
+    return null;
+  }
 }
 
 /**
@@ -140,6 +243,7 @@ export async function fetchFromSupabase(email: string): Promise<UserSyncData | n
       notifications: typeof data.notifications === "string" ? JSON.parse(data.notifications) : data.notifications,
       theme: typeof data.theme === "string" ? JSON.parse(data.theme) : data.theme,
       onboarded: data.onboarded,
+      verified: data.verified,
     };
   } catch (err) {
     console.error("Failed to fetch data from Supabase:", err);

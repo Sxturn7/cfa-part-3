@@ -20,6 +20,10 @@ import {
   isSupabaseConfigured, 
   syncToSupabase, 
   fetchFromSupabase,
+  sendVerificationEmail,
+  setEmailVerified,
+  getVerifiedStatus,
+  consumeVerificationRedirect,
   SUPABASE_SQL_SETUP,
   UserSyncData
 } from "./utils/supabaseClient";
@@ -42,6 +46,9 @@ export default function App() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string>("");
   const [authSuccess, setAuthSuccess] = useState<string>("");
+  // Email verification flow
+  const [pendingVerifyEmail, setPendingVerifyEmail] = useState<string>("");
+  const [isResending, setIsResending] = useState<boolean>(false);
 
   const [activeTab, setActiveTab] = useState<"dashboard" | "curriculum" | "quiz" | "growth" | "calendar" | "flashcards">("dashboard");
   const [progress, setProgress] = useState<Record<string, ModuleProgress>>({});
@@ -95,12 +102,33 @@ export default function App() {
 
   // Local storage management per email account
   useEffect(() => {
-    const savedEmail = localStorage.getItem("cfa_current_email");
-    if (savedEmail) {
-      setEmail(savedEmail);
-      loadUserData(savedEmail);
-      setSignedIn(true);
-    }
+    (async () => {
+      // If the user just clicked the email verification link, Supabase bounces them
+      // back here with an active session. Confirm ownership, flag them verified, and
+      // sign them straight in.
+      if (isSupabaseConfigured() && (window.location.hash.includes("access_token") || window.location.search.includes("code="))) {
+        const verifiedEmail = await consumeVerificationRedirect();
+        if (verifiedEmail) {
+          await setEmailVerified(verifiedEmail);
+          // Clean the auth tokens out of the URL.
+          window.history.replaceState({}, document.title, window.location.pathname);
+          const cloudData = await fetchFromSupabase(verifiedEmail);
+          localStorage.setItem("cfa_current_email", verifiedEmail);
+          setEmail(verifiedEmail);
+          loadUserData(verifiedEmail, cloudData);
+          setSignedIn(true);
+          setAuthSuccess("Email verified! Welcome to your CFA study runway.");
+          return;
+        }
+      }
+
+      const savedEmail = localStorage.getItem("cfa_current_email");
+      if (savedEmail) {
+        setEmail(savedEmail);
+        loadUserData(savedEmail);
+        setSignedIn(true);
+      }
+    })();
   }, []);
 
   // Apply theme on change
@@ -313,7 +341,16 @@ export default function App() {
           read: false,
         };
 
-        // Sync to cloud on-registration if active
+        // Save local copies
+        localStorage.setItem(`cfa_profile_${emailClean}`, JSON.stringify(defaultProfile));
+        localStorage.setItem(`cfa_progress_${emailClean}`, JSON.stringify({}));
+        localStorage.setItem(`cfa_logs_${emailClean}`, JSON.stringify([]));
+        localStorage.setItem(`cfa_notifs_${emailClean}`, JSON.stringify([defaultNotif]));
+        localStorage.setItem(`cfa_onboarded_${emailClean}`, "false");
+
+        // Sync to cloud on-registration if active. The row is created as
+        // unverified (the `verified` column defaults to false), then we email a
+        // confirmation link. Access stays blocked until the candidate clicks it.
         if (isSupabaseConfigured()) {
           await syncToSupabase({
             email: emailClean,
@@ -325,21 +362,28 @@ export default function App() {
             theme: THEME_PRESETS.sage,
             onboarded: false,
           });
+
+          const sent = await sendVerificationEmail(emailClean);
+          if (!sent.success) {
+            setAuthError(`Account created, but the verification email failed to send: ${sent.error}. Use "Resend" to try again.`);
+          }
+
+          // Do NOT sign in yet — wait for email verification.
+          setPendingVerifyEmail(emailClean);
+          setAuthSuccess("");
+          setPassword("");
+          setConfirmPassword("");
+          setIsAuthLoading(false);
+          return;
         }
 
+        // Local-only mode (no cloud configured): no email gate, sign in directly.
         setEmail(emailClean);
         setUserProfile(defaultProfile);
         setProgress({});
         setActivityLogs([]);
         setNotifications([defaultNotif]);
         setIsOnboarded(false);
-
-        // Save local copies
-        localStorage.setItem(`cfa_profile_${emailClean}`, JSON.stringify(defaultProfile));
-        localStorage.setItem(`cfa_progress_${emailClean}`, JSON.stringify({}));
-        localStorage.setItem(`cfa_logs_${emailClean}`, JSON.stringify([]));
-        localStorage.setItem(`cfa_notifs_${emailClean}`, JSON.stringify([defaultNotif]));
-        localStorage.setItem(`cfa_onboarded_${emailClean}`, "false");
 
         setSignedIn(true);
         setAuthSuccess("Account successfully registered!");
@@ -374,6 +418,17 @@ export default function App() {
           return;
         }
 
+        // Block sign-in until the candidate has verified their email (cloud mode only).
+        if (isSupabaseConfigured() && loadedData) {
+          const isVerified = await getVerifiedStatus(emailClean);
+          if (!isVerified) {
+            setPendingVerifyEmail(emailClean);
+            setPassword("");
+            setIsAuthLoading(false);
+            return;
+          }
+        }
+
         // Save active session
         localStorage.setItem("cfa_current_email", emailClean);
         localStorage.setItem(`cfa_auth_${emailClean}`, authPassword);
@@ -391,6 +446,29 @@ export default function App() {
     } finally {
       setIsAuthLoading(false);
     }
+  };
+
+  const handleResendVerification = async () => {
+    if (!pendingVerifyEmail) return;
+    setIsResending(true);
+    setAuthError("");
+    setAuthSuccess("");
+    const sent = await sendVerificationEmail(pendingVerifyEmail);
+    if (sent.success) {
+      setAuthSuccess(`Verification email re-sent to ${pendingVerifyEmail}.`);
+    } else {
+      setAuthError(`Could not resend email: ${sent.error}`);
+    }
+    setIsResending(false);
+  };
+
+  const handleCancelVerification = () => {
+    setPendingVerifyEmail("");
+    setAuthError("");
+    setAuthSuccess("");
+    setPassword("");
+    setConfirmPassword("");
+    setAuthMode("login");
   };
 
   const handleSignOut = () => {
@@ -769,6 +847,52 @@ export default function App() {
               </p>
             </div>
 
+            {pendingVerifyEmail ? (
+              /* Pending email-verification panel */
+              <div className="animate-fadeIn">
+                <div className="w-14 h-14 rounded-full bg-[#5A6344]/10 border border-[#A3B18A] mx-auto flex items-center justify-center mb-4">
+                  <Mail size={24} className="text-[#5A6344]" />
+                </div>
+                <h3 className="text-center text-base font-serif font-bold text-[#4A3728] mb-1.5">Verify your email</h3>
+                <p className="text-center text-xs text-[#7D7859] leading-relaxed mb-4">
+                  We sent a verification link to{" "}
+                  <span className="font-bold text-[#4A3728] break-all">{pendingVerifyEmail}</span>. Click the link in
+                  that email to confirm it&apos;s really you, then you&apos;ll be signed in automatically.
+                </p>
+
+                {authError && (
+                  <div className="mb-3 p-3 bg-red-50 border border-[#94625A]/40 text-[#94625A] text-xs rounded-lg font-medium">
+                    ⚠️ {authError}
+                  </div>
+                )}
+                {authSuccess && (
+                  <div className="mb-3 p-3 bg-[#FDFCF8] border border-[#A3B18A] text-[#5A6344] text-xs rounded-lg font-medium">
+                    ✨ {authSuccess}
+                  </div>
+                )}
+
+                <p className="text-center text-[10px] text-[#A8A48F] leading-relaxed mb-4">
+                  Didn&apos;t get it? Check your spam folder, or resend the link below.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={handleResendVerification}
+                  disabled={isResending}
+                  className="w-full bg-[#5A6344] hover:bg-[#4a5137] disabled:bg-[#5A6344]/50 text-white font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm border-none flex items-center justify-center gap-2"
+                >
+                  {isResending ? "Resending..." : "Resend Verification Email"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelVerification}
+                  className="w-full mt-2 text-[#7D7859] hover:text-[#4A3728] font-semibold text-xs py-2 transition bg-transparent border-none"
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            ) : (
+            <>
             {/* Auth Mode Tab Bar */}
             <div className="flex border-b border-[#E5E2D0] mb-6">
               <button
@@ -904,6 +1028,8 @@ export default function App() {
                 <span>🌱 Creating an account secure-locks your unique analytics profile, notes history, and active performance logs.</span>
               )}
             </div>
+            </>
+            )}
           </div>
         </main>
       ) : !isOnboarded ? (
