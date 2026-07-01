@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Subject, ModuleProgress } from "../types";
 import { Question } from "../curriculum";
@@ -385,9 +384,9 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
           {!answered && (
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center text-xs text-slate-500 py-8 shadow-sm">
               <Award size={28} className="mx-auto mb-2 text-slate-400 opacity-75" />
-              <p className="font-medium text-slate-200">Ready to validate?</p>
+              <p className="font-medium text-slate-200">Select an Option</p>
               <p className="text-[10px] text-slate-400 mt-1 leading-relaxed max-w-xs mx-auto">
-                Carefully retrieve necessary formulas, select the appropriate option A, B, C, or D, and evaluate accuracy.
+                Choose the best answer option to evaluate your understanding of this topic.
               </p>
             </div>
           )}
