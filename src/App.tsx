@@ -1138,7 +1138,7 @@ export default function App() {
           CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute.
         </div>
         <div className="mt-1 font-mono">
-          CFA Prep Guide
+          CFA Prep Tracker
         </div>
       </footer>
 
