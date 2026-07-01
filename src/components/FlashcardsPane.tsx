@@ -393,11 +393,11 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
   return (
     <div className="space-y-6">
       {/* Upper header section */}
-      <div className="bg-[#F9F8F0] border border-[#E5E2D0] p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xl">🎴</span>
-            <h2 className="text-lg font-serif font-bold text-slate-900">Spaced Repetition Active Recall</h2>
+            <h2 className="text-lg font-serif font-bold text-slate-100">Spaced Repetition Active Recall</h2>
           </div>
           <p className="text-xs text-slate-500 mt-1">
             Standard CFA formulas and tricky core definitions. Flashcard grading stores your retention history and calculates active study metrics.
@@ -405,18 +405,18 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
         </div>
 
         {/* Mini scorecard details */}
-        <div className="flex gap-4 bg-white/70 p-2.5 rounded-xl border border-[#E5E2D0] shrink-0 w-full md:w-auto">
+        <div className="flex gap-4 bg-slate-800 p-2.5 rounded-xl border border-slate-700 shrink-0 w-full md:w-auto">
           <div className="text-center px-2">
             <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wide">Recall Rate</div>
-            <div className="text-sm font-bold text-slate-800 font-mono">{recallMasteryPercent}%</div>
+            <div className="text-sm font-bold text-slate-200 font-mono">{recallMasteryPercent}%</div>
           </div>
-          <div className="text-center px-2 border-l border-[#E5E2D0]">
+          <div className="text-center px-2 border-l border-slate-700">
             <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wide">Mastered</div>
-            <div className="text-sm font-bold text-emerald-600 font-mono">{masteredCount} cards</div>
+            <div className="text-sm font-bold text-emerald-500 font-mono">{masteredCount} cards</div>
           </div>
-          <div className="text-center px-2 border-l border-[#E5E2D0]">
+          <div className="text-center px-2 border-l border-slate-700">
             <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wide">Active Streak</div>
-            <div className="text-sm font-bold text-amber-600 font-mono">🔥 {revealStreak}</div>
+            <div className="text-sm font-bold text-amber-500 font-mono">🔥 {revealStreak}</div>
           </div>
         </div>
       </div>
