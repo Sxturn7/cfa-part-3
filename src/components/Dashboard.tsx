@@ -172,7 +172,7 @@ export default function Dashboard({
           <div>
             <h2 className="text-lg font-serif font-bold text-slate-100 leading-none">CFA Level I Study Runway</h2>
             <p className="text-xs text-slate-500 mt-1 font-sans">
-              Dynamic tracking and organic knowledge growth tree calibrated to your target exam date.
+              Track your study progress and syllabus coverage leading up to your target exam date.
             </p>
           </div>
         </div>
@@ -476,7 +476,7 @@ export default function Dashboard({
           ) : (
             <div className="space-y-2.5">
               <p className="text-[11px] text-slate-500 leading-relaxed mb-1">
-                The mock engine highlights subject collections with running review scores falling below average benchmarks:
+                Subjects with running averages falling below the 70% passing threshold:
               </p>
               {weakSubjects.map((s) => (
                 <div key={s.id} className="bg-slate-800 border border-slate-700 p-3 rounded-lg flex items-center justify-between shadow-xs">
