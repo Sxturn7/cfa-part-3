@@ -50,7 +50,7 @@ export default function App() {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);
   const [isNotifCenterOpen, setIsNotifCenterOpen] = useState<boolean>(false);
   const [activeRevisionModId, setActiveRevisionModId] = useState<string | null>(null);
-  const [currentTheme, setCurrentTheme] = useState<AppTheme>(THEME_PRESETS.sage);
+  const [currentTheme, setCurrentTheme] = useState<AppTheme>(THEME_PRESETS.dark);
   const [isDesignCustomizerOpen, setIsDesignCustomizerOpen] = useState<boolean>(false);
 
   // Global Focus Timer States
@@ -114,7 +114,7 @@ export default function App() {
   const loadUserData = (currentEmail: string, fetchedData?: UserSyncData | null) => {
     // If we have fetched data from Supabase, load that directly!
     if (fetchedData) {
-      setCurrentTheme(fetchedData.theme || THEME_PRESETS.sage);
+      setCurrentTheme(fetchedData.theme || THEME_PRESETS.dark);
       setUserProfile(fetchedData.profile);
       setProgress(fetchedData.progress || {});
       setActivityLogs(fetchedData.logs || []);
@@ -122,7 +122,7 @@ export default function App() {
       setIsOnboarded(fetchedData.onboarded || false);
 
       // Cache locally in localStorage as a backup
-      localStorage.setItem(`cfa_theme_${currentEmail}`, JSON.stringify(fetchedData.theme || THEME_PRESETS.sage));
+      localStorage.setItem(`cfa_theme_${currentEmail}`, JSON.stringify(fetchedData.theme || THEME_PRESETS.dark));
       localStorage.setItem(`cfa_profile_${currentEmail}`, JSON.stringify(fetchedData.profile));
       localStorage.setItem(`cfa_progress_${currentEmail}`, JSON.stringify(fetchedData.progress || {}));
       localStorage.setItem(`cfa_logs_${currentEmail}`, JSON.stringify(fetchedData.logs || []));
@@ -141,10 +141,10 @@ export default function App() {
       try {
         setCurrentTheme(JSON.parse(cachedTheme));
       } catch (e) {
-        setCurrentTheme(THEME_PRESETS.sage);
+        setCurrentTheme(THEME_PRESETS.dark);
       }
     } else {
-      setCurrentTheme(THEME_PRESETS.sage);
+      setCurrentTheme(THEME_PRESETS.dark);
     }
 
     // Load profile
@@ -328,7 +328,7 @@ export default function App() {
             progress: {},
             logs: [],
             notifications: [defaultNotif],
-            theme: THEME_PRESETS.sage,
+            theme: THEME_PRESETS.dark,
             onboarded: false,
           });
           if (!syncRes.success) {
@@ -1160,7 +1160,6 @@ export default function App() {
           <button
             onClick={() => setIsDbSettingsOpen(true)}
             className="text-slate-500 hover:text-blue-400 transition inline-flex items-center gap-1 hover:underline font-mono text-[10px] cursor-pointer bg-transparent border-none outline-none"
-          CFA Prep Tracker
           >
             <Database size={10} />
             <span>Database Connection Settings</span>
