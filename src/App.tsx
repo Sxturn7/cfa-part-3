@@ -704,16 +704,16 @@ export default function App() {
       <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 mr-1.5 border border-blue-400/20">
-            <span className="font-extrabold text-sm text-white font-sans tracking-tight">CFA</span>
+            <span className="font-extrabold text-sm text-white font-sans tracking-tight">YOU</span>
           </div>
           <div>
             <h1 className="text-base font-bold text-slate-100 tracking-tight flex items-center gap-2">
-              Level I Prep Engine
+              Level I Prep Tracker
               <span className="text-[10px] bg-slate-800 text-emerald-400 font-mono font-semibold px-2 py-0.5 rounded border border-emerald-950 select-none">
                 93 Modules Embedded
               </span>
             </h1>
-            <p className="text-[10px] text-slate-400 font-medium">Excellence in Finance Curriculum Study Partner</p>
+            <p className="text-[10px] text-slate-400 font-medium">Level 1 Tracker</p>
           </div>
         </div>
 
