@@ -213,7 +213,8 @@ export default function App() {
     updatedProgress: Record<string, ModuleProgress>, 
     updatedLogs: ActivityLog[],
     updatedNotifs?: AppNotification[],
-    updatedTheme?: AppTheme
+    updatedTheme?: AppTheme,
+    updatedOnboarded?: boolean
   ) => {
     if (!email) return;
     localStorage.setItem(`cfa_profile_${email}`, JSON.stringify(updatedProfile));
@@ -226,6 +227,8 @@ export default function App() {
     }
 
     const activeTheme = updatedTheme !== undefined ? updatedTheme : currentTheme;
+    const activeOnboarded = updatedOnboarded !== undefined ? updatedOnboarded : isOnboarded;
+    localStorage.setItem(`cfa_onboarded_${email}`, activeOnboarded ? "true" : "false");
 
     // Background Cloud Sync
     if (isSupabaseConfigured()) {
@@ -236,7 +239,7 @@ export default function App() {
         logs: updatedLogs,
         notifications: activeNotifs,
         theme: activeTheme,
-        onboarded: isOnboarded,
+        onboarded: activeOnboarded,
       }).catch((err) => console.error("Cloud auto sync failed:", err));
     }
   };
@@ -315,7 +318,7 @@ export default function App() {
 
         // Sync to cloud on-registration if active
         if (isSupabaseConfigured()) {
-          await syncToSupabase({
+          const syncRes = await syncToSupabase({
             email: emailClean,
             password: password,
             profile: defaultProfile,
@@ -325,6 +328,11 @@ export default function App() {
             theme: THEME_PRESETS.sage,
             onboarded: false,
           });
+          if (!syncRes.success) {
+            setAuthError(`Supabase Cloud Sync Failed: ${syncRes.error}. Please verify your credentials and ensure your SQL table schema includes all columns (notifications, theme, onboarded, updated_at). See the 1-Click SQL Setup script in Database Settings.`);
+            setIsAuthLoading(false);
+            return;
+          }
         }
 
         setEmail(emailClean);
@@ -923,16 +931,14 @@ export default function App() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                const profileKey = `cfa_profile_${email}`;
                 const updatedProfile = {
                   ...userProfile,
                   targetExamDate: tempOnboardDate,
                   dailyTargetHours: tempOnboardHours
                 };
                 setUserProfile(updatedProfile);
-                localStorage.setItem(profileKey, JSON.stringify(updatedProfile));
-                localStorage.setItem(`cfa_onboarded_${email}`, "true");
                 setIsOnboarded(true);
+                saveData(updatedProfile, progress, activityLogs, undefined, undefined, true);
               }}
               className="space-y-4"
             >
