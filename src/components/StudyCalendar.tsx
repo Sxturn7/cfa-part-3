@@ -245,9 +245,9 @@ export default function StudyCalendar({
   return (
     <div className="space-y-6">
       {/* Upper header section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#F9F8F0] border border-[#E5E2D0] p-5 rounded-2xl">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl">
         <div>
-          <h2 className="text-xl font-serif font-bold text-[#4A3728] flex items-center gap-2">
+          <h2 className="text-xl font-serif font-bold text-slate-100 flex items-center gap-2">
             📅 Candidate Study Calendar & Milestones
           </h2>
           <p className="text-xs text-slate-500 mt-1">
@@ -257,23 +257,23 @@ export default function StudyCalendar({
         
         {/* Calendar Stats Summary cards */}
         <div className="flex items-center gap-3.5 flex-wrap">
-          <div className="bg-white border border-[#E5E2D0] rounded-xl px-4 py-2 flex items-center gap-2.5">
-            <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 flex items-center gap-2.5">
+            <div className="p-2 bg-slate-700/50 rounded-lg text-emerald-500">
               <CalendarCheck2 size={16} />
             </div>
             <div>
               <p className="text-[10px] font-mono text-slate-400 uppercase">Checkpoints</p>
-              <p className="text-sm font-bold text-[#4A3728]">{stats.completed} / {stats.total} Done</p>
+              <p className="text-sm font-bold text-slate-200">{stats.completed} / {stats.total} Done</p>
             </div>
           </div>
 
-          <div className="bg-white border border-[#E5E2D0] rounded-xl px-4 py-2 flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-xs font-mono font-bold text-slate-700">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs font-mono font-bold text-slate-200">
               {stats.pct}%
             </div>
             <div>
               <p className="text-[10px] font-mono text-slate-400 uppercase">Consistency</p>
-              <div className="w-24 bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1">
+              <div className="w-24 bg-slate-750 h-1.5 rounded-full overflow-hidden mt-1">
                 <div 
                   className="bg-emerald-500 h-full transition-all duration-500" 
                   style={{ width: `${stats.pct}%` }}
@@ -288,15 +288,15 @@ export default function StudyCalendar({
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         
         {/* Calendar Month Grid Card - 3 Columns */}
-        <div className="xl:col-span-3 bg-white border border-[#E5E2D0] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        <div className="xl:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
           <div>
             {/* Calendar Controls */}
-            <div className="flex items-center justify-between border-b border-[#F1EFE0] pb-4 mb-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
               <div className="flex items-center gap-1">
                 <button
                   type="button"
                   onClick={handlePrevMonth}
-                  className="p-1.5 hover:bg-slate-50 rounded-lg border border-[#E5E2D0] text-slate-600 hover:text-slate-900 transition"
+                  className="p-1.5 hover:bg-slate-800 rounded-lg border border-slate-800 text-slate-400 hover:text-slate-100 transition cursor-pointer"
                   aria-label="Previous month"
                 >
                   <ChevronLeft size={16} />
@@ -304,12 +304,12 @@ export default function StudyCalendar({
                 <button
                   type="button"
                   onClick={handleNextMonth}
-                  className="p-1.5 hover:bg-slate-50 rounded-lg border border-[#E5E2D0] text-slate-600 hover:text-slate-900 transition"
+                  className="p-1.5 hover:bg-slate-800 rounded-lg border border-slate-800 text-slate-400 hover:text-slate-100 transition cursor-pointer"
                   aria-label="Next month"
                 >
                   <ChevronRight size={16} />
                 </button>
-                <span className="text-sm font-serif font-bold text-[#4A3728] px-2">
+                <span className="text-sm font-serif font-bold text-slate-100 px-2">
                   {monthNames[month]} {year}
                 </span>
               </div>
@@ -318,7 +318,7 @@ export default function StudyCalendar({
                 <button
                   type="button"
                   onClick={handleToday}
-                  className="px-3 py-1.5 text-xs font-semibold bg-[#F1EFE0] hover:bg-[#D9D5C3] text-[#4A3728] rounded-lg transition"
+                  className="px-3 py-1.5 text-xs font-semibold bg-slate-850 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
                 >
                   Today
                 </button>
@@ -336,10 +336,10 @@ export default function StudyCalendar({
             </div>
 
             {/* Interactive Filters Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-50 border border-slate-100 p-3 rounded-xl mb-4 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-800 border border-slate-700 p-3 rounded-xl mb-4 text-xs">
               <div className="flex items-center gap-2">
                 <SlidersHorizontal size={13} className="text-slate-400" />
-                <span className="font-semibold text-slate-600">Filters:</span>
+                <span className="font-semibold text-slate-300">Filters:</span>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-1.5">
@@ -390,7 +390,7 @@ export default function StudyCalendar({
                   return (
                     <div 
                       key={`empty-${idx}`} 
-                      className="bg-slate-50/40 border border-dashed border-slate-100 rounded-xl aspect-square md:aspect-auto md:h-24 p-1.5"
+                      className="bg-slate-800/40 border border-dashed border-slate-700 rounded-xl aspect-square md:aspect-auto md:h-24 p-1.5"
                     />
                   );
                 }
@@ -409,7 +409,7 @@ export default function StudyCalendar({
                         ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)]/20 shadow-sm"
                         : isToday
                         ? "border-amber-400 bg-amber-50/20"
-                        : "border-[#E5E2D0] hover:border-slate-350 bg-white"
+                        : "border-slate-800 hover:border-slate-700 bg-slate-900 text-slate-200"
                     }`}
                   >
                     {/* Day number with status dot */}
@@ -419,7 +419,7 @@ export default function StudyCalendar({
                           ? "bg-amber-100 text-amber-800" 
                           : isSelected 
                           ? "bg-[var(--theme-accent)] text-white" 
-                          : "text-[#4A3728]"
+                          : "text-slate-200"
                       }`}>
                         {day.getDate()}
                       </span>
@@ -436,7 +436,7 @@ export default function StudyCalendar({
                       {dayCheckpoints.slice(0, 3).map(cp => (
                         <div 
                           key={cp.id}
-                          className="text-[9px] truncate px-1 py-0.5 rounded flex items-center gap-1 text-slate-700 font-sans border border-slate-100 bg-slate-50"
+                          className="text-[9px] truncate px-1 py-0.5 rounded flex items-center gap-1 text-slate-200 font-sans border border-slate-750 bg-slate-800"
                         >
                           <span 
                             className="w-1.5 h-1.5 rounded-full shrink-0" 
