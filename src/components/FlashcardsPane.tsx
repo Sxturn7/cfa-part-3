@@ -397,10 +397,10 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
         <div>
           <div className="flex items-center gap-2">
             <span className="text-xl">🎴</span>
-            <h2 className="text-lg font-serif font-bold text-slate-100">Spaced Repetition Active Recall</h2>
+            <h2 className="text-lg font-serif font-bold text-slate-100">Formula & Definition Review</h2>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Standard CFA formulas and tricky core definitions. Flashcard grading stores your retention history and calculates active study metrics.
+            Review core CFA formulas and definitions using active recall. Your progress helps track recall rates.
           </p>
         </div>
 
