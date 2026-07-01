@@ -268,7 +268,7 @@ export default function Dashboard({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Unified Interactive Study Logger - Occupies 1 column */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+        <div id="tour-study-tracker" className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-100 pb-2">
               ⏱️ study logger
