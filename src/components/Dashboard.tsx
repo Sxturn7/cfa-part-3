@@ -166,11 +166,11 @@ export default function Dashboard({
     <>
       <div className="space-y-6">
       {/* Dashboard Top Title with Settings Button */}
-      <div className="flex justify-between items-center bg-[#F9F8F0] border border-[#E5E2D0] p-4 rounded-xl">
+      <div className="flex justify-between items-center bg-slate-900 border border-slate-800 p-4 rounded-xl">
         <div className="flex items-center gap-3">
-          <GraduationCap className="text-[#5A6344]" size={28} />
+          <GraduationCap className="text-blue-500" size={28} />
           <div>
-            <h2 className="text-lg font-serif font-bold text-[#4A3728] leading-none">CFA Level I Study Runway</h2>
+            <h2 className="text-lg font-serif font-bold text-slate-100 leading-none">CFA Level I Study Runway</h2>
             <p className="text-xs text-slate-500 mt-1 font-sans">
               Dynamic tracking and organic knowledge growth tree calibrated to your target exam date.
             </p>
@@ -180,9 +180,9 @@ export default function Dashboard({
         <button
           type="button"
           onClick={() => setIsSettingsOpen(true)}
-          className="flex items-center gap-1.5 bg-white border border-[#D9D5C3] hover:bg-[#FDFCF8] text-[#4A3728] text-xs font-semibold px-3 py-2 rounded-lg transition"
+          className="flex items-center gap-1.5 bg-slate-800 border border-slate-700 hover:bg-slate-850 text-slate-200 text-xs font-semibold px-3 py-2 rounded-lg transition cursor-pointer"
         >
-          <Settings size={14} className="text-[#7D7859] animate-spin-slow" />
+          <Settings size={14} className="animate-spin-slow text-blue-500" />
           Plan Settings
         </button>
       </div>
@@ -270,7 +270,7 @@ export default function Dashboard({
         {/* Unified Interactive Study Logger - Occupies 1 column */}
         <div id="tour-study-tracker" className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm flex flex-col justify-between">
           <div>
-            <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-100 pb-2">
+            <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-800 pb-2">
               ⏱️ study logger
             </h3>
 
@@ -346,7 +346,7 @@ export default function Dashboard({
               </div>
 
               {/* Session Duration Selector and Quick Presets */}
-              <div className="bg-[#F1EFE0]/40 p-3 rounded-xl border border-[#E5E2D0]/60 space-y-2.5">
+              <div className="bg-slate-800/40 p-3 rounded-xl border border-slate-700 space-y-2.5">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500">
                     Duration (Minutes)
@@ -463,7 +463,7 @@ export default function Dashboard({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Weak Areas Alerts */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm md:col-span-1">
-          <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono text-rose-500 border-b border-slate-100 pb-2">
+          <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono text-rose-500 border-b border-slate-800 pb-2">
             ⚠️ Attention Areas (&lt;70%)
           </h3>
 
@@ -479,14 +479,14 @@ export default function Dashboard({
                 The mock engine highlights subject collections with running review scores falling below average benchmarks:
               </p>
               {weakSubjects.map((s) => (
-                <div key={s.id} className="bg-white border border-[#E5E2D0] p-3 rounded-lg flex items-center justify-between shadow-xs">
+                <div key={s.id} className="bg-slate-800 border border-slate-700 p-3 rounded-lg flex items-center justify-between shadow-xs">
                   <div>
-                    <span className="text-xs text-[#4A3728] font-bold block">{s.name}</span>
+                    <span className="text-xs text-slate-100 font-bold block">{s.name}</span>
                     <span className="text-[10px] text-slate-400 font-sans">
                       {s.completed} of {s.total} complete
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold text-[#94625A] bg-rose-50 border border-rose-100 px-2 py-1 rounded">
+                  <span className="text-xs font-mono font-bold text-[#94625A] bg-rose-950/20 border border-slate-750 px-2 py-1 rounded">
                     {s.avgScore}% avg
                   </span>
                 </div>
@@ -497,18 +497,18 @@ export default function Dashboard({
 
         {/* Activity Logs history table */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm md:col-span-2">
-          <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-1.5 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-100 pb-2">
+          <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-1.5 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-800 pb-2">
             📝 session activity registers
           </h3>
 
           {activityLogs.length === 0 ? (
-            <div className="p-8 text-center bg-[#FDFCF8] border border-[#E5E2D0] rounded-lg text-slate-400 font-mono text-xs">
+            <div className="p-8 text-center bg-slate-850 border border-slate-800 rounded-lg text-slate-400 font-mono text-xs">
               No sessions registered. Use the stopwatch or manual drawer to file data.
             </div>
           ) : (
             <div className="overflow-x-auto max-h-[220px] scrollbar-thin">
               <table className="w-full text-left text-xs text-[#3D3B30]">
-                <thead className="bg-[#F1EFE0] text-slate-500 uppercase font-mono text-[9px]">
+                <thead className="bg-slate-800 text-slate-400 uppercase font-mono text-[9px]">
                   <tr>
                     <th className="py-2.5 px-3">Date</th>
                     <th className="py-2.5 px-3">Subject</th>
@@ -517,9 +517,9 @@ export default function Dashboard({
                     <th className="py-2.5 px-3">Logged Index</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 bg-white">
+                <tbody className="divide-y divide-slate-800 bg-slate-900">
                   {activityLogs.slice(0, 8).map((log) => (
-                    <tr key={log.id} className="hover:bg-slate-100/50">
+                    <tr key={log.id} className="hover:bg-slate-800/40">
                       <td className="py-2.5 px-3 font-mono text-[10px] text-slate-400">
                         {new Date(log.timestamp).toLocaleDateString()}
                       </td>
@@ -528,13 +528,13 @@ export default function Dashboard({
                           {log.subjectName}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-[#4A3728] font-medium max-w-[200px] truncate">
+                      <td className="py-3 px-3 text-slate-100 font-medium max-w-[200px] truncate">
                         {log.moduleName}
                       </td>
                       <td className="py-2.5 px-3 font-mono text-slate-500">{log.durationMinutes}m</td>
                       <td className="py-2.5 px-3 font-mono">
                         {log.score !== undefined ? (
-                          <span className={`font-semibold ${log.score >= 70 ? "text-[#5A6344]" : "text-[#94625A]"}`}>
+                          <span className={`font-semibold ${log.score >= 70 ? "text-emerald-500" : "text-[#94625A]"}`}>
                             {log.score}%
                           </span>
                         ) : (
@@ -553,15 +553,15 @@ export default function Dashboard({
       {/* Floating Settings Modal Triggered from Title Header - Changes ONLY allowed here! */}
       {isSettingsOpen && (
         <div className="fixed inset-0 bg-black/40 backdrop-filter backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white border border-[#E5E2D0] rounded-2xl max-w-sm w-full p-6 shadow-2xl animate-fadeIn space-y-4">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl animate-fadeIn space-y-4">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="text-sm font-serif font-bold text-[#4A3728] flex items-center gap-1.5">
                 ⚙️ Adjust Syllabus Runway Goals
               </h3>
               <button
                 type="button"
                 onClick={() => setIsSettingsOpen(false)}
-                className="text-slate-450 hover:text-slate-700 bg-slate-100 p-1 rounded-full text-xs"
+                className="text-slate-400 hover:text-slate-200 bg-slate-800 p-1 rounded-full text-xs cursor-pointer"
               >
                 <X size={14} />
               </button>
@@ -576,7 +576,7 @@ export default function Dashboard({
                   type="email"
                   disabled
                   value={userProfile.email}
-                  className="w-full bg-[#F9F8F0] border border-[#D9D5C3] text-slate-400 text-xs px-3 py-2 rounded-lg font-mono outline-none"
+                  className="w-full bg-slate-950 border border-slate-850 text-slate-400 text-xs px-3 py-2 rounded-lg font-mono outline-none"
                 />
               </div>
 
@@ -597,7 +597,7 @@ export default function Dashboard({
                       dailyTargetHours: val
                     }));
                   }}
-                  className="w-full bg-white border border-[#D9D5C3] text-sm px-3 py-2 rounded-lg font-mono outline-none focus:border-[#5A6344]"
+                  className="w-full bg-slate-800 border border-slate-700 text-sm px-3 py-2 rounded-lg font-mono outline-none"
                 />
               </div>
 
@@ -617,19 +617,19 @@ export default function Dashboard({
                       targetExamDate: chosen
                     }));
                   }}
-                  className="w-full bg-white border border-[#D9D5C3] text-[#3D3B30] text-sm px-3 py-2 rounded-lg font-mono outline-none focus:border-[#5A6344]"
+                  className="w-full bg-slate-800 border border-slate-700 text-[#3D3B30] text-sm px-3 py-2 rounded-lg font-mono outline-none"
                 />
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-100 flex justify-end">
+            <div className="pt-2 border-t border-slate-800 flex justify-end">
               <button
                 type="button"
                 onClick={() => {
                   setIsSettingsOpen(false);
                   // Trigger alert confirmation
                 }}
-                className="bg-[#5A6344] hover:bg-[#4a5137] text-white text-xs font-bold px-4 py-2 rounded-lg transition border-none shadow-sm"
+                className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition border-none shadow-sm cursor-pointer"
               >
                 Save & Lock Plan
               </button>
