@@ -1135,10 +1135,10 @@ export default function App() {
       {/* Elegant Standard footer */}
       <footer className="border-t border-slate-850 mt-12 py-6 text-center text-slate-500 text-[11px] bg-slate-950/60 font-sans">
         <div>
-          CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. This prep utility is an independent learning assistant.
+          CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute.
         </div>
         <div className="mt-1 font-mono">
-          CFA Prep Engine v1.1.0 • Independent Study Assistant
+          CFA Prep Guide
         </div>
       </footer>
 
