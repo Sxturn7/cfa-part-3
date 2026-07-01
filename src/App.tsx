@@ -704,7 +704,7 @@ export default function App() {
       <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 mr-1.5 border border-blue-400/20">
-            <span className="font-extrabold text-sm text-white font-sans tracking-tight">YOU</span>
+            <span className="font-extrabold text-sm text-white font-sans tracking-tight">CFA</span>
           </div>
           <div>
             <h1 className="text-base font-bold text-slate-100 tracking-tight flex items-center gap-2">
@@ -713,7 +713,7 @@ export default function App() {
                 93 Modules Embedded
               </span>
             </h1>
-            <p className="text-[10px] text-slate-400 font-medium">Level 1 Tracker</p>
+            <p className="text-[10px] text-slate-400 font-medium">Track Smart, Prep Better.</p>
           </div>
         </div>
 
@@ -721,7 +721,7 @@ export default function App() {
           <div className="flex items-center gap-3.5">
             <div className="hidden sm:flex flex-col text-right">
               <span className="text-xs text-slate-300 font-mono font-medium">{userProfile.email}</span>
-              <span className="text-[10px] text-slate-500">CFA Level I Account</span>
+              <span className="text-[10px] text-slate-500">CFA Level I Candidate</span>
             </div>
 
             {/* Design Customizer Button */}
@@ -773,7 +773,7 @@ export default function App() {
               </div>
               <h2 className="text-xl font-serif font-bold tracking-tight text-[#4A3728]">CFA Level I Mastery</h2>
               <p className="text-xs text-[#7D7859] leading-relaxed max-w-xs mx-auto">
-                Access your private adaptive Study Planner, 93 embedded curriculum modules, and interactive Visual Growth Tree.
+                93 curriculum modules. One personalized study experience.
               </p>
             </div>
 
