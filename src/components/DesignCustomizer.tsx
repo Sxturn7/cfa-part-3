@@ -184,101 +184,41 @@ export default function DesignCustomizer({
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => handleSelectPreset("sage")}
+                onClick={() => handleSelectPreset("light")}
                 className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
-                  currentTheme.preset === "sage"
-                    ? "border-[#5A6344] bg-[#5A6344]/5 text-slate-100"
-                    : "border-slate-800 bg-slate-950 hover:border-slate-700"
-                }`}
-              >
-                <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-serif text-[#5A6344]">Sage Garden</span>
-                  {currentTheme.preset === "sage" && <Check size={12} className="text-[#5A6344]" />}
-                </div>
-                <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#5A6344] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#FDFCF8] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Organic</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleSelectPreset("oxford")}
-                className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
-                  currentTheme.preset === "oxford"
+                  currentTheme.preset === "light"
                     ? "border-blue-500 bg-blue-950/10 text-slate-100"
                     : "border-slate-800 bg-slate-950 hover:border-slate-700"
                 }`}
               >
                 <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-serif text-[#1b365d]">Oxford Navy</span>
-                  {currentTheme.preset === "oxford" && <Check size={12} className="text-blue-500" />}
+                  <span className="text-xs font-bold font-serif text-[#2563EB]">Light Theme</span>
+                  {currentTheme.preset === "light" && <Check size={12} className="text-blue-500" />}
                 </div>
                 <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#1b365d] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#FAF9F5] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Academic</span>
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#2563EB] border border-white/20 inline-block" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#FAFAF7] border border-slate-700 inline-block" />
+                  <span className="text-[9px] text-slate-500 font-mono">Focused</span>
                 </div>
               </button>
 
               <button
                 type="button"
-                onClick={() => handleSelectPreset("crimson")}
+                onClick={() => handleSelectPreset("dark")}
                 className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
-                  currentTheme.preset === "crimson"
-                    ? "border-rose-500 bg-rose-950/10 text-slate-100"
+                  currentTheme.preset === "dark"
+                    ? "border-blue-500 bg-blue-950/10 text-slate-100"
                     : "border-slate-800 bg-slate-950 hover:border-slate-700"
                 }`}
               >
                 <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-serif text-[#9E2A2B]">Editorial Red</span>
-                  {currentTheme.preset === "crimson" && <Check size={12} className="text-rose-500" />}
+                  <span className="text-xs font-bold font-mono text-[#3B82F6]">Dark Theme</span>
+                  {currentTheme.preset === "dark" && <Check size={12} className="text-blue-500" />}
                 </div>
                 <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#9E2A2B] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#FDFDFD] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Wealth</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleSelectPreset("midnight")}
-                className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
-                  currentTheme.preset === "midnight"
-                    ? "border-emerald-500 bg-emerald-950/10 text-slate-100"
-                    : "border-slate-800 bg-slate-950 hover:border-slate-700"
-                }`}
-              >
-                <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-mono text-[#10B981]">Midnight Dark</span>
-                  {currentTheme.preset === "midnight" && <Check size={12} className="text-emerald-500" />}
-                </div>
-                <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#10B981] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#0B0F19] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Sleek</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleSelectPreset("nordic")}
-                className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
-                  currentTheme.preset === "nordic"
-                    ? "border-slate-400 bg-slate-800/10 text-slate-100"
-                    : "border-slate-800 bg-slate-950 hover:border-slate-700"
-                }`}
-              >
-                <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-sans text-slate-400">Nordic Cool</span>
-                  {currentTheme.preset === "nordic" && <Check size={12} className="text-slate-400" />}
-                </div>
-                <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#4B5563] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#F3F4F6] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Minimalist</span>
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#3B82F6] border border-white/20 inline-block" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#0E1117] border border-slate-700 inline-block" />
+                  <span className="text-[9px] text-slate-500 font-mono">Favourite</span>
                 </div>
               </button>
 
@@ -287,11 +227,7 @@ export default function DesignCustomizer({
                 onClick={() => {
                   triggerCustomThemeUpdate({});
                 }}
-                className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
-                  currentTheme.preset === "custom"
-                    ? "border-amber-400 bg-amber-950/10 text-slate-100"
-                    : "border-slate-800 bg-slate-950 hover:border-slate-700"
-                }`}
+                className="col-span-2 p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 border-slate-800 bg-slate-950 hover:border-slate-700"
               >
                 <div className="flex justify-between items-start w-full">
                   <span className="text-xs font-bold text-amber-500 flex items-center gap-1">
@@ -301,7 +237,7 @@ export default function DesignCustomizer({
                 </div>
                 <div className="flex gap-1 items-center mt-2">
                   <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-rose-500 via-amber-400 to-sky-400 border border-white/20 inline-block" stroke="none" />
-                  <span className="text-[9px] text-amber-500 font-mono">Create your own</span>
+                  <span className="text-[9px] text-amber-500 font-mono">Create your own template</span>
                 </div>
               </button>
             </div>
@@ -406,15 +342,15 @@ export default function DesignCustomizer({
         <div className="p-4 border-t border-slate-800 bg-slate-950/80 flex gap-2 font-sans">
           <button
             type="button"
-            onClick={() => handleSelectPreset("sage")}
-            className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg transition text-center flex items-center justify-center gap-1"
+            onClick={() => handleSelectPreset("dark")}
+            className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg transition text-center flex items-center justify-center gap-1 cursor-pointer"
           >
-            <RefreshCw size={12} /> Reset to Organic Sage
+            <RefreshCw size={12} /> Reset to Dark Theme
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="bg-[#5A6344] hover:bg-opacity-90 text-white text-xs py-2 px-4 rounded-lg transition"
+            className="bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 px-4 rounded-lg transition cursor-pointer"
           >
             Apply Design
           </button>
