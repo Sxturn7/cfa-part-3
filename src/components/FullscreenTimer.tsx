@@ -258,7 +258,7 @@ export default function FullscreenTimer({
           <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl w-full text-left space-y-2">
             <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase text-slate-500">
               <Award size={12} className="text-amber-500" />
-              <span>CFA Candidate Encouragement</span>
+              <span>Some Motivation</span>
             </div>
             <p className="text-xs text-slate-300 leading-relaxed font-serif italic">
               "{STUDY_QUOTES[activeQuoteIdx]}"
