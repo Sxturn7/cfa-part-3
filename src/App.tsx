@@ -10,6 +10,7 @@ import FlashcardsPane from "./components/FlashcardsPane";
 import NotificationCenter from "./components/NotificationCenter";
 import RevisionReminderModal from "./components/RevisionReminderModal";
 import DesignCustomizer from "./components/DesignCustomizer";
+import TutorialTour from "./components/TutorialTour";
 import { AppTheme, THEME_PRESETS, applyTheme } from "./theme";
 import { BookOpen, Clock, Activity, Calendar, LayoutDashboard, Brain, HelpCircle, LogOut, Eye, EyeOff, Bell, Sparkles, Palette, Database, X, Maximize2, Pause, Play, RotateCcw, CheckCircle } from "lucide-react";
 import FullscreenTimer from "./components/FullscreenTimer";
@@ -92,6 +93,8 @@ export default function App() {
   const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
   const [tempOnboardDate, setTempOnboardDate] = useState<string>("");
   const [tempOnboardHours, setTempOnboardHours] = useState<number>(2);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
+  const [justRegistered, setJustRegistered] = useState<boolean>(false);
 
   // Local storage management per email account
   useEffect(() => {
@@ -350,6 +353,7 @@ export default function App() {
         localStorage.setItem(`cfa_onboarded_${emailClean}`, "false");
 
         setSignedIn(true);
+        setJustRegistered(true);
         setAuthSuccess("Account successfully registered!");
         setPassword("");
         setConfirmPassword("");
@@ -726,6 +730,7 @@ export default function App() {
 
             {/* Design Customizer Button */}
             <button
+              id="tour-nav-design"
               onClick={() => setIsDesignCustomizerOpen(true)}
               className="p-2 text-amber-500 hover:text-amber-400 bg-slate-800/30 hover:bg-slate-800 border border-slate-750 hover:border-slate-600 rounded-full transition flex items-center justify-center w-8 h-8 shrink-0 shadow-sm cursor-pointer"
               title="Runway Design Studio"
@@ -939,6 +944,11 @@ export default function App() {
                 setUserProfile(updatedProfile);
                 setIsOnboarded(true);
                 saveData(updatedProfile, progress, activityLogs, undefined, undefined, true);
+                
+                if (justRegistered) {
+                  setIsTourOpen(true);
+                  setJustRegistered(false);
+                }
               }}
               className="space-y-4"
             >
@@ -993,6 +1003,7 @@ export default function App() {
           {/* Tabs Selector Navigation items */}
           <div className="flex border-b border-slate-800 overflow-x-auto scrollbar-none whitespace-nowrap gap-1">
             <button
+              id="tour-nav-dashboard"
               onClick={() => setActiveTab("dashboard")}
               className={`py-3 px-4 text-xs font-semibold border-b-2 font-mono flex items-center gap-1.5 transition ${
                 activeTab === "dashboard"
@@ -1005,6 +1016,7 @@ export default function App() {
             </button>
 
             <button
+              id="tour-nav-curriculum"
               onClick={() => setActiveTab("curriculum")}
               className={`py-3 px-4 text-xs font-semibold border-b-2 font-mono flex items-center gap-1.5 transition ${
                 activeTab === "curriculum"
@@ -1017,6 +1029,7 @@ export default function App() {
             </button>
 
             <button
+              id="tour-nav-quiz"
               onClick={() => setActiveTab("quiz")}
               className={`py-3 px-4 text-xs font-semibold border-b-2 font-mono flex items-center gap-1.5 transition ${
                 activeTab === "quiz"
@@ -1029,6 +1042,7 @@ export default function App() {
             </button>
 
             <button
+              id="tour-nav-growth"
               onClick={() => setActiveTab("growth")}
               className={`py-3 px-4 text-xs font-semibold border-b-2 font-mono flex items-center gap-1.5 transition ${
                 activeTab === "growth"
@@ -1041,6 +1055,7 @@ export default function App() {
             </button>
 
             <button
+              id="tour-nav-calendar"
               onClick={() => setActiveTab("calendar")}
               className={`py-3 px-4 text-xs font-semibold border-b-2 font-mono flex items-center gap-1.5 transition ${
                 activeTab === "calendar"
@@ -1053,6 +1068,7 @@ export default function App() {
             </button>
 
             <button
+              id="tour-nav-flashcards"
               onClick={() => setActiveTab("flashcards")}
               className={`py-3 px-4 text-xs font-semibold border-b-2 font-mono flex items-center gap-1.5 transition ${
                 activeTab === "flashcards"
@@ -1138,7 +1154,17 @@ export default function App() {
           CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute.
         </div>
         <div className="mt-1 font-mono">
+                CFA Prep Tracker
+        </div>
+        <div className="mt-2.5">
+          <button
+            onClick={() => setIsDbSettingsOpen(true)}
+            className="text-slate-500 hover:text-blue-400 transition inline-flex items-center gap-1 hover:underline font-mono text-[10px] cursor-pointer bg-transparent border-none outline-none"
           CFA Prep Tracker
+          >
+            <Database size={10} />
+            <span>Database Connection Settings</span>
+          </button>
         </div>
       </footer>
 
@@ -1404,6 +1430,19 @@ export default function App() {
           </div>
         </div>
       )}
+        {/* Interactive Platform Walkthrough Tour */}
+      <TutorialTour
+        isOpen={isTourOpen}
+        onClose={() => {
+          setIsTourOpen(false);
+          setActiveTab("dashboard");
+          if (email) {
+            localStorage.setItem(`cfa_tour_viewed_${email}`, "true");
+          }
+        }}
+        setActiveTab={setActiveTab}
+        activeTab={activeTab}
+      />
     </div>
   );
 }
