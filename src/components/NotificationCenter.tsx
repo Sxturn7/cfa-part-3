@@ -184,7 +184,7 @@ export default function NotificationCenter({
 
         {/* Bottom Tip Footer */}
         <div className="p-3 border-t border-slate-800 bg-slate-950/80 text-[10px] text-slate-500 leading-relaxed flex items-center gap-1.5 justify-center">
-          <Sparkles size={11} className="text-[#5A6344]" />
+          <Sparkles size={11} className="text-blue-500" />
           <span>Completed steps automatically schedule active recall.</span>
         </div>
       </div>
