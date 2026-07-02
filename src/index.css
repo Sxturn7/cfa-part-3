@@ -69,7 +69,7 @@ body,
 html {
   background-color: var(--theme-bg) !important;
   color: var(--theme-text-main) !important;
-  font-family: "Inter", system-ui, sans-serif !important;
+  font-family: "IBM Plex Sans", system-ui, sans-serif !important;
 }
 
 /* Selection aesthetics */
@@ -80,7 +80,7 @@ html {
 
 /* Titles and Display headings font overrides */
 h1, h2, h3, .font-serif, .font-serif-display {
-  font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif !important;
+  font-family: "IBM Plex Sans", "IBM Plex Sans", system-ui, -apple-system, sans-serif !important;
   color: var(--theme-text-dark) !important;
   letter-spacing: -0.015em !important;
 }
