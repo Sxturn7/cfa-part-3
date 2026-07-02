@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Calendar, ChevronRight, Brain, Info } from "lucide-react";
+import { X, ChevronRight, Brain, Info } from "lucide-react";
 
 interface RevisionReminderModalProps {
   isOpen: boolean;
@@ -19,104 +19,99 @@ export default function RevisionReminderModal({
   const cycles = [
     {
       days: 1,
-      label: "Cycle 1: Active Recall (Tomorrow)",
-      desc: "Disrupt the immediate forgetting curve. Review core formulas and key financial concepts.",
-      tag: "1 Day",
+      label: "Active Recall (Tomorrow)",
+      desc: "Disrupt the forgetting curve early. Review formulas and core concepts.",
+      tag: "1d",
       memoryBoost: "95% retention target",
-      color: "border-slate-800 hover:border-amber-500 bg-slate-900/20 text-slate-100"
     },
     {
       days: 7,
-      label: "Cycle 2: Practice Drill (In a week)",
-      desc: "Re-engage before conceptual decay sets in. Take practice quizzes to build deep recall.",
-      tag: "7 Days",
+      label: "Practice Drill (Next week)",
+      desc: "Re-engage before conceptual decay sets in. Solve sample question banks.",
+      tag: "7d",
       memoryBoost: "97% retention target",
-      color: "border-slate-800 hover:border-blue-500 bg-slate-900/20 text-slate-100"
     },
     {
       days: 16,
-      label: "Cycle 3: Permanent Memory (Long cycle)",
-      desc: "Anchor into semantic long-term memory. Perfect for spaced check-offs before mock exams.",
-      tag: "16 Days",
+      label: "Long Spaced Check-off",
+      desc: "Deep-anchor into permanent long-term memory. Ideal before practice mocks.",
+      tag: "16d",
       memoryBoost: "99% retention target",
-      color: "border-slate-800 hover:border-purple-500 bg-slate-900/20 text-slate-100"
     }
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn font-sans">
-      <div className="w-full max-w-md bg-slate-900 border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl relative flex flex-col p-6 space-y-4">
+    <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn font-sans">
+      <div className="w-full max-w-md bg-[var(--theme-card)] border border-[var(--theme-border)]/40 rounded-2xl p-6 shadow-xl relative flex flex-col space-y-5">
         
         {/* Close button */}
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 top-4 text-slate-450 hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-800/40 transition cursor-pointer"
+          className="absolute right-4 top-4 text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] p-1.5 rounded-full transition cursor-pointer"
         >
           <X size={15} />
         </button>
 
         {/* Header */}
         <div className="space-y-1">
-          <div className="flex items-center gap-1.5 text-amber-500">
-            <Brain size={15} className="animate-pulse" />
-            <span className="text-[10px] uppercase font-bold tracking-widest font-mono">Spaced Repetition</span>
+          <div className="flex items-center gap-1.5 text-[var(--theme-accent)]">
+            <Brain size={13} className="opacity-70" />
+            <span className="text-[10px] uppercase font-medium tracking-wide">Spaced Repetition</span>
           </div>
-          <h3 className="text-base font-bold text-slate-100 font-sans tracking-tight">
+          <h3 className="text-base font-semibold text-[var(--theme-text-dark)] tracking-tight">
             Schedule Revision Session
           </h3>
         </div>
 
-        {/* Completed Module Target */}
-        <div className="bg-slate-950 p-3 rounded-xl border border-slate-850">
-          <span className="text-[9px] text-slate-500 font-mono uppercase block tracking-wider">Completed Lesson:</span>
-          <p className="text-xs font-bold text-slate-200 mt-0.5">
+        {/* Completed Lesson */}
+        <div className="bg-[var(--theme-beige)]/40 p-4 rounded-xl border border-[var(--theme-border)]/30">
+          <span className="text-[10px] text-[var(--theme-text-main)] font-sans opacity-60 block">Completed lesson:</span>
+          <p className="text-xs font-semibold text-[var(--theme-text-dark)] mt-1">
             {moduleName}
           </p>
         </div>
 
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+        <span className="text-[11px] font-medium text-[var(--theme-text-dark)] opacity-70 block">
           Select retention cycle:
         </span>
 
         {/* Cycles list */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           {cycles.map((cycle) => (
             <button
               key={cycle.days}
               type="button"
               onClick={() => onScheduleRevision(cycle.days)}
-              className={`w-full flex items-center justify-between p-3 rounded-xl border transition text-left group outline-none cursor-pointer ${cycle.color}`}
+              className="w-full flex items-center justify-between p-3.5 bg-[var(--theme-card)] hover:bg-[var(--theme-beige)]/30 border border-[var(--theme-border)]/35 hover:border-[var(--theme-border)] rounded-xl transition-all text-left group outline-none cursor-pointer hover:-translate-y-[1px]"
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="text-[10px] font-mono font-bold bg-slate-950 border border-slate-800 text-slate-300 w-9 h-9 rounded-lg flex items-center justify-center shrink-0 shadow-inner group-hover:text-white group-hover:border-slate-700">
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="text-[10px] font-medium bg-[var(--theme-beige)]/70 border border-[var(--theme-border)]/20 text-[var(--theme-text-dark)] w-9 h-9 rounded-xl flex items-center justify-center shrink-0">
                   {cycle.tag}
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h5 className="text-xs font-bold text-slate-200 group-hover:text-white transition truncate">
-                      {cycle.label}
-                    </h5>
-                  </div>
-                  <p className="text-[10px] text-slate-400 leading-normal mt-0.5">
-                    {cycle.memoryBoost}
+                  <h5 className="text-xs font-semibold text-[var(--theme-text-dark)]">
+                    {cycle.label}
+                  </h5>
+                  <p className="text-[10px] text-[var(--theme-text-main)] opacity-75 mt-0.5 leading-relaxed">
+                    {cycle.desc}
                   </p>
                 </div>
               </div>
-              <ChevronRight size={14} className="text-slate-500 group-hover:text-slate-250 group-hover:translate-x-0.5 transition shrink-0 ml-1" />
+              <ChevronRight size={13} className="text-[var(--theme-text-main)] opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition shrink-0 ml-1.5" />
             </button>
           ))}
         </div>
 
         {/* Footer Actions */}
-        <div className="flex justify-between items-center pt-3 border-t border-slate-850 text-[10px] text-slate-500">
+        <div className="flex justify-between items-center pt-4 border-t border-[var(--theme-border)]/30 text-[10px] text-[var(--theme-text-main)] opacity-80">
           <span className="flex items-center gap-1">
-            <Info size={11} /> Auto-schedules on your calendar
+            <Info size={11} className="opacity-70" /> Auto-saves to your tracker
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-450 hover:text-slate-200 font-semibold hover:bg-slate-800/40 py-1 px-2.5 rounded transition cursor-pointer"
+            className="text-[var(--theme-text-dark)] hover:text-[var(--theme-accent)] font-medium transition cursor-pointer"
           >
             Skip, revise later
           </button>
