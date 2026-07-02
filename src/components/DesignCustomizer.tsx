@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { X, Sparkles, Palette, Check, RefreshCw, Layout, Smartphone } from "lucide-react";
-import { AppTheme, THEME_PRESETS, applyTheme } from "../theme";
+import React from "react";
+import { X, Sun, Moon, Check, Palette } from "lucide-react";
+import { AppTheme, THEME_PRESETS } from "../theme";
 
 interface DesignCustomizerProps {
   isOpen: boolean;
@@ -9,350 +9,199 @@ interface DesignCustomizerProps {
   onThemeChange: (theme: AppTheme) => void;
 }
 
+// Quick-select premium accent colors
+const PRESET_ACCENTS = [
+  { name: "Royal Blue", value: "#2563EB" },
+  { name: "Bright Blue", value: "#3B82F6" },
+  { name: "Indigo", value: "#6366F1" },
+  { name: "Purple", value: "#8B5CF6" },
+  { name: "Emerald", value: "#10B981" },
+  { name: "Teal", value: "#0D9488" },
+  { name: "Amber", value: "#F59E0B" },
+  { name: "Rose", value: "#F43F5E" },
+];
+
+function hexToRgb(hex: string): string {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  const fullHex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "37, 99, 235";
+}
+
 export default function DesignCustomizer({
   isOpen,
   onClose,
   currentTheme,
   onThemeChange,
 }: DesignCustomizerProps) {
-  // Temporary dynamic state for the custom design options
-  const [customAccent, setCustomAccent] = useState<string>(currentTheme.accent);
-  const [customBg, setCustomBg] = useState<string>(currentTheme.bg);
-  const [customCard, setCustomCard] = useState<string>(currentTheme.card);
-  const [customText, setCustomText] = useState<string>(currentTheme.textMain);
-  const [customTextDark, setCustomTextDark] = useState<string>(currentTheme.textDark);
-
-  useEffect(() => {
-    if (currentTheme.preset !== "custom") {
-      setCustomAccent(currentTheme.accent);
-      setCustomBg(currentTheme.bg);
-      setCustomCard(currentTheme.card);
-      setCustomText(currentTheme.textMain);
-      setCustomTextDark(currentTheme.textDark);
-    }
-  }, [currentTheme]);
-
   if (!isOpen) return null;
 
-  const handleSelectPreset = (presetKey: keyof typeof THEME_PRESETS) => {
+  const handleSelectPreset = (presetKey: "light" | "dark") => {
     const selected = THEME_PRESETS[presetKey];
     onThemeChange(selected);
   };
 
-  const handleCustomAccentChange = (hex: string) => {
-    setCustomAccent(hex);
-    triggerCustomThemeUpdate({ accent: hex });
-  };
+  const handleAccentColorChange = (hexColor: string) => {
+    // Determine whether to base on light or dark mode properties
+    const isLightBase = currentTheme.bg === "#FAFAF7" || currentTheme.bg === "#FAFBFC" || currentTheme.bg === "#FFFFFF" || currentTheme.preset === "light";
+    const baseTheme = isLightBase ? THEME_PRESETS.light : THEME_PRESETS.dark;
 
-  const handleCustomBgTemplate = (base: "slate" | "warm" | "light" | "paper") => {
-    let bg = "#FDFCF8";
-    let card = "#F9F8F0";
-    let border = "#E5E2D0";
-    let beige = "#F1EFE0";
-    let beigeDark = "#D9D5C3";
-    let textMain = "#3D3B30";
-    let textDark = "#4A3728";
-
-    if (base === "slate") {
-      bg = "#0B0F19";
-      card = "#111827";
-      border = "#1F2937";
-      beige = "#1F2937";
-      beigeDark = "#374151";
-      textMain = "#D1D5DB";
-      textDark = "#F3F4F6";
-    } else if (base === "light") {
-      bg = "#F3F4F6";
-      card = "#FFFFFF";
-      border = "#E5E7EB";
-      beige = "#F9FAFB";
-      beigeDark = "#D1D5DB";
-      textMain = "#1F2937";
-      textDark = "#111827";
-    } else if (base === "paper") {
-      bg = "#FFFFFF";
-      card = "#FAFBFD";
-      border = "#E2E8F0";
-      beige = "#F1F5F9";
-      beigeDark = "#CBD5E1";
-      textMain = "#334155";
-      textDark = "#0F172A";
-    }
-
-    setCustomBg(bg);
-    setCustomCard(card);
-    setCustomText(textMain);
-    setCustomTextDark(textDark);
-
-    triggerCustomThemeUpdate({
-      bg,
-      card,
-      border,
-      beige,
-      beigeDark,
-      textMain,
-      textDark,
-      headerBg: bg === "#0B0F19" ? "rgba(11, 15, 25, 0.85)" : `rgba(${hexToRgb(bg)}, 0.75)`,
-      inputBg: bg === "#0B0F19" ? "#1F2937" : "#FFFFFF",
-    });
-  };
-
-  function hexToRgb(hex: string): string {
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    const cleanHex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-    return result
-      ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-      : "253, 252, 248";
-  }
-
-  const triggerCustomThemeUpdate = (overrides: Partial<AppTheme>) => {
-    // Generate a full custom theme based on overrides and current values
-    const updatedTheme: AppTheme = {
+    const customTheme: AppTheme = {
+      ...baseTheme,
       preset: "custom",
-      accent: overrides.accent ?? customAccent,
-      accentHover: darkenColor(overrides.accent ?? customAccent),
-      accentLight: hexToRgba(overrides.accent ?? customAccent, 0.15),
-      bg: overrides.bg ?? customBg,
-      card: overrides.card ?? customCard,
-      border: overrides.border ?? (customBg === "#0B0F19" ? "#1F2937" : "#E5E2D0"),
-      beige: overrides.beige ?? (customBg === "#0B0F19" ? "#1F2937" : "#F1EFE0"),
-      beigeDark: overrides.beigeDark ?? (customBg === "#0B0F19" ? "#374151" : "#D9D5C3"),
-      textMain: overrides.textMain ?? customText,
-      textDark: overrides.textDark ?? customTextDark,
-      headerBg: overrides.headerBg ?? (customBg === "#0B0F19" ? "rgba(11, 15, 25, 0.85)" : "rgba(255, 255, 255, 0.7)"),
-      inputBg: overrides.inputBg ?? (customBg === "#0B0F19" ? "#1F2937" : "#ffffff"),
+      accent: hexColor,
+      accentHover: hexColor,
+      accentLight: `rgba(${hexToRgb(hexColor)}, 0.15)`,
     };
-    onThemeChange(updatedTheme);
+    onThemeChange(customTheme);
   };
-
-  function darkenColor(hex: string): string {
-    // Basic color darken fallback for hover state
-    try {
-      const rgb = hexToRgb(hex).split(",").map((x) => Math.max(0, parseInt(x.trim(), 10) - 25));
-      return `#${rgb.map((x) => x.toString(16).padStart(2, "0")).join("")}`;
-    } catch {
-      return hex;
-    }
-  }
-
-  function hexToRgba(hex: string, alpha: number): string {
-    return `rgba(${hexToRgb(hex)}, ${alpha})`;
-  }
 
   return (
     <>
       {/* Overlay Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 transition-all"
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 transition-all cursor-pointer"
         onClick={onClose}
+        id="theme-overlay"
       />
 
-      {/* Drawer */}
-      <div className="fixed right-0 top-0 h-screen w-full max-w-sm bg-slate-900 border-l border-slate-800 shadow-2xl z-50 flex flex-col animate-slideIn">
+      {/* Modern, Simple Slide-out Sidebar */}
+      <div 
+        className="fixed right-0 top-0 h-screen w-full max-w-sm bg-slate-900 border-l border-slate-800 shadow-2xl z-50 flex flex-col font-sans"
+        id="theme-modal"
+      >
         {/* Header */}
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-slate-850 rounded-lg text-amber-500">
-              <Palette size={16} />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-100 font-serif">Runway Design Studio</h3>
-              <p className="text-[10px] text-slate-400 font-mono">
-                Completely customize colors, ambiance, & accents
-              </p>
-            </div>
+        <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-1.5">
+              <Palette size={16} className="text-blue-500" />
+              <span>Theme Customization</span>
+            </h3>
+            <p className="text-xs text-slate-400 mt-1">Adjust visual themes & accent colors</p>
           </div>
           <button 
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-800 transition cursor-pointer"
+            id="close-theme-btn"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-6">
-          
-          {/* Preset Theme Selector */}
+        <div className="flex-1 p-5 space-y-6 overflow-y-auto">
+          {/* Base Presets */}
           <div className="space-y-3">
-            <h4 className="text-[11px] font-bold font-mono text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-              🎨 PRESET FLIGHT SHADES
-            </h4>
-            
-            <div className="grid grid-cols-2 gap-2">
+            <h4 className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Base Mode</h4>
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => handleSelectPreset("light")}
-                className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
+                className={`p-3 rounded-xl border text-left transition flex flex-col justify-between h-18 cursor-pointer ${
                   currentTheme.preset === "light"
-                    ? "border-blue-500 bg-blue-950/10 text-slate-100"
-                    : "border-slate-800 bg-slate-950 hover:border-slate-700"
+                    ? "border-blue-500 bg-blue-950/20 text-slate-100"
+                    : "border-slate-800 bg-slate-950 text-slate-300 hover:border-slate-700"
                 }`}
+                id="theme-btn-light"
               >
-                <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-serif text-[#2563EB]">Light Theme</span>
-                  {currentTheme.preset === "light" && <Check size={12} className="text-blue-500" />}
-                </div>
-                <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#2563EB] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#FAFAF7] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Focused</span>
-                </div>
+                <Sun size={18} className={currentTheme.preset === "light" ? "text-blue-400" : "text-slate-400"} />
+                <span className="text-xs font-semibold">Light Mode</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleSelectPreset("dark")}
-                className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 ${
+                className={`p-3 rounded-xl border text-left transition flex flex-col justify-between h-18 cursor-pointer ${
                   currentTheme.preset === "dark"
-                    ? "border-blue-500 bg-blue-950/10 text-slate-100"
-                    : "border-slate-800 bg-slate-950 hover:border-slate-700"
+                    ? "border-blue-500 bg-blue-950/20 text-slate-100"
+                    : "border-slate-800 bg-slate-950 text-slate-300 hover:border-slate-700"
                 }`}
+                id="theme-btn-dark"
               >
-                <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold font-mono text-[#3B82F6]">Dark Theme</span>
-                  {currentTheme.preset === "dark" && <Check size={12} className="text-blue-500" />}
-                </div>
-                <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#3B82F6] border border-white/20 inline-block" />
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#0E1117] border border-slate-700 inline-block" />
-                  <span className="text-[9px] text-slate-500 font-mono">Favourite</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  triggerCustomThemeUpdate({});
-                }}
-                className="col-span-2 p-3 rounded-xl border text-left transition relative flex flex-col justify-between h-20 border-slate-800 bg-slate-950 hover:border-slate-700"
-              >
-                <div className="flex justify-between items-start w-full">
-                  <span className="text-xs font-bold text-amber-500 flex items-center gap-1">
-                    <Sparkles size={11} className="animate-spin" /> Custom Canvas
-                  </span>
-                  {currentTheme.preset === "custom" && <Check size={12} className="text-amber-400" />}
-                </div>
-                <div className="flex gap-1 items-center mt-2">
-                  <span className="w-3.5 h-3.5 rounded-full bg-gradient-to-tr from-rose-500 via-amber-400 to-sky-400 border border-white/20 inline-block" stroke="none" />
-                  <span className="text-[9px] text-amber-500 font-mono">Create your own template</span>
-                </div>
+                <Moon size={18} className={currentTheme.preset === "dark" ? "text-blue-400" : "text-slate-400"} />
+                <span className="text-xs font-semibold">Dark Mode</span>
               </button>
             </div>
           </div>
 
-          {/* Color & Accent fine-tuning settings panel */}
-          <div className="space-y-4 pt-4 border-t border-slate-800">
-            <h4 className="text-[11px] font-bold font-mono text-slate-400 uppercase tracking-wider">
-              ⚙️ DEEP DESIGN CUSTOMIZATION
-            </h4>
-
-            {/* Custom Accent Picker */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-semibold text-slate-300">Primary Accent Spotlight Color</span>
-                <span className="text-[10px] font-mono text-slate-500 uppercase">{customAccent}</span>
-              </div>
-              <div className="flex gap-3 items-center bg-slate-950/40 p-2.5 rounded-xl border border-slate-850">
-                <input
-                  type="color"
-                  value={customAccent}
-                  onChange={(e) => handleCustomAccentChange(e.target.value)}
-                  className="w-10 h-10 rounded border-none cursor-pointer outline-none bg-transparent flex-shrink-0"
-                />
-                <div className="text-[11px] text-slate-400 font-sans">
-                  Instantly changes buttons, progress indicators, achievements highlights, and menu selections.
-                </div>
-              </div>
-            </div>
-
-            {/* Background Style Presets */}
-            <div className="space-y-2">
-              <span className="text-xs font-semibold text-slate-300">Background Canvas Atmosphere</span>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleCustomBgTemplate("warm")}
-                  className={`py-2 px-3 rounded-lg border text-xs font-medium transition flex items-center gap-1.5 justify-center ${
-                    customBg === "#FDFCF8"
-                      ? "border-amber-400/60 bg-amber-950/10 text-slate-200"
-                      : "border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700"
-                  }`}
-                >
-                  🌾 Warm Cream
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleCustomBgTemplate("slate")}
-                  className={`py-2 px-3 rounded-lg border text-xs font-medium transition flex items-center gap-1.5 justify-center ${
-                    customBg === "#0B0F19"
-                      ? "border-emerald-500/60 bg-emerald-950/10 text-slate-200"
-                      : "border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700"
-                  }`}
-                >
-                  🌌 Slate Midnight
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleCustomBgTemplate("light")}
-                  className={`py-2 px-3 rounded-lg border text-xs font-medium transition flex items-center gap-1.5 justify-center ${
-                    customBg === "#F3F4F6"
-                      ? "border-slate-400/60 bg-slate-800/10 text-slate-200"
-                      : "border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700"
-                  }`}
-                >
-                  ❄️ Cool Silver
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleCustomBgTemplate("paper")}
-                  className={`py-2 px-3 rounded-lg border text-xs font-medium transition flex items-center gap-1.5 justify-center ${
-                    customBg === "#FFFFFF"
-                      ? "border-slate-400/60 bg-slate-800/10 text-slate-200"
-                      : "border-slate-800 bg-slate-950 text-slate-400 hover:border-slate-700"
-                  }`}
-                >
-                  📄 Paper White
-                </button>
-              </div>
-            </div>
-
-            {/* Quick Palette Recommendations */}
-            <div className="space-y-2 pt-2 bg-slate-950/20 p-3 rounded-xl border border-slate-850/40">
-              <span className="text-[10px] text-slate-400 font-mono uppercase block">Pro Designer Accent Presets</span>
-              <div className="flex gap-2">
-                {["#10B981", "#3B82F6", "#8B5CF6", "#EC4899", "#F59E0B", "#EF4444"].map((color) => (
+          {/* Accent Color Customizer */}
+          <div className="space-y-3 pt-2 border-t border-slate-800/60">
+            <h4 className="text-[11px] font-bold tracking-wider text-slate-400 uppercase">Accent Color</h4>
+            
+            {/* Swatches */}
+            <div className="grid grid-cols-4 gap-2">
+              {PRESET_ACCENTS.map((accent) => {
+                const isSelected = currentTheme.accent.toLowerCase() === accent.value.toLowerCase();
+                return (
                   <button
-                    key={color}
+                    key={accent.value}
                     type="button"
-                    onClick={() => handleCustomAccentChange(color)}
-                    style={{ backgroundColor: color }}
-                    className="w-6 h-6 rounded-full border border-white/20 hover:scale-110 active:scale-95 transition"
-                    title={color}
+                    onClick={() => handleAccentColorChange(accent.value)}
+                    className="h-10 rounded-lg border border-slate-800 bg-slate-950 flex items-center justify-center relative hover:border-slate-700 transition cursor-pointer group"
+                    title={accent.name}
+                  >
+                    <span 
+                      className="w-5 h-5 rounded-full inline-block shadow-inner"
+                      style={{ backgroundColor: accent.value }}
+                    />
+                    {isSelected && (
+                      <span className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center">
+                        <Check size={14} className="text-white font-bold" />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Custom Color Input */}
+            <div className="pt-2">
+              <label className="text-[11px] font-medium text-slate-400 block mb-1.5">Or use a custom hex color picker:</label>
+              <div className="flex gap-2 items-center">
+                <div className="relative h-10 w-10 rounded-lg border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden shrink-0">
+                  <input
+                    type="color"
+                    value={currentTheme.accent}
+                    onChange={(e) => handleAccentColorChange(e.target.value)}
+                    className="absolute inset-0 w-full h-full p-0 border-0 cursor-pointer opacity-0 scale-150"
                   />
-                ))}
+                  <span 
+                    className="w-6 h-6 rounded-full inline-block border border-slate-700"
+                    style={{ backgroundColor: currentTheme.accent }}
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={currentTheme.accent.toUpperCase()}
+                    onChange={(e) => {
+                      if (e.target.value.startsWith("#") && e.target.value.length <= 7) {
+                        handleAccentColorChange(e.target.value);
+                      } else if (!e.target.value.startsWith("#") && e.target.value.length <= 6) {
+                        handleAccentColorChange("#" + e.target.value);
+                      }
+                    }}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg py-2 px-3 text-xs text-slate-200 font-mono focus:border-blue-500 focus:outline-none"
+                    placeholder="#3B82F6"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer actions */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/80 flex gap-2 font-sans">
-          <button
-            type="button"
-            onClick={() => handleSelectPreset("dark")}
-            className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs py-2 px-3 rounded-lg transition text-center flex items-center justify-center gap-1 cursor-pointer"
-          >
-            <RefreshCw size={12} /> Reset to Dark Theme
-          </button>
+        {/* Footer */}
+        <div className="p-5 border-t border-slate-800 bg-slate-950/60 flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 px-4 rounded-lg transition cursor-pointer"
+            className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs py-2.5 px-4 rounded-lg font-medium transition cursor-pointer text-center"
+            id="apply-theme-btn"
           >
-            Apply Design
+            Apply & Close
           </button>
         </div>
       </div>
