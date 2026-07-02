@@ -703,7 +703,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans select-none selection:bg-blue-600/30">
+    <div className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text-main)] flex flex-col font-sans select-none selection:bg-[var(--theme-accent-light)]">
       {/* 1. Header Navigation elements */}
       <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -766,24 +766,24 @@ export default function App() {
 
       {/* 2. Authentication splash screen */}
       {!signedIn ? (
-        <main className="flex-1 flex items-center justify-center p-6 bg-radial from-slate-900 via-slate-950 to-slate-950 relative overflow-hidden">
-          {/* visual dynamic ambient shapes */}
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+        <main className="flex-1 flex items-center justify-center p-6 bg-[var(--theme-bg)] relative overflow-hidden">
+          {/* subtle ambient background elements */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--theme-accent-light)] rounded-full blur-3xl pointer-events-none opacity-40" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[var(--theme-accent-light)] rounded-full blur-3xl pointer-events-none opacity-40" />
 
-          <div className="w-full max-w-md bg-slate-900/85 border border-slate-850 p-8 rounded-2xl shadow-xl relative animate-fadeIn">
+          <div className="w-full max-w-md bg-[var(--theme-card)] border border-[var(--theme-border)] p-8 rounded-2xl shadow-xl relative animate-fadeIn">
             <div className="text-center space-y-2 mb-6">
-              <div className="w-12 h-12 rounded-xl bg-[#5A6344] mx-auto flex items-center justify-center shadow-md text-white font-serif italic text-2xl font-bold">
+              <div className="w-11 h-11 rounded-xl bg-[var(--theme-accent)] mx-auto flex items-center justify-center shadow-sm text-[var(--theme-bg)] font-serif italic text-xl font-bold">
                 C
               </div>
-              <h2 className="text-xl font-serif font-bold tracking-tight text-[#4A3728]">CFA Level I Mastery</h2>
-              <p className="text-xs text-[#7D7859] leading-relaxed max-w-xs mx-auto">
+              <h2 className="text-xl font-bold tracking-tight text-[var(--theme-text-dark)] font-sans">CFA Level I Mastery</h2>
+              <p className="text-xs text-[var(--theme-text-main)] leading-relaxed max-w-xs mx-auto">
                 93 curriculum modules. One personalized study experience.
               </p>
             </div>
 
             {/* Auth Mode Tab Bar */}
-            <div className="flex border-b border-[#E5E2D0] mb-6">
+            <div className="flex border-b border-[var(--theme-border)] mb-6">
               <button
                 type="button"
                 onClick={() => {
@@ -791,10 +791,10 @@ export default function App() {
                   setAuthError("");
                   setAuthSuccess("");
                 }}
-                className={`flex-1 pb-2.5 text-xs font-bold uppercase tracking-widest transition-all ${
+                className={`flex-1 pb-2.5 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer ${
                   authMode === "login"
-                    ? "border-b-2 border-[#5A6344] text-[#4A3728]"
-                    : "text-slate-400 hover:text-slate-600 font-medium"
+                    ? "border-b-2 border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
+                    : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] opacity-70"
                 }`}
               >
                 Sign In
@@ -806,10 +806,10 @@ export default function App() {
                   setAuthError("");
                   setAuthSuccess("");
                 }}
-                className={`flex-1 pb-2.5 text-xs font-bold uppercase tracking-widest transition-all ${
+                className={`flex-1 pb-2.5 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer ${
                   authMode === "signup"
-                    ? "border-b-2 border-[#5A6344] text-[#4A3728]"
-                    : "text-slate-400 hover:text-slate-600 font-medium"
+                    ? "border-b-2 border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
+                    : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] opacity-70"
                 }`}
               >
                 Create Account
@@ -818,19 +818,19 @@ export default function App() {
 
             {/* Error & Success Messages */}
             {authError && (
-              <div className="mb-4 p-3 bg-red-50 border border-[#94625A]/40 text-[#94625A] text-xs rounded-lg font-medium">
+              <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-xs rounded-lg font-medium">
                 ⚠️ {authError}
               </div>
             )}
             {authSuccess && (
-              <div className="mb-4 p-3 bg-[#FDFCF8] border border-[#A3B18A] text-[#5A6344] text-xs rounded-lg font-medium">
+              <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs rounded-lg font-medium">
                 ✨ {authSuccess}
               </div>
             )}
 
             <form onSubmit={handleAuthSubmit} className="space-y-4">
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
                   Candidate Email
                 </label>
                 <input
@@ -842,12 +842,12 @@ export default function App() {
                     setEmail(e.target.value);
                     if (authError) setAuthError("");
                   }}
-                  className="w-full bg-white border border-[#D9D5C3] rounded-xl px-3 py-2.5 text-sm text-[#3D3B30] outline-none placeholder:text-slate-400 font-mono"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
                   Secure Password
                 </label>
                 <div className="relative">
@@ -860,12 +860,12 @@ export default function App() {
                       setPassword(e.target.value);
                       if (authError) setAuthError("");
                     }}
-                    className="w-full bg-white border border-[#D9D5C3] rounded-xl pl-3 pr-10 py-2.5 text-sm text-[#3D3B30] outline-none placeholder:text-slate-400 font-mono"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl pl-3.5 pr-10 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none p-1 flex items-center justify-center"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--theme-text-main)] opacity-60 hover:opacity-90 outline-none p-1 flex items-center justify-center cursor-pointer"
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -874,7 +874,7 @@ export default function App() {
 
               {authMode === "signup" && (
                 <div className="animate-fadeIn">
-                  <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1.5">
+                  <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
                     Confirm Password
                   </label>
                   <input
@@ -886,7 +886,7 @@ export default function App() {
                       setConfirmPassword(e.target.value);
                       if (authError) setAuthError("");
                     }}
-                    className="w-full bg-white border border-[#D9D5C3] rounded-xl px-3 py-2.5 text-sm text-[#3D3B30] outline-none placeholder:text-slate-400 font-mono"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
                   />
                 </div>
               )}
@@ -894,11 +894,11 @@ export default function App() {
               <button
                 type="submit"
                 disabled={isAuthLoading}
-                className="w-full bg-[#5A6344] hover:bg-[#4a5137] disabled:bg-[#5A6344]/50 text-white font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm mt-4 border-none flex items-center justify-center gap-2"
+                className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] disabled:opacity-50 text-[var(--theme-bg)] font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm mt-4 border-none flex items-center justify-center gap-2 cursor-pointer"
               >
                 {isAuthLoading ? (
                   <>
-                    <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-3.5 w-3.5 text-[var(--theme-bg)]" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
@@ -910,7 +910,7 @@ export default function App() {
               </button>
             </form>
 
-            <div className="mt-6 border-t border-[#E5E2D0] pt-4 text-center text-[10px] text-[#A8A48F] leading-relaxed">
+            <div className="mt-6 border-t border-[var(--theme-border)] pt-4 text-center text-[10px] text-[var(--theme-text-main)] opacity-60 leading-relaxed">
               {authMode === "login" ? (
                 <span>🔑 Enter your registered email and password to safely resume statistics and quiz feedback tracks.</span>
               ) : (
@@ -921,14 +921,14 @@ export default function App() {
         </main>
       ) : !isOnboarded ? (
         /* Onboarding Screen (New Profile Date and Weekly Target Hours Setup) */
-        <main className="flex-1 flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-slate-900/85 border border-[#E5E2D0] p-8 rounded-2xl shadow-xl relative animate-fadeIn">
-            <div className="text-center space-y-2 mb-6 border-b border-slate-100 pb-4">
-              <div className="w-12 h-12 rounded-xl bg-[#5A6344] mx-auto flex items-center justify-center shadow-md text-white font-serif italic text-2xl font-bold">
+        <main className="flex-1 flex items-center justify-center p-4 bg-[var(--theme-bg)]">
+          <div className="w-full max-w-md bg-[var(--theme-card)] border border-[var(--theme-border)] p-8 rounded-2xl shadow-xl relative animate-fadeIn">
+            <div className="text-center space-y-2 mb-6 border-b border-[var(--theme-border)] pb-4">
+              <div className="w-11 h-11 rounded-xl bg-[var(--theme-accent)] mx-auto flex items-center justify-center shadow-sm text-[var(--theme-bg)] font-serif italic text-xl font-bold">
                 🌱
               </div>
-              <h2 className="text-xl font-serif font-bold tracking-tight text-[#4A3728]">CFA Level I Runway Setup</h2>
-              <p className="text-xs text-[#7D7859] leading-relaxed max-w-xs mx-auto">
+              <h2 className="text-xl font-bold tracking-tight text-[var(--theme-text-dark)] font-sans">CFA Level I Runway Setup</h2>
+              <p className="text-xs text-[var(--theme-text-main)] leading-relaxed max-w-xs mx-auto">
                 Define your exam runway before launching the adaptive syllabus. Once saved, dates can only be adjusted inside Settings.
               </p>
             </div>
@@ -953,7 +953,7 @@ export default function App() {
               className="space-y-4"
             >
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
                   CFA Target Exam Date
                 </label>
                 <input
@@ -961,12 +961,12 @@ export default function App() {
                   required
                   value={tempOnboardDate}
                   onChange={(e) => setTempOnboardDate(e.target.value)}
-                  className="w-full bg-white border border-[#D9D5C3] rounded-xl px-3 py-2.5 text-sm text-[#3D3B30] outline-none font-mono"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] transition font-mono shadow-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1.5">
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
                   Daily Study Goal Hours (e.g. 1 - 8 hours)
                 </label>
                 <input
@@ -976,13 +976,13 @@ export default function App() {
                   max="24"
                   value={tempOnboardHours}
                   onChange={(e) => setTempOnboardHours(parseInt(e.target.value, 10) || 2)}
-                  className="w-full bg-white border border-[#D9D5C3] rounded-xl px-3 py-2.5 text-sm text-[#3D3B30] outline-none font-mono"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] transition font-mono shadow-sm"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#5A6344] hover:bg-[#4a5137] text-white font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm mt-4 border-none"
+                className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm mt-4 border-none cursor-pointer"
               >
                 Initialize Study Planner & Begin
               </button>
@@ -991,7 +991,7 @@ export default function App() {
             <button
               type="button"
               onClick={handleSignOut}
-              className="mt-4 w-full text-center text-xs text-rose-500 hover:underline font-mono bg-transparent border-none outline-none"
+              className="mt-4 w-full text-center text-xs text-rose-500 hover:underline font-mono bg-transparent border-none outline-none cursor-pointer"
             >
               ← Sign out and clear session
             </button>
@@ -1441,6 +1441,8 @@ export default function App() {
         }}
         setActiveTab={setActiveTab}
         activeTab={activeTab}
+        currentTheme={currentTheme}
+        onThemeChange={handleThemeChange}
       />
     </div>
   );
