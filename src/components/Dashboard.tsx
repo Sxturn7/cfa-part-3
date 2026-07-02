@@ -195,7 +195,7 @@ export default function Dashboard({
             <Calendar size={120} />
           </div>
           <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">Exam Countdown</p>
-          <h3 className="text-3xl font-extrabold text-[#4A3728] mt-2 font-sans tracking-tight">
+          <h3 className="text-3xl font-extrabold text-slate-100 mt-2 font-sans tracking-tight">
             {daysRemaining} <span className="text-base font-medium text-slate-400">Days Left</span>
           </h3>
           <div className="mt-4">
@@ -205,7 +205,7 @@ export default function Dashboard({
             </div>
             <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
               <div 
-                className="bg-[#5A6344] h-full rounded-full transition-all duration-700" 
+                className="bg-blue-500 h-full rounded-full transition-all duration-700" 
                 style={{ width: `${timeProgressPct}%` }}
               />
             </div>
@@ -218,11 +218,11 @@ export default function Dashboard({
             <Clock size={120} />
           </div>
           <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">Total Duration</p>
-          <h3 className="text-3xl font-extrabold text-[#4A3728] mt-2 font-sans tracking-tight">
+          <h3 className="text-3xl font-extrabold text-slate-100 mt-2 font-sans tracking-tight">
             {totalStudyHrs} <span className="text-base font-medium text-slate-400">Hours</span>
           </h3>
           <p className="text-xs text-slate-500 mt-4 leading-relaxed">
-            Target rate: <strong className="text-[#5A6344] font-mono">{userProfile.dailyTargetHours} hrs/day</strong>
+            Target rate: <strong className="text-blue-500 font-mono">{userProfile.dailyTargetHours} hrs/day</strong>
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export default function Dashboard({
             <CheckCircle size={120} />
           </div>
           <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">Today's Effort</p>
-          <h3 className="text-3xl font-extrabold text-[#4A3728] mt-2 font-sans tracking-tight">
+          <h3 className="text-3xl font-extrabold text-slate-100 mt-2 font-sans tracking-tight">
             {dailyHrs} / {userProfile.dailyTargetHours} <span className="text-xs text-slate-400 font-medium">hrs</span>
           </h3>
           <div className="mt-4">
@@ -254,12 +254,12 @@ export default function Dashboard({
           <div className="absolute -right-8 -bottom-8 text-slate-800 opacity-20 pointer-events-none">
             <BookOpen size={120} />
           </div>
-          <p className="text-xs text-slate-400 uppercase tracking-wider font-mono">L1 Syllabus coverage</p>
-          <h3 className="text-3xl font-extrabold text-[#4A3728] mt-2 font-sans tracking-tight">
+          <p className="text-xs text-slate-400 font-sans">Level I Syllabus Coverage</p>
+          <h3 className="text-3xl font-extrabold text-slate-100 mt-2 font-sans tracking-tight">
             {curriculumPercentage}% <span className="text-base font-normal text-slate-400">Completed</span>
           </h3>
-          <p className="text-xs text-slate-500 mt-4 font-mono leading-relaxed">
-            <span className="text-emerald-600 font-bold">{completedModules}</span> Done • <span className="text-amber-600 font-bold">{inProgressModules}</span> Active
+          <p className="text-xs text-slate-500 mt-4 font-sans leading-relaxed">
+            <span className="text-emerald-500 font-bold">{completedModules}</span> Done • <span className="text-amber-500 font-bold">{inProgressModules}</span> Active
           </p>
         </div>
       </div>
@@ -270,20 +270,20 @@ export default function Dashboard({
         {/* Unified Interactive Study Logger - Occupies 1 column */}
         <div id="tour-study-tracker" className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm flex flex-col justify-between">
           <div>
-            <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-800 pb-2">
-              ⏱️ study logger
+            <h3 className="text-xs font-bold text-slate-200 flex items-center gap-2 mb-3.5 border-b border-slate-800 pb-2">
+              ⏱️ Study Logger
             </h3>
 
             <div className="space-y-4">
               {/* CFA Curriculum Module */}
               <div>
-                <label className="block text-[9px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1">
+                <label className="block text-[10px] text-slate-400 mb-1.5 font-sans">
                   CFA Curriculum Module
                 </label>
                 <select
                   value={selectedModuleId}
                   onChange={(e) => setSelectedModuleId(e.target.value)}
-                  className="w-full bg-white text-[#3D3B30] text-xs outline-none focus:border-[#5A6344] font-sans"
+                  className="w-full bg-slate-950 text-slate-100 border border-slate-800 rounded-lg p-2.5 text-xs outline-none focus:border-blue-500 font-sans cursor-pointer"
                 >
                   {subjects.map((subj) => (
                     <optgroup key={subj.id} label={`${subj.name} (${subj.weight})`}>
@@ -300,7 +300,7 @@ export default function Dashboard({
               {/* Mode & Quiz Score Grid */}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-[9px] uppercase font-mono font-bold tracking-wider text-slate-400 mb-1">
+                  <label className="block text-[10px] text-slate-400 mb-1.5 font-sans">
                     Study Mode
                   </label>
                   <div className="grid grid-cols-2 gap-1">
@@ -330,7 +330,7 @@ export default function Dashboard({
                 </div>
 
                 <div>
-                  <label className="block text-[9px] uppercase font-mono font-bold tracking-wider text-slate-400 mb-1">
+                  <label className="block text-[10px] text-slate-400 mb-1.5 font-sans">
                     {sessionType === "quiz" ? "Quiz Score (%)" : "Score (%)"}
                   </label>
                   <input
@@ -340,7 +340,7 @@ export default function Dashboard({
                     max="100"
                     value={loggedScore}
                     onChange={(e) => setLoggedScore(e.target.value)}
-                    className="w-full bg-white border border-[#D9D5C3] rounded-lg px-2 py-1 text-xs text-[#3D3B30] outline-none font-mono"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-slate-100 outline-none font-mono focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -348,11 +348,11 @@ export default function Dashboard({
               {/* Session Duration Selector and Quick Presets */}
               <div className="bg-slate-800/40 p-3 rounded-xl border border-slate-700 space-y-2.5">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500">
+                  <span className="text-[11px] text-slate-400 font-sans">
                     Duration (Minutes)
                   </span>
                   {isTimerRunning && (
-                    <span className="text-[9px] text-[#5A6344] font-mono animate-pulse flex items-center gap-1 font-bold">
+                    <span className="text-[9px] text-emerald-400 font-mono animate-pulse flex items-center gap-1 font-bold">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping inline-block" />
                       Live: {formatTimer(timerSeconds)}
                     </span>
@@ -371,7 +371,7 @@ export default function Dashboard({
                         setIsTimerRunning(false);
                       }
                     }}
-                    className="w-20 bg-white border border-[#D9D5C3] rounded-lg px-2 py-1 text-xs text-[#3D3B30] font-mono outline-none"
+                    className="w-20 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-slate-100 font-mono outline-none focus:border-blue-500"
                   />
                   
                   {/* Quick Preset Buttons */}
@@ -463,19 +463,19 @@ export default function Dashboard({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Weak Areas Alerts */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm md:col-span-1">
-          <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-2 mb-3.5 tracking-wider uppercase font-mono text-rose-500 border-b border-slate-800 pb-2">
+          <h3 className="text-xs font-bold text-rose-400 flex items-center gap-2 mb-3.5 border-b border-slate-800 pb-2">
             ⚠️ Attention Areas (&lt;70%)
           </h3>
 
           {weakSubjects.length === 0 ? (
-            <div className="bg-emerald-55/40 border border-emerald-100 p-5 rounded-xl text-center text-emerald-800">
-              <CheckCircle size={28} className="mx-auto mb-2 text-[#5A6344]" />
+            <div className="bg-emerald-950/20 border border-emerald-900/60 p-5 rounded-xl text-center text-emerald-400">
+              <CheckCircle size={28} className="mx-auto mb-2 text-emerald-400" />
               <p className="text-xs font-semibold">Exemplary scores maintained!</p>
-              <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">No subject averages have slumped behind the 70% threshold yet.</p>
+              <p className="text-[10px] text-slate-450 mt-1 leading-relaxed">No subject averages have slumped behind the 70% threshold yet.</p>
             </div>
           ) : (
             <div className="space-y-2.5">
-              <p className="text-[11px] text-slate-500 leading-relaxed mb-1">
+              <p className="text-[11px] text-slate-400 leading-relaxed mb-1">
                 Subjects with running averages falling below the 70% passing threshold:
               </p>
               {weakSubjects.map((s) => (
@@ -486,7 +486,7 @@ export default function Dashboard({
                       {s.completed} of {s.total} complete
                     </span>
                   </div>
-                  <span className="text-xs font-mono font-bold text-[#94625A] bg-rose-950/20 border border-slate-750 px-2 py-1 rounded">
+                  <span className="text-xs font-mono font-bold text-red-450 bg-rose-950/20 border border-slate-750 px-2 py-1 rounded">
                     {s.avgScore}% avg
                   </span>
                 </div>
@@ -497,8 +497,8 @@ export default function Dashboard({
 
         {/* Activity Logs history table */}
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm md:col-span-2">
-          <h3 className="text-xs font-bold text-[#4A3728] flex items-center gap-1.5 mb-3.5 tracking-wider uppercase font-mono border-b border-slate-800 pb-2">
-            📝 session activity registers
+          <h3 className="text-xs font-bold text-slate-200 flex items-center gap-1.5 mb-3.5 border-b border-slate-800 pb-2">
+            📝 Session Activity Registers
           </h3>
 
           {activityLogs.length === 0 ? (
@@ -507,8 +507,8 @@ export default function Dashboard({
             </div>
           ) : (
             <div className="overflow-x-auto max-h-[220px] scrollbar-thin">
-              <table className="w-full text-left text-xs text-[#3D3B30]">
-                <thead className="bg-slate-800 text-slate-400 uppercase font-mono text-[9px]">
+              <table className="w-full text-left text-xs text-slate-300">
+                <thead className="bg-slate-800 text-slate-400 text-[10px] font-sans">
                   <tr>
                     <th className="py-2.5 px-3">Date</th>
                     <th className="py-2.5 px-3">Subject</th>
@@ -534,7 +534,7 @@ export default function Dashboard({
                       <td className="py-2.5 px-3 font-mono text-slate-500">{log.durationMinutes}m</td>
                       <td className="py-2.5 px-3 font-mono">
                         {log.score !== undefined ? (
-                          <span className={`font-semibold ${log.score >= 70 ? "text-emerald-500" : "text-[#94625A]"}`}>
+                          <span className={`font-semibold ${log.score >= 70 ? "text-emerald-500" : "text-red-400"}`}>
                             {log.score}%
                           </span>
                         ) : (
@@ -555,7 +555,7 @@ export default function Dashboard({
         <div className="fixed inset-0 bg-black/40 backdrop-filter backdrop-blur-xs flex items-center justify-center p-4 z-50">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl animate-fadeIn space-y-4">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-serif font-bold text-[#4A3728] flex items-center gap-1.5">
+              <h3 className="text-sm font-serif font-bold text-slate-100 flex items-center gap-1.5">
                 ⚙️ Adjust Syllabus Runway Goals
               </h3>
               <button
@@ -569,19 +569,19 @@ export default function Dashboard({
 
             <div className="space-y-3.5">
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-400 mb-1.5 font-sans">
                   Candidate Email
                 </label>
                 <input
                   type="email"
                   disabled
                   value={userProfile.email}
-                  className="w-full bg-slate-950 border border-slate-850 text-slate-400 text-xs px-3 py-2 rounded-lg font-mono outline-none"
+                  className="w-full bg-slate-950 border border-slate-850 text-slate-400 text-xs px-3 py-2 rounded-lg outline-none font-sans"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1">
+                <label className="block text-xs font-medium text-slate-400 mb-1.5 font-sans">
                   Planned Daily Study Goal Hours
                 </label>
                 <input
@@ -597,12 +597,12 @@ export default function Dashboard({
                       dailyTargetHours: val
                     }));
                   }}
-                  className="w-full bg-slate-800 border border-slate-700 text-sm px-3 py-2 rounded-lg font-mono outline-none"
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 text-sm px-3 py-2 rounded-lg font-mono outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-slate-500 mb-1">
+                <label className="block text-xs font-medium text-slate-400 mb-1.5 font-sans">
                   CFA Target Exam Date
                 </label>
                 <input
@@ -617,7 +617,7 @@ export default function Dashboard({
                       targetExamDate: chosen
                     }));
                   }}
-                  className="w-full bg-slate-800 border border-slate-700 text-[#3D3B30] text-sm px-3 py-2 rounded-lg font-mono outline-none"
+                  className="w-full bg-slate-800 border border-slate-700 text-slate-100 text-sm px-3 py-2 rounded-lg font-mono outline-none"
                 />
               </div>
             </div>
