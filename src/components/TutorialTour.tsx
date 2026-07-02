@@ -67,7 +67,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       elementId: null,
       title: "Welcome Candidate! 🚀",
       icon: <Sparkles size={20} />,
-      iconColor: "text-amber-400",
+      iconColor: "text-amber-500",
       text: "Welcome to your CFA Level I Prep Runway. All 10 major subjects and 93 curriculum modules are pre-loaded. Let's do a quick walkthrough of what you can do here!",
       actionTip: "Click 'Next' below to begin the quick walkthrough."
     },
@@ -76,7 +76,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       elementId: "tour-study-tracker",
       title: "Live Study Focus Tracker ⏱️",
       icon: <LayoutDashboard size={20} />,
-      iconColor: "text-blue-400",
+      iconColor: "text-blue-500",
       text: "This is your active focus stopwatch. Select any reading module and click 'Live Track' to log your study minutes and build your preparation streak!",
       actionTip: "Look at the highlighted Study Logger card on the dashboard."
     },
@@ -85,7 +85,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       elementId: "tour-nav-curriculum",
       title: "Curriculum Syllabus & Notes 📚",
       icon: <BookOpen size={20} />,
-      iconColor: "text-emerald-400",
+      iconColor: "text-emerald-500",
       text: "Browse all 93 syllabus readings. Set custom statuses (Active, Reviewing, Complete) and write personal study notes for easy reference.",
       actionTip: "Click the highlighted Curriculum tab above or click Next."
     },
@@ -94,25 +94,25 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       elementId: "tour-nav-quiz",
       title: "Practice Quizzes ✍️",
       icon: <HelpCircle size={20} />,
-      iconColor: "text-violet-400",
+      iconColor: "text-violet-500",
       text: "Generate custom practice questions on any topic. Get instant math steps, clear answer explanations, and track your score milestones.",
       actionTip: "Click on the Practice Quizzes tab above to test your skills."
     },
     {
       tab: "growth",
       elementId: "tour-nav-growth",
-      title: "Interactive Knowledge Garden 🌳",
+      title: "Knowledge Tree 🌳",
       icon: <TrendingUp size={20} />,
-      iconColor: "text-teal-400",
-      text: "Watch your financial progress grow visually. Your completed readings and logged study hours nourish a beautiful, dynamic tree!",
-      actionTip: "Click on the Interactive Knowledge Tree tab above to check it out."
+      iconColor: "text-teal-500",
+      text: "Your study progress, transformed into a living ecosystem that grows with every completed module.",
+      actionTip: "Click on the Knowledge Tree tab above to check it out."
     },
     {
       tab: "calendar",
       elementId: "tour-nav-calendar",
       title: "Smart Study Calendar 📅",
       icon: <Calendar size={20} />,
-      iconColor: "text-rose-400",
+      iconColor: "text-rose-500",
       text: "Enter your target exam date. Our system automatically distributes the readings across your calendar to keep you on schedule.",
       actionTip: "Click on the Study Calendar tab above to see your roadmap."
     },
@@ -121,7 +121,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       elementId: "tour-nav-flashcards",
       title: "Active Recall Flashcards 🧠",
       icon: <Brain size={20} />,
-      iconColor: "text-indigo-400",
+      iconColor: "text-indigo-500",
       text: "Review complex CFA formulas and terms. Flip cards to reveal answers and self-rate your memory retention level.",
       actionTip: "Click on the Memory Recall tab above to study Leitner flashcards."
     },
@@ -130,17 +130,17 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       elementId: null,
       title: "Style Your Runway! 🎨",
       icon: <Palette size={20} />,
-      iconColor: "text-blue-400",
+      iconColor: "text-blue-500",
       text: "Choose your workspace theme and accent color to customize your preparation runway experience.",
       actionTip: "Select Light/Dark mode and choose your favorite accent color below."
     },
     {
       tab: "dashboard",
       elementId: null,
-      title: "All the Best! 🌟",
+      title: "NOTE",
       icon: <Sparkles size={20} />,
-      iconColor: "text-amber-400",
-      text: "You are all set to conquer the CFA Level I Prep Runway!\n\nPrep well and stay focused. You've got this!\n\n- Satvik",
+      iconColor: "text-amber-500",
+      text: "Prep well\nAll the best :-)\n-Satvik",
       actionTip: "Click 'Done' to finish the walkthrough and begin your study session."
     }
   ];
@@ -253,7 +253,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
 
   return (
     <>
-      {/* Dynamic Absolute Highlight Overlay - pointer-events-none lets users click tabs natively! */}
+      {/* Dynamic Absolute Highlight Overlay */}
       {targetRect && (
         <div 
           className="fixed pointer-events-none z-50 rounded-xl transition-all duration-300"
@@ -262,50 +262,50 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
             top: `${targetRect.top - 4}px`,
             width: `${targetRect.width + 8}px`,
             height: `${targetRect.height + 8}px`,
-            boxShadow: "0 0 0 9999px rgba(15, 23, 42, 0.45), 0 0 14px rgba(59, 130, 246, 0.5)",
-            border: "2px solid rgba(59, 130, 246, 0.85)"
+            boxShadow: "0 0 0 9999px rgba(10, 10, 10, 0.45), 0 0 14px rgba(var(--theme-accent), 0.5)",
+            border: "2px solid var(--theme-accent)"
           }}
         >
           {/* Subtle blinking click helper label */}
-          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-blue-600 text-white font-mono text-[9px] px-2 py-0.5 rounded font-extrabold shadow-md tracking-wider flex items-center gap-1">
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-[var(--theme-accent)] text-[var(--theme-bg)] font-mono text-[9px] px-2.5 py-0.5 rounded font-semibold shadow-xs tracking-wider flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            ACTIVE AREA
+            HIGHLIGHTED TARGET
           </div>
         </div>
       )}
 
       {/* Main floating instruction helper card */}
       <div 
-        className="fixed inset-x-0 bottom-0 md:top-24 md:bottom-auto md:right-8 md:left-auto z-50 p-4 md:p-0 pointer-events-none flex justify-center md:block"
+        className="fixed inset-x-0 bottom-0 md:top-24 md:bottom-auto md:right-8 md:left-auto z-50 p-4 md:p-0 pointer-events-none flex justify-center md:block font-sans"
         id="tutorial-tour-container"
       >
         <div 
-          className="pointer-events-auto w-full max-w-sm bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden flex flex-col animate-slideUp"
+          className="pointer-events-auto w-full max-w-sm bg-[var(--theme-card)] border border-[var(--theme-border)]/45 rounded-2xl shadow-xl overflow-hidden flex flex-col animate-slideUp"
           id="tutorial-tour-card"
         >
           {/* Progress bar */}
-          <div className="w-full bg-slate-950 h-1 flex">
+          <div className="w-full bg-[var(--theme-beige)] h-1 flex">
             {steps.map((_, idx) => (
               <div 
                 key={idx}
                 className={`h-full transition-all duration-300 flex-1 ${
-                  idx <= currentStep ? "bg-blue-500" : "bg-slate-800"
+                  idx <= currentStep ? "bg-[var(--theme-accent)]" : "bg-transparent"
                 }`}
               />
             ))}
           </div>
 
           {/* Card Header */}
-          <div className="p-3 px-4 border-b border-slate-850 flex items-center justify-between bg-slate-950/20">
+          <div className="p-3.5 px-5 border-b border-[var(--theme-border)]/15 flex items-center justify-between bg-[var(--theme-beige)]/10">
             <div className="flex items-center gap-2">
-              <span className="text-[9px] bg-slate-800 text-blue-400 font-mono px-2 py-0.5 rounded-full font-bold">
-                STEP {currentStep + 1} OF {steps.length}
+              <span className="text-[9px] bg-[var(--theme-accent-light)] text-[var(--theme-accent)] font-medium px-2 py-0.5 rounded-full">
+                Step {currentStep + 1} of {steps.length}
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">QUICK TOUR</span>
+              <span className="text-[10px] text-[var(--theme-text-main)] opacity-60 uppercase tracking-wider font-medium">Workspace Tour</span>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-500 hover:text-slate-350 transition p-0.5 rounded cursor-pointer bg-transparent border-none outline-none"
+              className="text-[var(--theme-text-main)] opacity-50 hover:opacity-100 transition p-1 rounded-full cursor-pointer bg-transparent border-none outline-none"
               title="Close Walkthrough"
               aria-label="Close walkthrough"
             >
@@ -314,62 +314,62 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
           </div>
 
           {/* Simple Body */}
-          <div className="p-5 space-y-3.5">
+          <div className="p-5 space-y-4">
             <div className="flex gap-2.5 items-center">
-              <div className={`p-1.5 rounded-lg shrink-0 ${currentStepData.iconColor}`}>
+              <div className={`p-1 rounded-lg shrink-0 ${currentStepData.iconColor}`}>
                 {currentStepData.icon}
               </div>
-              <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider font-mono">
+              <h4 className="text-xs font-semibold text-[var(--theme-text-dark)] uppercase tracking-wider">
                 {currentStepData.title}
               </h4>
             </div>
 
-            <p className="text-xs text-slate-350 leading-relaxed font-sans whitespace-pre-line">
+            <p className="text-xs text-[var(--theme-text-main)] leading-relaxed whitespace-pre-line font-normal opacity-95">
               {currentStepData.text}
             </p>
 
             {currentStepData.title === "Style Your Runway! 🎨" && (
-              <div className="space-y-4 pt-2.5 border-t border-slate-800/60">
+              <div className="space-y-4 pt-3.5 border-t border-[var(--theme-border)]/15">
                 {/* Base Mode Options */}
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase font-mono block">
-                    Base Mode:
+                <div className="space-y-2">
+                  <span className="text-[10px] font-semibold tracking-wider text-[var(--theme-text-main)] uppercase block">
+                    Base Workspace Style:
                   </span>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-2.5">
                     <button
                       type="button"
                       onClick={() => handleSelectPreset("light")}
-                      className={`py-2 px-3 rounded-lg border text-left transition flex items-center gap-2 cursor-pointer ${
+                      className={`py-2 px-3 rounded-xl border text-left transition-all flex items-center gap-2 cursor-pointer ${
                         currentTheme.preset === "light"
-                          ? "border-blue-500 bg-blue-950/20 text-slate-100"
-                          : "border-slate-800 bg-slate-950 text-slate-350 hover:border-slate-700"
+                          ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)] text-[var(--theme-accent)] font-semibold shadow-xs"
+                          : "border-[var(--theme-border)]/20 bg-[var(--theme-card)] text-[var(--theme-text-main)] hover:border-[var(--theme-border)]/40"
                       }`}
                     >
-                      <Sun size={13} className={currentTheme.preset === "light" ? "text-blue-400" : "text-slate-400"} />
-                      <span className="text-xs font-semibold">Light Mode</span>
+                      <Sun size={13} className={currentTheme.preset === "light" ? "text-[var(--theme-accent)]" : "text-[var(--theme-text-main)] opacity-70"} />
+                      <span className="text-xs">Sage Light</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => handleSelectPreset("dark")}
-                      className={`py-2 px-3 rounded-lg border text-left transition flex items-center gap-2 cursor-pointer ${
+                      className={`py-2 px-3 rounded-xl border text-left transition-all flex items-center gap-2 cursor-pointer ${
                         currentTheme.preset === "dark"
-                          ? "border-blue-500 bg-blue-950/20 text-slate-100"
-                          : "border-slate-800 bg-slate-950 text-slate-350 hover:border-slate-700"
+                          ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)] text-[var(--theme-accent)] font-semibold shadow-xs"
+                          : "border-[var(--theme-border)]/20 bg-[var(--theme-card)] text-[var(--theme-text-main)] hover:border-[var(--theme-border)]/40"
                       }`}
                     >
-                      <Moon size={13} className={currentTheme.preset === "dark" ? "text-blue-400" : "text-slate-400"} />
-                      <span className="text-xs font-semibold">Dark Mode</span>
+                      <Moon size={13} className={currentTheme.preset === "dark" ? "text-[var(--theme-accent)]" : "text-[var(--theme-text-main)] opacity-70"} />
+                      <span className="text-xs">Sage Dark</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Accent Swatches */}
-                <div className="space-y-1.5">
-                  <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase font-mono block">
-                    Accent Color:
+                <div className="space-y-2">
+                  <span className="text-[10px] font-semibold tracking-wider text-[var(--theme-text-main)] uppercase block">
+                    Accent Color Accent:
                   </span>
-                  <div className="grid grid-cols-4 gap-1.5">
+                  <div className="grid grid-cols-4 gap-2">
                     {PRESET_ACCENTS.map((accent) => {
                       const isSelected = currentTheme.accent.toLowerCase() === accent.value.toLowerCase();
                       return (
@@ -377,7 +377,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
                           key={accent.value}
                           type="button"
                           onClick={() => handleAccentColorChange(accent.value)}
-                          className="h-8 rounded-lg border border-slate-800 bg-slate-950 flex items-center justify-center relative hover:border-slate-700 transition cursor-pointer group"
+                          className="h-8 rounded-xl border border-[var(--theme-border)]/15 bg-[var(--theme-card)] flex items-center justify-center relative hover:border-[var(--theme-border)]/40 transition cursor-pointer group hover:-translate-y-[1px]"
                           title={accent.name}
                         >
                           <span 
@@ -385,8 +385,8 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
                             style={{ backgroundColor: accent.value }}
                           />
                           {isSelected && (
-                            <span className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center">
-                              <Check size={11} className="text-white font-bold" />
+                            <span className="absolute inset-0 bg-black/5 rounded-xl flex items-center justify-center">
+                              <Check size={11} className="text-white font-semibold drop-shadow-sm" />
                             </span>
                           )}
                         </button>
@@ -398,32 +398,31 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
             )}
 
             {/* Instruction Tip */}
-            <div className="p-2 bg-slate-950/40 border border-slate-850 rounded-lg flex items-start gap-1.5">
-              <Info size={12} className="text-blue-400 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-slate-400 font-sans leading-snug">
+            <div className="p-3 bg-[var(--theme-beige)]/10 border border-[var(--theme-border)]/15 rounded-xl flex items-start gap-2">
+              <Info size={12} className="text-[var(--theme-accent)] shrink-0 mt-0.5 opacity-85" />
+              <p className="text-[11px] text-[var(--theme-text-main)] opacity-80 leading-snug">
                 {currentStepData.actionTip}
               </p>
             </div>
           </div>
 
           {/* Card Footer Actions */}
-          <div className="p-3 px-4 border-t border-slate-850 bg-slate-950/50 flex items-center justify-between gap-2 shrink-0">
+          <div className="p-3.5 px-5 border-t border-[var(--theme-border)]/15 bg-[var(--theme-beige)]/10 flex items-center justify-between gap-2 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="text-slate-500 hover:text-slate-300 text-xs font-semibold hover:underline bg-transparent border-none outline-none cursor-pointer"
+              className="text-[var(--theme-text-main)] opacity-60 hover:opacity-100 text-xs font-medium hover:underline bg-transparent border-none outline-none cursor-pointer"
             >
-              Skip
+              Skip Tour
             </button>
 
-            <div className="flex gap-1.5">
+            <div className="flex gap-2">
               {currentStep > 0 && (
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-300 hover:text-slate-100 px-3 py-1 rounded-lg text-xs font-semibold transition active:scale-95 cursor-pointer"
+                  className="bg-[var(--theme-beige)]/30 hover:bg-[var(--theme-beige)] border border-[var(--theme-border)]/20 text-[var(--theme-text-dark)] px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer"
                 >
-                  <ChevronLeft size={12} />
                   Back
                 </button>
               )}
@@ -431,19 +430,9 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
               <button
                 type="button"
                 onClick={handleNext}
-                className="bg-blue-600 hover:bg-blue-500 border-none text-white px-3.5 py-1 rounded-lg text-xs font-bold transition active:scale-95 shadow-lg shadow-blue-600/10 cursor-pointer"
+                className="bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] border-none text-[var(--theme-bg)] px-4 py-1.5 rounded-xl text-xs font-semibold transition shadow-xs cursor-pointer"
               >
-                {currentStep === steps.length - 1 ? (
-                  <>
-                    Done
-                    <Check size={12} className="ml-0.5" />
-                  </>
-                ) : (
-                  <>
-                    Next
-                    <ChevronRight size={12} className="ml-0.5" />
-                  </>
-                )}
+                {currentStep === steps.length - 1 ? "Done" : "Next"}
               </button>
             </div>
           </div>
