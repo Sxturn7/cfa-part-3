@@ -262,7 +262,7 @@ export default function StudyCalendar({
               <CalendarCheck2 size={16} />
             </div>
             <div>
-              <p className="text-[10px] font-mono text-slate-400 uppercase">Checkpoints</p>
+              <p className="text-[11px] text-slate-400 font-sans">Checkpoints</p>
               <p className="text-sm font-bold text-slate-200">{stats.completed} / {stats.total} Done</p>
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function StudyCalendar({
               {stats.pct}%
             </div>
             <div>
-              <p className="text-[10px] font-mono text-slate-400 uppercase">Consistency</p>
+              <p className="text-[11px] text-slate-400 font-sans">Consistency</p>
               <div className="w-24 bg-slate-750 h-1.5 rounded-full overflow-hidden mt-1">
                 <div 
                   className="bg-emerald-500 h-full transition-all duration-500" 
@@ -343,11 +343,11 @@ export default function StudyCalendar({
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 font-mono text-[10px] uppercase">Subject</span>
+                  <span className="text-slate-400 text-xs font-sans">Subject</span>
                   <select
                     value={subjectFilter}
                     onChange={(e) => setSubjectFilter(e.target.value)}
-                    className="bg-white border border-[#E5E2D0] rounded px-2 py-1 text-xs text-[#3D3B30] outline-none"
+                    className="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-blue-500 cursor-pointer"
                   >
                     <option value="all">All Subject Streams</option>
                     <option value="general">⭐ General Milestones</option>
@@ -358,11 +358,11 @@ export default function StudyCalendar({
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 font-mono text-[10px] uppercase">Status</span>
+                  <span className="text-slate-400 text-xs font-sans">Status</span>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="bg-white border border-[#E5E2D0] rounded px-2 py-1 text-xs text-[#3D3B30] outline-none"
+                    className="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-blue-500 cursor-pointer"
                   >
                     <option value="all">All Progress States</option>
                     <option value="not_started">🔴 Not Started</option>
@@ -374,7 +374,7 @@ export default function StudyCalendar({
             </div>
 
             {/* Calendar grid */}
-            <div className="grid grid-cols-7 text-center font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <div className="grid grid-cols-7 text-center font-sans text-xs font-semibold text-slate-400 mb-2">
               <div>Sun</div>
               <div>Mon</div>
               <div>Tue</div>
@@ -472,14 +472,14 @@ export default function StudyCalendar({
         </div>
 
         {/* Selected Day Info Sidebar - 1 Column */}
-        <div className="xl:col-span-1 bg-white border border-[#E5E2D0] rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
+        <div className="xl:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
           <div>
-            <div className="border-b border-[#F1EFE0] pb-3.5 mb-3.5">
-              <h3 className="text-xs font-bold text-[#4A3728] tracking-wider uppercase font-mono flex items-center gap-2 mb-1">
+            <div className="border-b border-slate-800 pb-3.5 mb-3.5">
+              <h3 className="text-xs font-bold text-slate-200 font-sans flex items-center gap-2 mb-1">
                 📅 Day Agenda
               </h3>
               {selectedDay ? (
-                <p className="text-xs font-serif font-bold text-slate-500">
+                <p className="text-xs font-serif font-bold text-slate-300">
                   {selectedDay.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               ) : (
@@ -490,13 +490,13 @@ export default function StudyCalendar({
             {selectedDay && (
               <div className="space-y-3">
                 {selectedDayCheckpoints.length === 0 ? (
-                  <div className="bg-slate-50/50 border border-dashed border-[#E5E2D0] p-6 rounded-xl text-center space-y-2">
-                    <AlertCircle size={22} className="text-slate-400 mx-auto" />
-                    <p className="text-[11px] font-medium text-slate-500">No checkpoints on this day.</p>
+                  <div className="bg-slate-950/40 border border-dashed border-slate-800 p-6 rounded-xl text-center space-y-2">
+                    <AlertCircle size={22} className="text-slate-500 mx-auto" />
+                    <p className="text-[11px] font-medium text-slate-450">No checkpoints on this day.</p>
                     <button
                       type="button"
                       onClick={() => handleOpenAddModal(selectedDay)}
-                      className="text-[10px] font-bold text-[var(--theme-accent)] hover:underline inline-flex items-center gap-1"
+                      className="text-[10px] font-bold text-blue-500 hover:underline inline-flex items-center gap-1"
                     >
                       <Plus size={10} /> Schedule study event
                     </button>
@@ -508,15 +508,15 @@ export default function StudyCalendar({
                         key={cp.id}
                         className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between ${
                           cp.status === "completed"
-                            ? "bg-slate-50/75 border-slate-200"
-                            : "bg-white border-[#E5E2D0] hover:shadow-xs"
+                            ? "bg-slate-950/40 border-slate-800/80"
+                            : "bg-slate-950 border-slate-800 hover:shadow-xs"
                         }`}
                       >
                         <div className="flex items-start gap-2">
                           <button
                             type="button"
                             onClick={() => handleToggleComplete(cp.id)}
-                            className="p-0.5 mt-0.5 rounded hover:bg-slate-100 transition border-none bg-transparent cursor-pointer text-slate-450 hover:text-emerald-500"
+                            className="p-0.5 mt-0.5 rounded hover:bg-slate-800 transition border-none bg-transparent cursor-pointer text-slate-400 hover:text-emerald-500"
                             title={cp.status === "completed" ? "Mark incomplete" : "Complete Milestone!"}
                           >
                             {cp.status === "completed" ? (
@@ -528,7 +528,7 @@ export default function StudyCalendar({
 
                           <div className="flex-1 pr-4 min-w-0">
                             <h4 className={`text-xs font-bold leading-snug truncate ${
-                              cp.status === "completed" ? "line-through text-slate-400" : "text-[#4A3728]"
+                              cp.status === "completed" ? "line-through text-slate-500" : "text-slate-100"
                             }`}>
                               {cp.title}
                             </h4>
@@ -541,7 +541,7 @@ export default function StudyCalendar({
 
                             <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                               {/* Subject Badge */}
-                              <span className="text-[8px] uppercase font-mono font-semibold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-500 border border-slate-200">
+                              <span className="text-[9px] font-sans font-semibold px-1.5 py-0.5 rounded-md bg-slate-150 text-slate-400 border border-slate-200">
                                 {cp.subjectId === "general" ? "⭐ General" : subjects.find(s => s.id === cp.subjectId)?.name.substring(0, 15) || cp.subjectId}
                               </span>
 
@@ -554,7 +554,7 @@ export default function StudyCalendar({
 
                               {/* Status badge */}
                               {cp.status === "in_progress" && (
-                                <span className="text-[8px] bg-amber-50 text-amber-700 font-bold px-1 rounded font-mono">In Progress</span>
+                                <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1 rounded font-sans">In Progress</span>
                               )}
                             </div>
                           </div>
