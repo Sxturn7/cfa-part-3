@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Subject, ModuleStatus, ModuleProgress, LearningModule } from "../types";
-import { Search, ChevronDown, ChevronRight, CheckCircle, BookOpen, Clock, FileText, Calendar, RotateCw } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, CheckCircle, BookOpen, Clock, FileText, RotateCw } from "lucide-react";
 
 interface ModuleListProps {
   subjects: Subject[];
@@ -16,7 +16,6 @@ export default function ModuleList({
   progress,
   onChangeModuleStatus,
   onChangeModuleNotes,
-  onRecordQuizScore,
   onProgressRevisionCycle,
 }: ModuleListProps) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,9 +25,6 @@ export default function ModuleList({
   });
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
 
-  // Score temp state to prevent complete rerenders
-  const [tempScores, setTempScores] = useState<Record<string, string>>({});
-
   const toggleSubject = (subjectId: string) => {
     setExpandedSubjects((prev) => ({ ...prev, [subjectId]: !prev[subjectId] }));
   };
@@ -36,11 +32,11 @@ export default function ModuleList({
   const getStatusIcon = (status?: ModuleStatus) => {
     switch (status) {
       case ModuleStatus.COMPLETED:
-        return <CheckCircle className="text-emerald-500 w-5 h-5 flex-shrink-0" />;
+        return <CheckCircle className="text-emerald-600 w-5 h-5 flex-shrink-0" />;
       case ModuleStatus.IN_PROGRESS:
-        return <BookOpen className="text-blue-400 w-5 h-5 flex-shrink-0 animate-pulse" />;
+        return <BookOpen className="text-amber-600 w-5 h-5 flex-shrink-0 animate-pulse" />;
       default:
-        return <div className="w-5 h-5 rounded-full border-2 border-slate-700 flex-shrink-0" />;
+        return <div className="w-5 h-5 rounded-full border border-[var(--theme-border)] flex-shrink-0" />;
     }
   };
 
@@ -58,7 +54,7 @@ export default function ModuleList({
   };
 
   // Filter modules based on search & status
-  const matchesFilter = (mod: LearningModule, subjectId: string) => {
+  const matchesFilter = (mod: LearningModule) => {
     const prog = currentProgress(mod.id);
     const matchesSearch = mod.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || prog.status === statusFilter;
@@ -68,33 +64,33 @@ export default function ModuleList({
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-5 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-80">
-          <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+          <Search className="absolute left-3.5 top-3 w-4 h-4 text-[var(--theme-text-main)] opacity-50" />
           <input
             type="text"
-            placeholder="Search all 93 learning modules..."
+            placeholder="Search learning modules..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 text-slate-200 text-xs pl-9 pr-4 py-2 rounded-lg outline-none focus:border-blue-500"
+            className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 text-[var(--theme-text-dark)] text-xs pl-10 pr-4 py-2.5 rounded-xl outline-none focus:border-[var(--theme-accent)] transition shadow-xs placeholder:opacity-30"
           />
         </div>
 
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <span className="text-xs text-slate-400 font-mono">Filter Status:</span>
-          <div className="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 w-full md:w-auto">
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <span className="text-[11px] font-medium text-[var(--theme-text-main)] opacity-80">Filter Status:</span>
+          <div className="grid grid-cols-4 gap-1 bg-[var(--theme-beige)]/40 p-1 rounded-xl border border-[var(--theme-border)]/30 w-full md:w-auto">
             {(["all", ModuleStatus.NOT_STARTED, ModuleStatus.IN_PROGRESS, ModuleStatus.COMPLETED] as const).map(
               (f) => (
                 <button
                   key={f}
                   onClick={() => setStatusFilter(f)}
-                  className={`text-[10px] uppercase font-semibold py-1 px-2.5 rounded-md transition ${
+                  className={`text-[10px] font-medium py-1.5 px-3 rounded-lg transition-all cursor-pointer ${
                     statusFilter === f
-                      ? "bg-slate-800 text-slate-200 shadow-sm"
-                      : "text-slate-500 hover:text-slate-300"
+                      ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs"
+                      : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
                   }`}
                 >
-                  {f === "all" ? "All" : f.replace("_", " ")}
+                  {f === "all" ? "All" : f === "not_started" ? "Not started" : f === "in_progress" ? "In progress" : "Done"}
                 </button>
               )
             )}
@@ -105,7 +101,7 @@ export default function ModuleList({
       {/* Accordion list of subjects */}
       <div className="space-y-4">
         {subjects.map((subj) => {
-          const matchingMods = subj.modules.filter((m) => matchesFilter(m, subj.id));
+          const matchingMods = subj.modules.filter((m) => matchesFilter(m));
           if (matchingMods.length === 0 && searchTerm) return null; // hide empty search subject
 
           const isExpanded = expandedSubjects[subj.id];
@@ -117,47 +113,40 @@ export default function ModuleList({
           return (
             <div
               key={subj.id}
-              className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg transition-all"
+              className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl overflow-hidden transition-all hover:shadow-xs"
             >
               {/* Subject Banner Header */}
               <button
                 type="button"
                 onClick={() => toggleSubject(subj.id)}
-                className="w-full text-left px-5 py-4 bg-slate-900 flex items-center justify-between hover:bg-slate-800/60 transition"
+                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-[var(--theme-beige)]/20 transition-all cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  {isExpanded ? <ChevronDown className="text-slate-400 w-5 h-5" /> : <ChevronRight className="text-slate-400 w-5 h-5" />}
+                  {isExpanded ? <ChevronDown className="text-[var(--theme-text-main)] opacity-60 w-5 h-5" /> : <ChevronRight className="text-[var(--theme-text-main)] opacity-60 w-5 h-5" />}
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-[var(--theme-text-dark)] flex items-center gap-2">
                       {subj.name}
-                      <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-mono">
-                        Weight: {subj.weight}
+                      <span className="text-[10px] bg-[var(--theme-beige)] border border-[var(--theme-border)]/20 text-[var(--theme-text-dark)] px-2 py-0.5 rounded-full font-mono font-medium opacity-80">
+                        {subj.weight}
                       </span>
                     </h4>
-                    <span className="text-[11px] text-slate-500 font-mono">
+                    <span className="text-[11px] text-[var(--theme-text-main)] opacity-70 mt-1 block">
                       {completedCount} of {subj.modules.length} modules complete ({progressPercent}%)
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="hidden sm:block w-36 bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:block w-36 bg-[var(--theme-beige)] h-2 rounded-full overflow-hidden border border-[var(--theme-border)]/20">
                     <div
                       className="h-full rounded-full transition-all"
                       style={{
                         width: `${progressPercent}%`,
-                        backgroundColor: `var(--${subj.id}-color, #38bdf8)`,
+                        backgroundColor: `var(--theme-accent)`,
                       }}
                     />
                   </div>
-                  <span
-                    className="text-xs font-mono font-bold px-2 py-1 rounded"
-                    style={{
-                      color: `var(--${subj.id}-color, #f8fafc)`,
-                      backgroundColor: `#0f172a`,
-                      border: `1.5px solid var(--${subj.id}-color, #334155)`,
-                    }}
-                  >
+                  <span className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-[var(--theme-beige)]/50 border border-[var(--theme-border)]/20 text-[var(--theme-text-dark)]">
                     {progressPercent}%
                   </span>
                 </div>
@@ -165,7 +154,7 @@ export default function ModuleList({
 
               {/* Collapsed Modules listing */}
               {isExpanded && (
-                <div className="border-t border-slate-800 p-3 bg-slate-950/20 divide-y divide-slate-800/80">
+                <div className="border-t border-[var(--theme-border)]/20 p-3 bg-[var(--theme-beige)]/10 divide-y divide-[var(--theme-border)]/15">
                   {matchingMods.map((mod) => {
                     const isModExpanded = expandedModuleId === mod.id;
                     const p = currentProgress(mod.id);
@@ -173,14 +162,14 @@ export default function ModuleList({
                     return (
                       <div
                         key={mod.id}
-                        className={`transition-colors py-2 px-3 ${
-                          isModExpanded ? "bg-slate-900/65 rounded-lg border border-slate-850" : ""
+                        className={`transition-all py-2 px-3 ${
+                          isModExpanded ? "bg-[var(--theme-card)] rounded-xl border border-[var(--theme-border)]/30 my-2 shadow-xs" : ""
                         }`}
                       >
                         {/* List Row compact view */}
                         <div
                           onClick={() => setExpandedModuleId(isModExpanded ? null : mod.id)}
-                          className="flex items-center justify-between cursor-pointer group hover:bg-slate-800/20 rounded py-1 px-1.5 transition"
+                          className="flex items-center justify-between cursor-pointer group hover:bg-[var(--theme-beige)]/20 rounded-lg py-1.5 px-2 transition-all"
                         >
                           <div className="flex items-center gap-3 min-w-0">
                             <button
@@ -192,16 +181,16 @@ export default function ModuleList({
                                   : ModuleStatus.COMPLETED;
                                 onChangeModuleStatus(mod.id, nextStatus);
                               }}
-                              className="bg-transparent border-none p-0.5 rounded hover:bg-slate-800 transition cursor-pointer flex-shrink-0 flex items-center justify-center group/btn"
-                              title={p.status === ModuleStatus.COMPLETED ? "Click to mark as incomplete" : "Click to quickly mark as completed!"}
+                              className="bg-transparent border-none p-0.5 rounded-lg hover:bg-[var(--theme-beige)]/40 transition cursor-pointer flex-shrink-0 flex items-center justify-center"
+                              title={p.status === ModuleStatus.COMPLETED ? "Click to mark as incomplete" : "Click to mark as completed"}
                             >
                               {getStatusIcon(p.status)}
                             </button>
                             <div className="min-w-0">
-                              <span className="text-xs text-slate-400 font-mono pr-1.5">
-                                Mod {mod.order}.
+                              <span className="text-xs text-[var(--theme-text-main)] opacity-50 font-mono pr-1.5">
+                                M{mod.order}.
                               </span>
-                              <span className="text-xs font-medium text-slate-200 group-hover:text-blue-400">
+                              <span className="text-xs font-medium text-[var(--theme-text-dark)] group-hover:text-[var(--theme-accent)] transition-colors">
                                 {mod.name}
                               </span>
                             </div>
@@ -209,17 +198,17 @@ export default function ModuleList({
 
                           <div className="flex items-center gap-4">
                             {/* Summary indicators */}
-                            <span className="text-[10px] text-slate-500 font-mono hidden sm:flex items-center gap-1">
-                              <Clock size={11} /> {p.studyTimeMinutes} min studied
+                            <span className="text-[10px] text-[var(--theme-text-main)] opacity-70 hidden sm:flex items-center gap-1">
+                              <Clock size={11} className="opacity-70" /> {p.studyTimeMinutes} min studied
                             </span>
                             {p.quizScore !== null && (
-                              <span className="text-[10px] font-mono bg-slate-900 border border-slate-800 text-indigo-400 px-1.5 py-0.5 rounded font-bold">
+                              <span className="text-[10px] bg-[var(--theme-beige)] border border-[var(--theme-border)]/30 text-[var(--theme-accent)] px-2 py-0.5 rounded-lg font-medium">
                                 Quiz: {p.quizScore}%
                               </span>
                             )}
                             {p.revisionCycle > 0 && (
-                              <span className="text-[10px] font-mono bg-amber-950/30 text-amber-500 border border-amber-900/50 px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                                <RotateCw size={10} /> Cycle {p.revisionCycle}
+                              <span className="text-[10px] bg-amber-50/60 text-amber-800 border border-amber-250/50 px-2 py-0.5 rounded-lg flex items-center gap-0.5 font-medium">
+                                <RotateCw size={10} className="opacity-70" /> Revise {p.revisionCycle}
                               </span>
                             )}
                           </div>
@@ -227,22 +216,22 @@ export default function ModuleList({
 
                         {/* Expandable modules edit workspace */}
                         {isModExpanded && (
-                          <div className="mt-4 pt-3 border-t border-slate-800 text-slate-300 text-xs grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
+                          <div className="mt-4 pt-4 border-t border-[var(--theme-border)]/20 text-[var(--theme-text-main)] text-xs grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeIn">
                             {/* Status, Timers and cycle level */}
-                            <div className="space-y-3 bg-slate-950/60 p-4 rounded-lg border border-slate-800">
-                              <h5 className="font-semibold text-slate-200 border-b border-slate-800 pb-1.5 font-mono text-[10px] uppercase">
-                                PROGRESS MANAGEMENT
+                            <div className="space-y-4 bg-[var(--theme-beige)]/20 p-4 rounded-xl border border-[var(--theme-border)]/30">
+                              <h5 className="font-semibold text-[var(--theme-text-dark)] border-b border-[var(--theme-border)]/20 pb-2 text-[10px] uppercase tracking-wide">
+                                Progress Management
                               </h5>
 
                               <div>
-                                <label className="block text-[11px] text-slate-400 mb-1">Set Module Status</label>
+                                <label className="block text-[11px] text-[var(--theme-text-main)] mb-1.5 font-medium">Set Status</label>
                                 <select
                                   value={p.status}
                                   onChange={(e) => onChangeModuleStatus(mod.id, e.target.value as ModuleStatus)}
-                                  className="w-full bg-slate-900 border border-slate-800 text-slate-200 text-xs px-2.5 py-1.5 rounded outline-none focus:border-blue-500"
+                                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 text-[var(--theme-text-dark)] text-xs px-2.5 py-2 rounded-xl outline-none focus:border-[var(--theme-accent)] transition cursor-pointer"
                                 >
-                                  <option value={ModuleStatus.NOT_STARTED}>Not Started</option>
-                                  <option value={ModuleStatus.IN_PROGRESS}>In Progress</option>
+                                  <option value={ModuleStatus.NOT_STARTED}>Not started</option>
+                                  <option value={ModuleStatus.IN_PROGRESS}>In progress</option>
                                   <option value={ModuleStatus.COMPLETED}>Completed</option>
                                 </select>
                               </div>
@@ -252,21 +241,21 @@ export default function ModuleList({
                                   <button
                                     type="button"
                                     onClick={() => onChangeModuleStatus(mod.id, ModuleStatus.COMPLETED)}
-                                    className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition shadow cursor-pointer"
+                                    className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] text-xs font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs hover:-translate-y-[1px] cursor-pointer"
                                   >
                                     ✓ Mark as Completed
                                   </button>
                                 ) : (
-                                  <div className="py-2 px-3 bg-emerald-950/20 border border-emerald-900/30 rounded-xl flex items-center justify-center gap-1.5 text-emerald-400 text-xs font-semibold">
-                                    <CheckCircle size={14} /> Completed
+                                  <div className="py-2 px-3 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-xl flex items-center justify-center gap-1.5 text-xs font-semibold">
+                                    <CheckCircle size={14} className="opacity-80" /> Completed
                                   </div>
                                 )}
                               </div>
 
-                              <div className="pt-2 border-t border-slate-800/40 space-y-2">
+                              <div className="pt-3 border-t border-[var(--theme-border)]/20 space-y-2.5">
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-bold text-slate-400 font-mono uppercase tracking-wider">Revision</span>
+                                    <span className="text-[10px] font-semibold text-[var(--theme-text-main)] uppercase tracking-wide">Revision</span>
                                     <div className="flex gap-1.5">
                                       {[1, 2, 3].map((step) => {
                                         const label = step === 1 ? "1d" : step === 2 ? "7d" : "16d";
@@ -274,25 +263,25 @@ export default function ModuleList({
                                         return (
                                           <div 
                                             key={step}
-                                            className={`w-2.5 h-1.5 rounded-full transition-all duration-300 border ${
+                                            className={`w-2 h-2 rounded-full transition-all duration-300 border ${
                                               active 
-                                                ? "bg-amber-500 border-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)] animate-pulse" 
-                                                : "bg-slate-900 border-slate-800"
+                                                ? "bg-amber-500 border-amber-400" 
+                                                : "bg-[var(--theme-beige)] border-[var(--theme-border)]/40"
                                             }`}
-                                            title={`${label} Spaced Review: ${active ? "Completed" : "Pending"}`}
+                                            title={`${label} spaced review: ${active ? "Completed" : "Pending"}`}
                                           />
                                         );
                                       })}
                                     </div>
                                   </div>
-                                  <span className="text-[9px] font-mono text-amber-500 font-semibold bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                  <span className="text-[10px] text-amber-700 font-medium">
                                     {p.revisionCycle}/3 done
                                   </span>
                                 </div>
                                 <button
                                   type="button"
                                   onClick={() => onProgressRevisionCycle(mod.id)}
-                                  className="w-full py-1.5 bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs rounded-lg font-semibold transition cursor-pointer select-none border border-slate-700/50 hover:border-slate-600"
+                                  className="w-full py-2 bg-[var(--theme-beige)] hover:bg-[var(--theme-beige-dark)]/50 text-[var(--theme-text-dark)] text-xs rounded-xl font-medium transition cursor-pointer select-none border border-[var(--theme-border)]/40"
                                 >
                                   {p.revisionCycle >= 3 ? "Reset study chain" : `Confirm Cycle ${p.revisionCycle + 1} Revision`}
                                 </button>
@@ -301,17 +290,17 @@ export default function ModuleList({
 
                             {/* Study Notes Workspace */}
                             <div className="md:col-span-2 space-y-2 flex flex-col">
-                              <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
-                                <h5 className="font-semibold text-slate-200 font-mono text-[10px] uppercase flex items-center gap-1">
-                                  <FileText size={12} className="text-blue-400" /> Executive study notes
+                              <div className="flex items-center justify-between border-b border-[var(--theme-border)]/20 pb-2">
+                                <h5 className="font-semibold text-[var(--theme-text-dark)] uppercase tracking-wide text-[10px] flex items-center gap-1.5">
+                                  <FileText size={12} className="text-[var(--theme-accent)] opacity-70" /> Study Notes
                                 </h5>
-                                <span className="text-[10px] text-slate-500 font-mono">Saves automatically</span>
+                                <span className="text-[10px] text-[var(--theme-text-main)] opacity-50">Saves automatically</span>
                               </div>
                               <textarea
                                 value={p.notes}
                                 onChange={(e) => onChangeModuleNotes(mod.id, e.target.value)}
-                                placeholder="Type or paste active learning equations, definitions, or notes here for fast lookup... Standard CFA formulas such as Gordon Growth, EAR, and Du Pont decomposition look beautiful written here!"
-                                className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-slate-200 outline-none focus:border-blue-500 font-sans flex-1 h-[140px] resize-none"
+                                placeholder="Write formulas, active learning notes, or equations here for fast retrieval... (e.g. Gordon Growth model, CAPM model, EAR calculations)"
+                                className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/45 rounded-xl p-3 text-xs text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] transition font-sans flex-1 h-[140px] resize-none shadow-xs"
                               />
                             </div>
                           </div>
