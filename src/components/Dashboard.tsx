@@ -170,9 +170,9 @@ export default function Dashboard({
         <div className="flex items-center gap-3">
           <GraduationCap className="text-blue-500" size={28} />
           <div>
-            <h2 className="text-lg font-serif font-bold text-slate-100 leading-none">CFA Level I Study Runway</h2>
+            <h2 className="text-lg font-serif font-bold text-slate-100 leading-none">Study Dashboard</h2>
             <p className="text-xs text-slate-500 mt-1 font-sans">
-              Track your study progress and syllabus coverage leading up to your target exam date.
+              Everything you need to stay on track, in one place.
             </p>
           </div>
         </div>
