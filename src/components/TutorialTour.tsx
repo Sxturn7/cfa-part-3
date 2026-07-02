@@ -11,14 +11,40 @@ import {
   Check, 
   HelpCircle,
   TrendingUp,
-  Info
+  Info,
+  Sun,
+  Moon,
+  Palette
 } from "lucide-react";
+import { AppTheme, THEME_PRESETS } from "../theme";
+
+const PRESET_ACCENTS = [
+  { name: "Royal Blue", value: "#2563EB" },
+  { name: "Bright Blue", value: "#3B82F6" },
+  { name: "Indigo", value: "#6366F1" },
+  { name: "Purple", value: "#8B5CF6" },
+  { name: "Emerald", value: "#10B981" },
+  { name: "Teal", value: "#0D9488" },
+  { name: "Amber", value: "#F59E0B" },
+  { name: "Rose", value: "#F43F5E" },
+];
+
+function hexToRgb(hex: string): string {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  const fullHex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "37, 99, 235";
+}
 
 interface TutorialTourProps {
   isOpen: boolean;
   onClose: () => void;
   setActiveTab: (tab: "dashboard" | "curriculum" | "quiz" | "growth" | "calendar" | "flashcards") => void;
   activeTab: "dashboard" | "curriculum" | "quiz" | "growth" | "calendar" | "flashcards";
+  currentTheme: AppTheme;
+  onThemeChange: (theme: AppTheme) => void;
 }
 
 interface TourStep {
@@ -31,7 +57,7 @@ interface TourStep {
   actionTip: string;
 }
 
-export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab }: TutorialTourProps) {
+export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab, currentTheme, onThemeChange }: TutorialTourProps) {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
 
@@ -102,6 +128,15 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab 
     {
       tab: "dashboard",
       elementId: null,
+      title: "Style Your Runway! 🎨",
+      icon: <Palette size={20} />,
+      iconColor: "text-blue-400",
+      text: "Choose your workspace theme and accent color to customize your preparation runway experience.",
+      actionTip: "Select Light/Dark mode and choose your favorite accent color below."
+    },
+    {
+      tab: "dashboard",
+      elementId: null,
       title: "All the Best! 🌟",
       icon: <Sparkles size={20} />,
       iconColor: "text-amber-400",
@@ -109,6 +144,25 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab 
       actionTip: "Click 'Done' to finish the walkthrough and begin your study session."
     }
   ];
+
+  const handleSelectPreset = (presetKey: "light" | "dark") => {
+    const selected = THEME_PRESETS[presetKey];
+    onThemeChange(selected);
+  };
+
+  const handleAccentColorChange = (hexColor: string) => {
+    const isLightBase = currentTheme.preset === "light";
+    const baseTheme = isLightBase ? THEME_PRESETS.light : THEME_PRESETS.dark;
+
+    const customTheme: AppTheme = {
+      ...baseTheme,
+      preset: "custom",
+      accent: hexColor,
+      accentHover: hexColor,
+      accentLight: `rgba(${hexToRgb(hexColor)}, 0.15)`,
+    };
+    onThemeChange(customTheme);
+  };
 
   // Auto advance tour step if user manually clicks on the top tabs
   useEffect(() => {
@@ -273,6 +327,75 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab 
             <p className="text-xs text-slate-350 leading-relaxed font-sans whitespace-pre-line">
               {currentStepData.text}
             </p>
+
+            {currentStepData.title === "Style Your Runway! 🎨" && (
+              <div className="space-y-4 pt-2.5 border-t border-slate-800/60">
+                {/* Base Mode Options */}
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase font-mono block">
+                    Base Mode:
+                  </span>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleSelectPreset("light")}
+                      className={`py-2 px-3 rounded-lg border text-left transition flex items-center gap-2 cursor-pointer ${
+                        currentTheme.preset === "light"
+                          ? "border-blue-500 bg-blue-950/20 text-slate-100"
+                          : "border-slate-800 bg-slate-950 text-slate-350 hover:border-slate-700"
+                      }`}
+                    >
+                      <Sun size={13} className={currentTheme.preset === "light" ? "text-blue-400" : "text-slate-400"} />
+                      <span className="text-xs font-semibold">Light Mode</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleSelectPreset("dark")}
+                      className={`py-2 px-3 rounded-lg border text-left transition flex items-center gap-2 cursor-pointer ${
+                        currentTheme.preset === "dark"
+                          ? "border-blue-500 bg-blue-950/20 text-slate-100"
+                          : "border-slate-800 bg-slate-950 text-slate-350 hover:border-slate-700"
+                      }`}
+                    >
+                      <Moon size={13} className={currentTheme.preset === "dark" ? "text-blue-400" : "text-slate-400"} />
+                      <span className="text-xs font-semibold">Dark Mode</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Accent Swatches */}
+                <div className="space-y-1.5">
+                  <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase font-mono block">
+                    Accent Color:
+                  </span>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {PRESET_ACCENTS.map((accent) => {
+                      const isSelected = currentTheme.accent.toLowerCase() === accent.value.toLowerCase();
+                      return (
+                        <button
+                          key={accent.value}
+                          type="button"
+                          onClick={() => handleAccentColorChange(accent.value)}
+                          className="h-8 rounded-lg border border-slate-800 bg-slate-950 flex items-center justify-center relative hover:border-slate-700 transition cursor-pointer group"
+                          title={accent.name}
+                        >
+                          <span 
+                            className="w-4 h-4 rounded-full inline-block shadow-inner"
+                            style={{ backgroundColor: accent.value }}
+                          />
+                          {isSelected && (
+                            <span className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center">
+                              <Check size={11} className="text-white font-bold" />
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Instruction Tip */}
             <div className="p-2 bg-slate-950/40 border border-slate-850 rounded-lg flex items-start gap-1.5">
