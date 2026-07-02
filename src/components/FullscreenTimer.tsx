@@ -8,7 +8,6 @@ import {
   Sparkles, 
   Volume2, 
   VolumeX, 
-  BookOpen, 
   Compass, 
   Award 
 } from "lucide-react";
@@ -26,12 +25,12 @@ interface FullscreenTimerProps {
 }
 
 const STUDY_QUOTES = [
-  "Deep work is the superpower of the 21st century.",
-  "Focus on the process, not just the outcome. Each second builds your future self.",
-  "The Level I curriculum is vast, but today's progress is what matters.",
-  "Your mind is like water. When turbulent, it's difficult to see. When calm, everything becomes clear.",
-  "Spaced repetition and high-focus periods beat long, distracted cramming every single time.",
-  "Integrity in study breeds ultimate clarity in execution."
+  "Deep focus is the ultimate competitive advantage.",
+  "Focus on the process, not just the outcome. Each second builds your future mastery.",
+  "The Level I curriculum is broad, but today's micro-progress is what wins.",
+  "Your mind is like water. When calm, everything becomes perfectly clear.",
+  "Spaced repetition and high-focus periods always beat late-night distracted cramming.",
+  "Integrity in daily prep breeds absolute confidence during the exam."
 ];
 
 export default function FullscreenTimer({
@@ -49,7 +48,6 @@ export default function FullscreenTimer({
   const [breathingProgress, setBreathingProgress] = useState(0); // 0 to 100 for visual scaling
   const [activeQuoteIdx, setActiveQuoteIdx] = useState(0);
   const [ambientSound, setAmbientSound] = useState(false);
-  const [audioNode, setAudioNode] = useState<HTMLAudioElement | null>(null);
 
   // Breathing Guide loop (4-second box breathing cycle)
   useEffect(() => {
@@ -86,7 +84,7 @@ export default function FullscreenTimer({
     return () => clearInterval(interval);
   }, [isOpen]);
 
-  // Ambient focus synth sound (optional, built using web audio API to avoid missing file errors!)
+  // Ambient focus synth sound using Web Audio API
   useEffect(() => {
     let audioCtx: AudioContext | null = null;
     let osc1: OscillatorNode | null = null;
@@ -104,12 +102,12 @@ export default function FullscreenTimer({
 
         // Relaxing low-frequency binaural hum
         osc1.type = "sine";
-        osc1.frequency.setValueAtTime(120, audioCtx.currentTime); // 120Hz
+        osc1.frequency.setValueAtTime(110, audioCtx.currentTime); // 110Hz
         
         osc2.type = "sine";
-        osc2.frequency.setValueAtTime(124, audioCtx.currentTime); // 124Hz binaural beat
+        osc2.frequency.setValueAtTime(114, audioCtx.currentTime); // 114Hz binaural beat (4Hz theta delta difference)
 
-        gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime); // very quiet and subtle
+        gainNode.gain.setValueAtTime(0.015, audioCtx.currentTime); // extremely gentle and subtle hum
 
         osc1.connect(gainNode);
         osc2.connect(gainNode);
@@ -118,7 +116,7 @@ export default function FullscreenTimer({
         osc1.start();
         osc2.start();
       } catch (err) {
-        console.warn("Web Audio API not fully allowed in iframe:", err);
+        console.warn("Web Audio API focus oscillator blocked:", err);
       }
     }
 
@@ -140,54 +138,55 @@ export default function FullscreenTimer({
 
   const getBreathingLabel = () => {
     switch (breathingStep) {
-      case "inhale": return "Breathe In Slowly";
-      case "hold": return "Hold the Breath";
-      case "exhale": return "Breathe Out Gently";
-      case "rest": return "Pause & Reset";
+      case "inhale": return "Inhale Slowly";
+      case "hold": return "Hold Breath";
+      case "exhale": return "Exhale Gently";
+      case "rest": return "Rest & Center";
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-950 text-slate-100 z-50 flex flex-col justify-between p-6 overflow-hidden select-none">
-      {/* Background radial ambient lights */}
-      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none animate-pulse duration-[8000ms]" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none animate-pulse duration-[10000ms]" />
+    <div className="fixed inset-0 bg-[var(--theme-bg)] text-[var(--theme-text-dark)] z-50 flex flex-col justify-between p-6 overflow-hidden select-none animate-fadeIn font-sans">
+      
+      {/* Background radial ambient lights based on selected theme */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[var(--theme-accent)]/5 rounded-full blur-3xl pointer-events-none animate-pulse duration-[8000ms]" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[var(--theme-accent)]/5 rounded-full blur-3xl pointer-events-none animate-pulse duration-[10000ms]" />
 
       {/* 1. Header controls */}
-      <div className="flex items-center justify-between border-b border-slate-900 pb-4 z-10 relative">
+      <div className="flex items-center justify-between border-b border-[var(--theme-border)]/20 pb-4 z-10 relative">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[var(--theme-accent)]/20 border border-[var(--theme-accent)]/40 flex items-center justify-center text-[var(--theme-accent)]">
-            <Compass className="animate-spin duration-[20000ms]" size={16} />
+          <div className="w-8 h-8 rounded-lg bg-[var(--theme-accent-light)] border border-[var(--theme-accent)]/20 flex items-center justify-center text-[var(--theme-accent)]">
+            <Compass className="animate-spin duration-[30000ms]" size={16} />
           </div>
           <div>
-            <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-500 block">Focus Engine Active</span>
-            <span className="text-xs font-serif font-bold text-slate-350">{activeSubjectName} • {activeModuleName}</span>
+            <span className="text-[9px] font-semibold tracking-wider uppercase text-[var(--theme-text-main)] opacity-70 block">Focus Engine Active</span>
+            <span className="text-xs font-semibold text-[var(--theme-text-dark)]">{activeSubjectName} • {activeModuleName}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {/* Ambient Sound Toggle */}
           <button
             type="button"
             onClick={() => setAmbientSound(!ambientSound)}
-            className={`p-2 rounded-xl transition flex items-center gap-1.5 text-xs font-mono border ${
+            className={`px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 text-[11px] font-medium border cursor-pointer ${
               ambientSound 
-                ? "bg-emerald-950/40 border-emerald-800 text-emerald-400" 
-                : "bg-slate-900 border-slate-800 text-slate-450 hover:text-slate-200"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-800" 
+                : "bg-[var(--theme-card)] border-[var(--theme-border)]/35 text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
             }`}
-            title="Toggle Binaural hum to help focus"
+            title="Toggle binaural focus wave hum"
           >
             {ambientSound ? <Volume2 size={13} /> : <VolumeX size={13} />}
-            <span className="hidden sm:inline">{ambientSound ? "Binaural On" : "Ambient sound"}</span>
+            <span className="hidden sm:inline">{ambientSound ? "Binaural Focus On" : "Binaural focus wave"}</span>
           </button>
 
           {/* Minimize Button */}
           <button
             type="button"
             onClick={onMinimize}
-            className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 px-3 py-2 rounded-xl text-xs font-bold transition text-slate-300"
+            className="flex items-center gap-1.5 bg-[var(--theme-card)] hover:bg-[var(--theme-beige)] border border-[var(--theme-border)]/35 px-4.5 py-2 rounded-xl text-xs font-semibold transition-all text-[var(--theme-text-dark)] hover:-translate-y-[1px] cursor-pointer"
           >
-            <Minimize2 size={13} />
+            <Minimize2 size={13} className="opacity-75" />
             <span>Minimize</span>
           </button>
         </div>
@@ -204,38 +203,38 @@ export default function FullscreenTimer({
             <div 
               className="absolute inset-0 rounded-full bg-[var(--theme-accent)]/5 transition-all duration-1000 ease-in-out"
               style={{ 
-                transform: `scale(${1 + (breathingProgress / 100) * 0.3})`,
-                opacity: isTimerRunning ? 0.7 : 0.2
+                transform: `scale(${1 + (breathingProgress / 100) * 0.25})`,
+                opacity: isTimerRunning ? 0.75 : 0.15
               }}
             />
 
             {/* Main breathing orb */}
             <div 
-              className="absolute rounded-full flex flex-col items-center justify-center text-center transition-all duration-1000 ease-in-out border shadow-2xl"
+              className="absolute rounded-full flex flex-col items-center justify-center text-center transition-all duration-1000 ease-in-out border shadow-md"
               style={{
                 width: `${140 + (breathingProgress / 100) * 60}px`,
                 height: `${140 + (breathingProgress / 100) * 60}px`,
-                backgroundColor: breathingStep === "hold" ? "rgba(16, 185, 129, 0.15)" : "rgba(59, 130, 246, 0.1)",
-                borderColor: breathingStep === "hold" ? "#10B981" : "rgba(59, 130, 246, 0.4)",
-                boxShadow: `0 0 40px ${breathingStep === "hold" ? "rgba(16, 185, 129, 0.25)" : "rgba(59, 130, 246, 0.15)"}`
+                backgroundColor: breathingStep === "hold" ? "rgba(16, 185, 129, 0.08)" : "var(--theme-accent-light)",
+                borderColor: breathingStep === "hold" ? "#10B981" : "var(--theme-accent)",
+                boxShadow: `0 0 40px ${breathingStep === "hold" ? "rgba(16, 185, 129, 0.15)" : "var(--theme-accent-light)"}`
               }}
             >
               <Sparkles className="text-[var(--theme-accent)]/60 mb-2 animate-pulse" size={18} />
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
-                {isTimerRunning ? getBreathingLabel() : "Focus Stopped"}
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--theme-text-dark)]">
+                {isTimerRunning ? getBreathingLabel() : "Focus Paused"}
               </span>
               {isTimerRunning && (
-                <span className="text-[9px] font-mono font-medium text-slate-500 mt-1">
-                  {breathingStep === "inhale" || breathingStep === "exhale" ? "Deep breath" : "Relax"}
+                <span className="text-[9px] text-[var(--theme-text-main)] mt-1 opacity-75">
+                  {breathingStep === "inhale" || breathingStep === "exhale" ? "Follow rhythm" : "Relax"}
                 </span>
               )}
             </div>
           </div>
           
           <div className="text-center space-y-1">
-            <h3 className="text-sm font-semibold text-slate-350">Box Breathing Focus Guide</h3>
-            <p className="text-[11px] text-slate-500 max-w-xs leading-relaxed">
-              Match your breaths to the expanding center orb to lower heart rate and enter a productive study flow.
+            <h3 className="text-sm font-semibold text-[var(--theme-text-dark)]">Box Breathing Metronome</h3>
+            <p className="text-[11px] text-[var(--theme-text-main)] max-w-xs leading-relaxed opacity-75">
+              Sync your breaths to enter deep focus state and increase retention rates.
             </p>
           </div>
         </div>
@@ -243,24 +242,24 @@ export default function FullscreenTimer({
         {/* Stopwatch & Study Status - Right Side */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 max-w-md w-full">
           <div className="space-y-2">
-            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[var(--theme-accent)] bg-[var(--theme-accent)]/15 border border-[var(--theme-accent)]/30 px-2.5 py-1 rounded-full">
-              {isTimerRunning ? "⏱️ STUDY SESSION RUNNING" : "⏸️ TRACKER PAUSED"}
+            <span className="text-[9px] font-semibold tracking-wider uppercase text-[var(--theme-accent)] bg-[var(--theme-accent-light)] border border-[var(--theme-accent)]/20 px-3 py-1 rounded-full">
+              {isTimerRunning ? "Deep session running" : "Timer paused"}
             </span>
-            <div className="text-5xl md:text-7xl font-mono font-extrabold tracking-tight text-white select-text">
+            <div className="text-5xl md:text-7xl font-mono font-medium tracking-tight text-[var(--theme-text-dark)] select-text">
               {formatTimer(timerSeconds)}
             </div>
-            <p className="text-xs text-slate-400 font-sans">
-              Active module study clock. Your accrued study statistics sync perfectly.
+            <p className="text-xs text-[var(--theme-text-main)] opacity-75">
+              Focus time logged here will sync automatically to your diagnostics report.
             </p>
           </div>
 
           {/* Motivation Quote */}
-          <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl w-full text-left space-y-2">
-            <div className="flex items-center gap-1.5 text-[9px] font-mono uppercase text-slate-500">
+          <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 p-5 rounded-2xl w-full text-left space-y-2">
+            <div className="flex items-center gap-1.5 text-[9px] font-semibold uppercase text-[var(--theme-text-main)] opacity-70">
               <Award size={12} className="text-amber-500" />
-              <span>Some Motivation</span>
+              <span>Diagnostic Mindfulness</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-serif italic">
+            <p className="text-xs text-[var(--theme-text-dark)] leading-relaxed italic opacity-90">
               "{STUDY_QUOTES[activeQuoteIdx]}"
             </p>
           </div>
@@ -270,31 +269,31 @@ export default function FullscreenTimer({
             <button
               type="button"
               onClick={onToggleTimer}
-              className={`flex flex-col items-center justify-center p-3.5 rounded-xl border font-bold text-xs transition ${
+              className={`flex flex-col items-center justify-center p-3.5 rounded-xl border-none text-xs font-semibold transition-all hover:-translate-y-[1px] cursor-pointer ${
                 isTimerRunning 
-                  ? "bg-amber-500 hover:bg-amber-600 border-amber-600 text-slate-950" 
-                  : "bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] border-[var(--theme-accent)] text-white"
+                  ? "bg-amber-500 hover:bg-amber-600 text-neutral-900" 
+                  : "bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)]"
               }`}
             >
               {isTimerRunning ? <Pause size={18} className="mb-1" /> : <Play size={18} className="mb-1" />}
-              <span>{isTimerRunning ? "Pause Clock" : "Resume"}</span>
+              <span>{isTimerRunning ? "Pause" : "Resume"}</span>
             </button>
 
             <button
               type="button"
               onClick={onResetTimer}
-              className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-350 font-bold text-xs transition"
+              className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-[var(--theme-card)] hover:bg-[var(--theme-beige)] border border-[var(--theme-border)]/35 text-[var(--theme-text-dark)] text-xs font-semibold transition-all hover:-translate-y-[1px] cursor-pointer"
             >
-              <RotateCcw size={18} className="mb-1 text-slate-400" />
+              <RotateCcw size={18} className="mb-1 opacity-70" />
               <span>Reset</span>
             </button>
 
             <button
               type="button"
               onClick={onSaveSession}
-              className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-emerald-650 hover:bg-emerald-700 border border-emerald-800 text-white font-bold text-xs transition shadow-lg shadow-emerald-950/20"
+              className="flex flex-col items-center justify-center p-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border-none font-semibold text-xs transition-all hover:-translate-y-[1px] cursor-pointer"
             >
-              <CheckCircle size={18} className="mb-1 text-emerald-300" />
+              <CheckCircle size={18} className="mb-1 text-emerald-100" />
               <span>Log & Save</span>
             </button>
           </div>
@@ -302,8 +301,8 @@ export default function FullscreenTimer({
       </div>
 
       {/* 3. Footer branding */}
-      <div className="text-center text-slate-650 text-[10px] font-mono z-10 relative">
-        CFA STUDY BUDDY • DESIGNED WITH DISTRACTION-FREE INTERACTION SHIELDS
+      <div className="text-center text-[var(--theme-text-main)] text-[10px] font-mono tracking-wider opacity-50 z-10 relative">
+        CFA LEVEL I PREP RUNWAY • MINDFUL STUDY ENVELOPE
       </div>
     </div>
   );
