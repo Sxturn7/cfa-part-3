@@ -263,21 +263,38 @@ export default function ModuleList({
                                 )}
                               </div>
 
-                              <div>
-                                <div className="flex justify-between items-center mb-1">
-                                  <label className="text-[11px] text-slate-400 flex items-center gap-1">
-                                    <RotateCw size={11} /> Spaced Repetition Block
-                                  </label>
-                                  <span className="text-[10px] font-mono text-amber-500 font-bold bg-amber-950/20 px-1.5 py-0.2 rounded border border-amber-900/60">
-                                    Cycle {p.revisionCycle}/3
+                              <div className="pt-2 border-t border-slate-800/40 space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[10px] font-bold text-slate-400 font-mono uppercase tracking-wider">Revision</span>
+                                    <div className="flex gap-1.5">
+                                      {[1, 2, 3].map((step) => {
+                                        const label = step === 1 ? "1d" : step === 2 ? "7d" : "16d";
+                                        const active = p.revisionCycle >= step;
+                                        return (
+                                          <div 
+                                            key={step}
+                                            className={`w-2.5 h-1.5 rounded-full transition-all duration-300 border ${
+                                              active 
+                                                ? "bg-amber-500 border-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)] animate-pulse" 
+                                                : "bg-slate-900 border-slate-800"
+                                            }`}
+                                            title={`${label} Spaced Review: ${active ? "Completed" : "Pending"}`}
+                                          />
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                  <span className="text-[9px] font-mono text-amber-500 font-semibold bg-amber-500/10 px-1.5 py-0.5 rounded">
+                                    {p.revisionCycle}/3 done
                                   </span>
                                 </div>
                                 <button
                                   type="button"
                                   onClick={() => onProgressRevisionCycle(mod.id)}
-                                  className="w-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs py-1.5 px-2 rounded font-semibold text-center mt-1"
+                                  className="w-full py-1.5 bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs rounded-lg font-semibold transition cursor-pointer select-none border border-slate-700/50 hover:border-slate-600"
                                 >
-                                  {p.revisionCycle >= 3 ? "Reset study chain" : "Confirm Revision Session"}
+                                  {p.revisionCycle >= 3 ? "Reset study chain" : `Confirm Cycle ${p.revisionCycle + 1} Revision`}
                                 </button>
                               </div>
                             </div>
