@@ -22,14 +22,14 @@ const DIFFICULTY_LABELS: Record<Difficulty, string> = {
 };
 
 const DIFFICULTY_COLORS: Record<Difficulty, string> = {
-  easy: "bg-emerald-950/20 text-emerald-400 border-emerald-800/80",
-  medium: "bg-blue-950/20 text-blue-400 border-blue-800/80",
-  hard: "bg-amber-950/20 text-amber-400 border-amber-800/80",
-  expert: "bg-orange-950/20 text-orange-400 border-orange-800/80",
-  superhuman: "bg-red-950/20 text-red-400 border-red-800/80 animate-pulse"
+  easy: "bg-emerald-50 text-emerald-800 border-emerald-100",
+  medium: "bg-blue-50 text-blue-800 border-blue-100",
+  hard: "bg-amber-50 text-amber-800 border-amber-100",
+  expert: "bg-orange-50 text-orange-800 border-orange-100",
+  superhuman: "bg-rose-50 text-rose-800 border-rose-100"
 };
 
-export default function QuizPane({ subjects, progress, onRecordQuizScore }: QuizPaneProps) {
+export default function QuizPane({ subjects, onRecordQuizScore }: QuizPaneProps) {
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>("all");
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -46,9 +46,8 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
   
   // System states
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isUsingAi, setIsUsingAi] = useState<boolean>(false);
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
-  const [errorLog, setErrorLog] = useState<string | null>(null);
+  const [, setErrorLog] = useState<string | null>(null);
  
   // Load a question immediately upon choosing/starting
   const fetchQuestion = async (subjId: string, diff: Difficulty) => {
@@ -62,7 +61,6 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
       try {
         const quest = getProceduralQuestion(subjId, diff);
         setCurrentQuestion(quest);
-        setIsUsingAi(false);
       } catch (err: any) {
         console.error("Local generator failed:", err);
         setErrorLog("Could not generate a local study vignette.");
@@ -135,28 +133,28 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
   return (
     <div className="space-y-6">
       {/* Quiz Top Control Dashboard */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+      <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-6 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--theme-border)]/20 pb-4 mb-6">
           <div>
-            <h3 className="text-xl font-serif font-bold text-slate-100 flex items-center gap-2">
-              📝 Practice & Diagnostic Quizzes
+            <h3 className="text-xl font-semibold text-[var(--theme-text-dark)] tracking-tight">
+              Curriculum Diagnostic Quiz
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
-              Select any topic area to review multiple choice questions.
+            <p className="text-xs text-[var(--theme-text-main)] mt-1.5 opacity-75">
+              Formulate conceptual vignette questions across the active CFA Level I syllabus.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className={`text-xs px-3 py-1 font-sans rounded-full border font-medium ${DIFFICULTY_COLORS[difficulty]}`}>
+            <span className={`text-[10px] px-3 py-1 font-medium rounded-full border ${DIFFICULTY_COLORS[difficulty]}`}>
               {DIFFICULTY_LABELS[difficulty]}
             </span>
           </div>
         </div>
 
         {/* Options Row */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 bg-[var(--theme-beige)]/20 p-5 rounded-2xl border border-[var(--theme-border)]/30">
           <div className="flex-1 min-w-[200px]">
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
-              Target Curriculum Topic
+            <label className="block text-[11px] font-medium text-[var(--theme-text-main)] mb-1.5 opacity-80">
+              Select Syllabus Chapter
             </label>
             <select
               value={selectedSubjectId}
@@ -164,9 +162,9 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
                 setSelectedSubjectId(e.target.value);
                 fetchQuestion(e.target.value, difficulty);
               }}
-              className="w-full bg-slate-900 text-slate-100 text-xs font-sans font-medium outline-none border border-slate-800 rounded-lg p-2.5 focus:border-blue-500"
+              className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 text-[var(--theme-text-dark)] text-xs font-medium outline-none rounded-xl p-2.5 focus:border-[var(--theme-accent)] transition cursor-pointer"
             >
-              <option value="all">Mixed Levels (Comprehensive Review)</option>
+              <option value="all">Comprehensive Mix (All Chapters)</option>
               {subjects.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name} ({s.weight})
@@ -176,77 +174,76 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
           </div>
 
           {/* Micro Stats Grid */}
-          <div className="flex items-center gap-6 border-t sm:border-t-0 sm:border-l border-slate-800 pt-3 sm:pt-0 sm:pl-6">
+          <div className="flex items-center gap-6 border-t sm:border-t-0 sm:border-l border-[var(--theme-border)]/20 pt-4 sm:pt-0 sm:pl-6">
             <div className="text-center px-2">
-              <span className="block text-lg font-sans font-bold text-slate-100">{accuracy}%</span>
-              <span className="text-[10px] text-slate-400 font-sans block mt-0.5">Accuracy</span>
+              <span className="block text-lg font-semibold text-[var(--theme-text-dark)]">{accuracy}%</span>
+              <span className="text-[10px] text-[var(--theme-text-main)] opacity-70 block mt-0.5">Accuracy</span>
             </div>
-            <div className="text-center px-2">
-              <span className="block text-lg font-sans font-bold text-slate-100">{streak}</span>
-              <span className="text-[10px] text-slate-400 font-sans block mt-0.5">Streak 🔥</span>
+            <div className="text-center px-3 border-l border-[var(--theme-border)]/20">
+              <span className="block text-lg font-semibold text-[var(--theme-text-dark)]">{streak}</span>
+              <span className="text-[10px] text-[var(--theme-text-main)] opacity-70 block mt-0.5">Streak 🔥</span>
             </div>
-            <div className="text-center px-2">
-              <span className="block text-lg font-sans font-bold text-slate-100">{totalAnswered}</span>
-              <span className="text-[10px] text-slate-400 font-sans block mt-0.5">Solved</span>
+            <div className="text-center px-2 border-l border-[var(--theme-border)]/20">
+              <span className="block text-lg font-semibold text-[var(--theme-text-dark)]">{totalAnswered}</span>
+              <span className="text-[10px] text-[var(--theme-text-main)] opacity-70 block mt-0.5">Solved</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Question Arena */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left column: Active Question panel */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm lg:col-span-2 relative min-h-[400px] flex flex-col justify-between">
+        <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-6 shadow-xs lg:col-span-2 relative min-h-[400px] flex flex-col justify-between">
           
           {isLoading ? (
-            <div className="flex-1 flex flex-col items-center justify-center space-y-4 py-16">
-              <RefreshCw size={36} className="text-blue-500 animate-spin" />
-              <p className="text-xs text-slate-400 font-mono animate-pulse">
+            <div className="flex-1 flex flex-col items-center justify-center space-y-4 py-16 animate-fadeIn">
+              <RefreshCw size={28} className="text-[var(--theme-accent)] animate-spin opacity-85" />
+              <p className="text-[11px] text-[var(--theme-text-main)] opacity-70 animate-pulse font-mono">
                 Formulating quiz questions...
               </p>
             </div>
           ) : currentQuestion ? (
-            <div className="space-y-6 flex-1 flex flex-col justify-between">
+            <div className="space-y-6 flex-1 flex flex-col justify-between animate-fadeIn">
               <div>
                 {/* Meta Row */}
-                <div className="flex justify-between items-center text-xs text-slate-400 font-sans border-b border-slate-800 pb-3 mb-4">
-                  <span className="text-xs font-semibold text-slate-400">
-                    Topic: {subjects.find(s => s.id === currentQuestion.subjectId)?.name || "Mixed Levels"}
+                <div className="flex justify-between items-center text-xs text-[var(--theme-text-main)] opacity-85 border-b border-[var(--theme-border)]/20 pb-3 mb-4">
+                  <span className="text-[11px] font-semibold text-[var(--theme-text-dark)] opacity-90">
+                    Category: {subjects.find(s => s.id === currentQuestion.subjectId)?.name || "Mixed Chapters"}
                   </span>
                   <button
                     type="button"
                     onClick={() => toggleBookmark(currentQuestion.id)}
-                    className="flex items-center gap-1.5 hover:text-amber-500 font-sans transition"
+                    className="flex items-center gap-1.5 hover:text-[var(--theme-accent)] transition cursor-pointer"
                   >
-                    <BookMarked size={14} className={bookmarkedIds.includes(currentQuestion.id) ? "text-amber-500 fill-amber-500" : "text-slate-400"} />
+                    <BookMarked size={13} className={bookmarkedIds.includes(currentQuestion.id) ? "text-[var(--theme-accent)] fill-[var(--theme-accent)]" : "text-[var(--theme-text-main)] opacity-60"} />
                     <span className="text-[10px]">{bookmarkedIds.includes(currentQuestion.id) ? "Flagged" : "Flag Question"}</span>
                   </button>
                 </div>
 
                 {/* Vignette Statement */}
-                <div className="bg-slate-850 border border-slate-800 p-5 rounded-xl text-sm leading-relaxed text-slate-100 font-serif mb-5 shadow-inner">
-                  <HelpCircle size={16} className="inline text-blue-500 mr-2 -mt-1.5" />
+                <div className="bg-[var(--theme-beige)]/30 border border-[var(--theme-border)]/20 p-5 rounded-xl text-xs leading-relaxed text-[var(--theme-text-dark)] mb-5">
+                  <HelpCircle size={15} className="inline text-[var(--theme-accent)] mr-2 -mt-0.5 opacity-80" />
                   {currentQuestion.question}
                 </div>
 
                 {/* Question Options */}
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {currentQuestion.options.map((opt, oIdx) => {
                     const isOptSelected = selectedAnswer === oIdx;
                     const isCorr = oIdx === currentQuestion.correctAnswerIndex;
                     const wasThisChosen = answered && isOptSelected;
 
-                    // Option color scheme variables
-                    let optionStyles = "bg-slate-900 border-slate-800 hover:bg-slate-850 text-slate-200";
+                    let optionStyles = "bg-[var(--theme-card)] border-[var(--theme-border)]/35 text-[var(--theme-text-dark)] hover:bg-[var(--theme-beige)]/30";
                     if (isOptSelected && !answered) {
-                      optionStyles = "bg-slate-800 border-blue-500 text-slate-100 ring-1 ring-blue-500/30";
+                      optionStyles = "bg-[var(--theme-accent-light)] border-[var(--theme-accent)] text-[var(--theme-accent)] font-semibold";
                     } else if (answered) {
                       if (isCorr) {
-                        optionStyles = "bg-emerald-950/20 border-emerald-500 text-emerald-500 font-semibold ring-1 ring-emerald-500/25";
+                        optionStyles = "bg-emerald-50 border-emerald-300 text-emerald-800 font-semibold";
                       } else if (wasThisChosen) {
-                        optionStyles = "bg-red-950/20 border-red-500 text-red-500 ring-1 ring-red-500/30";
+                        optionStyles = "bg-rose-50 border-rose-300 text-rose-800";
                       } else {
-                        optionStyles = "bg-slate-900/50 border-slate-800/50 text-slate-500 opacity-60 cursor-not-allowed";
+                        optionStyles = "bg-[var(--theme-card)] border-[var(--theme-border)]/20 text-[var(--theme-text-main)] opacity-50 cursor-not-allowed";
                       }
                     }
 
@@ -256,17 +253,17 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
                         type="button"
                         disabled={answered}
                         onClick={() => handleSelectAnswer(oIdx)}
-                        className={`w-full text-left px-4 py-3 rounded-xl border text-xs font-medium transition duration-150 flex justify-between items-center ${optionStyles} cursor-pointer`}
+                        className={`w-full text-left px-4 py-3.5 rounded-xl border text-xs font-medium transition-all duration-150 flex justify-between items-center ${optionStyles} cursor-pointer hover:-translate-y-[1px]`}
                       >
-                        <span className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-slate-400">
+                        <span className="flex items-center gap-3">
+                          <span className="font-mono text-[10px] opacity-50">
                             {["A", "B", "C", "D"][oIdx]}.
                           </span>
                           <span>{opt}</span>
                         </span>
 
-                        {answered && isCorr && <CheckCircle2 className="text-emerald-500 w-4 h-4 shrink-0" />}
-                        {answered && wasThisChosen && !isCorr && <XCircle className="text-red-500 w-4 h-4 shrink-0" />}
+                        {answered && isCorr && <CheckCircle2 className="text-emerald-600 w-4 h-4 shrink-0" />}
+                        {answered && wasThisChosen && !isCorr && <XCircle className="text-rose-600 w-4 h-4 shrink-0" />}
                       </button>
                     );
                   })}
@@ -274,16 +271,16 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
               </div>
 
               {/* Action operations bar */}
-              <div className="flex items-center justify-between border-t border-slate-800 pt-4 mt-6">
-                <div className="text-[10px] text-slate-400 font-mono">
+              <div className="flex items-center justify-between border-t border-[var(--theme-border)]/20 pt-4 mt-6">
+                <div className="text-[10px] text-[var(--theme-text-main)]">
                   {answered ? (
                     isCorrect ? (
-                      <span className="text-emerald-400 font-bold">✨ Correct! Score logged.</span>
+                      <span className="text-emerald-700 font-semibold">✨ Correct! Progress logged.</span>
                     ) : (
-                      <span className="text-red-400 font-bold">❌ Incorrect. Review analysis below.</span>
+                      <span className="text-rose-700 font-semibold">❌ Incorrect. Review explanation.</span>
                     )
                   ) : (
-                    <span>⚠️ Select an option above to submit.</span>
+                    <span className="opacity-70">Select an option above to check.</span>
                   )}
                 </div>
 
@@ -292,7 +289,7 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
                     type="button"
                     onClick={handleSubmitAnswer}
                     disabled={selectedAnswer === null}
-                    className="bg-blue-600 hover:bg-blue-500 text-white disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-xs font-bold px-6 py-2.5 rounded-xl tracking-wider uppercase transition active:scale-95 border-none shadow-sm cursor-pointer"
+                    className="bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] disabled:opacity-40 disabled:cursor-not-allowed text-xs font-semibold px-5 py-2.5 rounded-xl transition-all hover:-translate-y-[1px] cursor-pointer"
                   >
                     Check Answer
                   </button>
@@ -300,18 +297,18 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
                   <button
                     type="button"
                     onClick={handleNextQuestion}
-                    className="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-6 py-2.5 rounded-xl tracking-wider uppercase transition flex items-center gap-1 cursor-pointer"
+                    className="bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] text-xs font-semibold px-5 py-2.5 rounded-xl transition-all hover:-translate-y-[1px] flex items-center gap-1 cursor-pointer"
                   >
-                    Next Question <ChevronRight size={14} />
+                    <span>Next Question</span> <ChevronRight size={14} className="opacity-80" />
                   </button>
                 )}
               </div>
             </div>
           ) : (
             <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
-              <AlertCircle className="text-amber-500 w-8 h-8 mb-2 animate-bounce" />
-              <p className="text-xs text-slate-500">Failed to load active study card.</p>
-              <button onClick={handleNextQuestion} className="mt-4 bg-blue-600 text-white text-xs px-4 py-2 rounded-xl cursor-pointer">
+              <AlertCircle className="text-amber-600 w-8 h-8 mb-2 animate-bounce" />
+              <p className="text-xs text-[var(--theme-text-main)]">Failed to load active study card.</p>
+              <button onClick={handleNextQuestion} className="mt-4 bg-[var(--theme-accent)] text-[var(--theme-bg)] text-xs px-4 py-2 rounded-xl cursor-pointer">
                 Reset & Retry
               </button>
             </div>
@@ -323,13 +320,13 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
         <div className="space-y-4">
           
           {/* Real-time difficulty controllers */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm">
-            <h5 className="text-xs font-bold text-slate-100 mb-2 flex items-center gap-1.5">
-              <Zap size={14} className="text-blue-500" />
-              Difficulty level
+          <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-5 shadow-xs">
+            <h5 className="text-xs font-semibold text-[var(--theme-text-dark)] mb-2.5 flex items-center gap-1.5">
+              <Zap size={14} className="text-[var(--theme-accent)] opacity-70" />
+              Challenge Level
             </h5>
-            <p className="text-xs text-slate-400 leading-relaxed mb-4">
-              Select the cognitive challenge level of your generated questions:
+            <p className="text-xs text-[var(--theme-text-main)] opacity-75 leading-relaxed mb-4">
+              Select the cognitive depth of your vignette questions:
             </p>
 
             <div className="grid grid-cols-2 gap-2.5">
@@ -337,53 +334,51 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore }: Quiz
                 type="button"
                 onClick={() => handleDifficultyAdjust("down")}
                 disabled={difficulty === "easy" || isLoading}
-                className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-750 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-700 text-slate-200 transition cursor-pointer"
-                title="Shift to simpler core formulations"
+                className="flex items-center justify-center gap-1 bg-[var(--theme-beige)]/50 hover:bg-[var(--theme-beige)]/70 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-medium px-3 py-2.5 rounded-xl border border-[var(--theme-border)]/20 text-[var(--theme-text-dark)] transition-all cursor-pointer hover:-translate-y-[1px]"
               >
-                <ArrowDown size={14} className="text-blue-500" />
-                Go Easier
+                <ArrowDown size={14} className="opacity-70" />
+                <span>Go Easier</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleDifficultyAdjust("up")}
                 disabled={difficulty === "superhuman" || isLoading}
-                className="flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-750 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-bold px-3 py-2.5 rounded-xl border border-slate-700 text-slate-200 transition cursor-pointer"
-                title="Shift to complex vignettes and obscure exceptions"
+                className="flex items-center justify-center gap-1 bg-[var(--theme-beige)]/50 hover:bg-[var(--theme-beige)]/70 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-medium px-3 py-2.5 rounded-xl border border-[var(--theme-border)]/20 text-[var(--theme-text-dark)] transition-all cursor-pointer hover:-translate-y-[1px]"
               >
-                <ArrowUp size={14} className="text-blue-500" />
-                Go Harder
+                <ArrowUp size={14} className="opacity-70" />
+                <span>Go Harder</span>
               </button>
             </div>
 
-            <div className="text-[11px] text-slate-400 mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
-              <span>Current scale:</span>
-              <span className="font-sans text-blue-500 font-bold capitalize">{difficulty}</span>
+            <div className="text-[11px] text-[var(--theme-text-main)] opacity-80 mt-4 flex items-center justify-between border-t border-[var(--theme-border)]/15 pt-3">
+              <span>Current difficulty:</span>
+              <span className="text-[var(--theme-accent)] font-semibold capitalize">{difficulty}</span>
             </div>
           </div>
 
           {/* Active Question Explanatory breakdown */}
           {answered && currentQuestion && (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm animate-fadeIn max-h-[340px] overflow-y-auto scrollbar-thin">
-              <div className="text-xs font-bold text-blue-500 mb-2.5 flex items-center gap-1.5 border-b border-slate-800 pb-2">
-                <AlertCircle size={13} className="text-blue-500" />
-                CFA Analysis & Explanations
+            <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-5 shadow-xs animate-fadeIn max-h-[340px] overflow-y-auto">
+              <div className="text-xs font-semibold text-[var(--theme-accent)] mb-3 flex items-center gap-1.5 border-b border-[var(--theme-border)]/15 pb-2">
+                <AlertCircle size={13} className="opacity-70" />
+                Rationale & Explanation
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed whitespace-pre-line font-sans">
+              <p className="text-xs text-[var(--theme-text-dark)] leading-relaxed whitespace-pre-line font-sans opacity-95">
                 {currentQuestion.explanation}
               </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400 italic">
-                Citing Module ID: {currentQuestion.moduleId.toUpperCase()}
+              <div className="mt-4 pt-3 border-t border-[var(--theme-border)]/15 text-[10px] text-[var(--theme-text-main)] opacity-50 italic">
+                Citing Module: {currentQuestion.moduleId.toUpperCase()}
               </div>
             </div>
           )}
 
           {/* Instruction helper */}
           {!answered && (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center text-xs text-slate-500 py-8 shadow-sm">
-              <Award size={28} className="mx-auto mb-2 text-slate-400 opacity-75" />
-              <p className="font-medium text-slate-200">Select an Option</p>
-              <p className="text-[10px] text-slate-400 mt-1 leading-relaxed max-w-xs mx-auto">
-                Choose the best answer option to evaluate your understanding of this topic.
+            <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-6 text-center text-xs text-[var(--theme-text-main)] py-8 shadow-xs">
+              <Award size={24} className="mx-auto mb-2.5 text-[var(--theme-text-main)] opacity-35" />
+              <p className="font-semibold text-[var(--theme-text-dark)]">Evaluate Your Recall</p>
+              <p className="text-[10px] opacity-70 mt-1 max-w-xs mx-auto leading-relaxed">
+                Choose the best answer option to verify your understanding. Correct answers update your chapters' review ratings in the curriculum directory.
               </p>
             </div>
           )}
