@@ -471,7 +471,7 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
           {/* Quick Creator Toggle */}
           <button
             onClick={() => setIsCreatorOpen(!isCreatorOpen)}
-            className="w-full bg-[#5A6344] hover:bg-[#4d543a] text-white text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition shadow border-none cursor-pointer"
+            className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition shadow border-none cursor-pointer"
           >
             <Plus size={14} />
             {isCreatorOpen ? "Hide Custom Creator" : "Create Custom Flashcard"}
@@ -614,11 +614,11 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
                     /* Card Back Component */
                     <div className="flex-1 flex flex-col justify-between animate-fadeIn overflow-y-auto">
                       {/* Gloss background highlight */}
-                      <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-[#5A6344]/5 rounded-full blur-3xl pointer-events-none" />
+                      <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
 
                       {/* Header */}
                       <div className="flex justify-between items-center mb-2 z-10">
-                        <span className="text-[8px] font-mono tracking-widest font-bold uppercase bg-[#5A6344]/30 border border-[#5A6344]/50 text-[#8E9B64] px-2 py-0.5 rounded-full">
+                        <span className="text-[8px] font-mono tracking-widest font-bold uppercase bg-blue-950/40 border border-blue-900/60 text-blue-400 px-2 py-0.5 rounded-full">
                           Answer Key & Breakdown
                         </span>
                         {userProfile.flashcardHistory?.[activeCard?.id] && (
