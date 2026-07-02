@@ -7,15 +7,10 @@ import {
   Trash2, 
   CheckCircle, 
   Circle, 
-  Clock, 
-  BookOpen, 
-  AlertCircle, 
   X, 
   Edit3, 
   SlidersHorizontal,
-  CalendarCheck2,
-  BookmarkCheck,
-  Check
+  CalendarCheck2
 } from "lucide-react";
 import { UserProfile, StudyCheckpoint, Subject } from "../types";
 
@@ -177,7 +172,6 @@ export default function StudyCalendar({
         return { 
           ...cp, 
           status: newStatus,
-          // Shift marker to grey/green if completed
           markerColor: newStatus === "completed" ? "#10B981" : cp.markerColor 
         };
       }
@@ -245,37 +239,35 @@ export default function StudyCalendar({
   return (
     <div className="space-y-6">
       {/* Upper header section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[var(--theme-card)] border border-[var(--theme-border)]/35 p-6 rounded-2xl">
         <div>
-          <h2 className="text-xl font-serif font-bold text-slate-100 flex items-center gap-2">
-            📅 Candidate Study Calendar & Milestones
-          </h2>
-          <p className="text-xs text-slate-500 mt-1">
-            Map out custom milestone checkpoints, assign color-coded progress status, and track your active exam preparation timeline.
+          <h2 className="text-xl font-semibold text-[var(--theme-text-dark)] tracking-tight">Curriculum Calendar</h2>
+          <p className="text-xs text-[var(--theme-text-main)] mt-1.5 opacity-75 max-w-xl leading-relaxed">
+            Map out milestones, assign progress states, and log study cycles to coordinate your Level I review timeline.
           </p>
         </div>
         
         {/* Calendar Stats Summary cards */}
         <div className="flex items-center gap-3.5 flex-wrap">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 flex items-center gap-2.5">
-            <div className="p-2 bg-slate-700/50 rounded-lg text-emerald-500">
-              <CalendarCheck2 size={16} />
+          <div className="bg-[var(--theme-beige)]/30 border border-[var(--theme-border)]/30 rounded-xl px-4 py-2 flex items-center gap-2.5">
+            <div className="p-2 bg-[var(--theme-beige)] rounded-lg text-[var(--theme-accent)]">
+              <CalendarCheck2 size={16} className="opacity-80" />
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-sans">Checkpoints</p>
-              <p className="text-sm font-bold text-slate-200">{stats.completed} / {stats.total} Done</p>
+              <p className="text-[10px] text-[var(--theme-text-main)] opacity-70">Checkpoints</p>
+              <p className="text-xs font-semibold text-[var(--theme-text-dark)] mt-0.5">{stats.completed} / {stats.total} Done</p>
             </div>
           </div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-xs font-mono font-bold text-slate-200">
+          <div className="bg-[var(--theme-beige)]/30 border border-[var(--theme-border)]/30 rounded-xl px-4 py-2 flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-full bg-[var(--theme-beige)] border border-[var(--theme-border)]/20 flex items-center justify-center text-[10px] font-mono font-medium text-[var(--theme-text-dark)]">
               {stats.pct}%
             </div>
             <div>
-              <p className="text-[11px] text-slate-400 font-sans">Consistency</p>
-              <div className="w-24 bg-slate-750 h-1.5 rounded-full overflow-hidden mt-1">
+              <p className="text-[10px] text-[var(--theme-text-main)] opacity-70">Consistency</p>
+              <div className="w-24 bg-[var(--theme-beige)] h-1.5 rounded-full overflow-hidden mt-1.5">
                 <div 
-                  className="bg-emerald-500 h-full transition-all duration-500" 
+                  className="bg-[var(--theme-accent)] h-full transition-all duration-500" 
                   style={{ width: `${stats.pct}%` }}
                 />
               </div>
@@ -285,18 +277,18 @@ export default function StudyCalendar({
       </div>
 
       {/* Grid container: Calendar on Left, Selected Day info & Stats on Right */}
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
         
         {/* Calendar Month Grid Card - 3 Columns */}
-        <div className="xl:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+        <div className="xl:col-span-3 bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
           <div>
             {/* Calendar Controls */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-              <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between border-b border-[var(--theme-border)]/15 pb-4 mb-4">
+              <div className="flex items-center gap-1.5">
                 <button
                   type="button"
                   onClick={handlePrevMonth}
-                  className="p-1.5 hover:bg-slate-800 rounded-lg border border-slate-800 text-slate-400 hover:text-slate-100 transition cursor-pointer"
+                  className="p-1.5 hover:bg-[var(--theme-beige)]/40 rounded-xl border border-[var(--theme-border)]/30 text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] transition-all cursor-pointer"
                   aria-label="Previous month"
                 >
                   <ChevronLeft size={16} />
@@ -304,12 +296,12 @@ export default function StudyCalendar({
                 <button
                   type="button"
                   onClick={handleNextMonth}
-                  className="p-1.5 hover:bg-slate-800 rounded-lg border border-slate-800 text-slate-400 hover:text-slate-100 transition cursor-pointer"
+                  className="p-1.5 hover:bg-[var(--theme-beige)]/40 rounded-xl border border-[var(--theme-border)]/30 text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] transition-all cursor-pointer"
                   aria-label="Next month"
                 >
                   <ChevronRight size={16} />
                 </button>
-                <span className="text-sm font-serif font-bold text-slate-100 px-2">
+                <span className="text-sm font-semibold text-[var(--theme-text-dark)] px-2">
                   {monthNames[month]} {year}
                 </span>
               </div>
@@ -318,7 +310,7 @@ export default function StudyCalendar({
                 <button
                   type="button"
                   onClick={handleToday}
-                  className="px-3 py-1.5 text-xs font-semibold bg-slate-850 hover:bg-slate-800 border border-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
+                  className="px-3.5 py-1.5 text-xs font-medium bg-[var(--theme-beige)]/50 hover:bg-[var(--theme-beige)]/80 border border-[var(--theme-border)]/30 text-[var(--theme-text-dark)] rounded-xl transition-all cursor-pointer hover:-translate-y-[1px]"
                 >
                   Today
                 </button>
@@ -327,29 +319,29 @@ export default function StudyCalendar({
                   <button
                     type="button"
                     onClick={() => handleOpenAddModal(selectedDay)}
-                    className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-white rounded-lg transition"
+                    className="flex items-center gap-1 px-3.5 py-1.5 text-xs font-semibold bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] rounded-xl transition-all hover:-translate-y-[1px] cursor-pointer"
                   >
-                    <Plus size={14} /> Add Checkpoint
+                    <Plus size={14} className="opacity-80" /> Add Event
                   </button>
                 )}
               </div>
             </div>
 
             {/* Interactive Filters Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-800 border border-slate-700 p-3 rounded-xl mb-4 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-[var(--theme-beige)]/20 border border-[var(--theme-border)]/30 p-3 rounded-xl mb-4 text-xs">
               <div className="flex items-center gap-2">
-                <SlidersHorizontal size={13} className="text-slate-400" />
-                <span className="font-semibold text-slate-300">Filters:</span>
+                <SlidersHorizontal size={12} className="text-[var(--theme-text-main)] opacity-70" />
+                <span className="font-semibold text-[var(--theme-text-dark)]">Filter Calendar:</span>
               </div>
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 text-xs font-sans">Subject</span>
+                  <span className="text-[var(--theme-text-main)] opacity-70 text-[11px]">Subject</span>
                   <select
                     value={subjectFilter}
                     onChange={(e) => setSubjectFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-blue-500 cursor-pointer"
+                    className="bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/30 rounded-lg px-2 py-1 text-xs text-[var(--theme-text-dark)] outline-none cursor-pointer"
                   >
-                    <option value="all">All Subject Streams</option>
+                    <option value="all">All Topics</option>
                     <option value="general">⭐ General Milestones</option>
                     {subjects.map(s => (
                       <option key={s.id} value={s.id}>{s.name}</option>
@@ -358,23 +350,23 @@ export default function StudyCalendar({
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-400 text-xs font-sans">Status</span>
+                  <span className="text-[var(--theme-text-main)] opacity-70 text-[11px]">Status</span>
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-xs text-slate-100 outline-none focus:border-blue-500 cursor-pointer"
+                    className="bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/30 rounded-lg px-2 py-1 text-xs text-[var(--theme-text-dark)] outline-none cursor-pointer"
                   >
-                    <option value="all">All Progress States</option>
-                    <option value="not_started">🔴 Not Started</option>
-                    <option value="in_progress">🟡 In Progress</option>
-                    <option value="completed">🟢 Finished</option>
+                    <option value="all">All States</option>
+                    <option value="not_started">Not started</option>
+                    <option value="in_progress">In progress</option>
+                    <option value="completed">Completed</option>
                   </select>
                 </div>
               </div>
             </div>
 
             {/* Calendar grid */}
-            <div className="grid grid-cols-7 text-center font-sans text-xs font-semibold text-slate-400 mb-2">
+            <div className="grid grid-cols-7 text-center font-sans text-xs font-medium text-[var(--theme-text-main)] opacity-70 mb-2">
               <div>Sun</div>
               <div>Mon</div>
               <div>Tue</div>
@@ -390,7 +382,7 @@ export default function StudyCalendar({
                   return (
                     <div 
                       key={`empty-${idx}`} 
-                      className="bg-slate-800/40 border border-dashed border-slate-700 rounded-xl aspect-square md:aspect-auto md:h-24 p-1.5"
+                      className="bg-[var(--theme-beige)]/20 border border-dashed border-[var(--theme-border)]/15 rounded-xl aspect-square md:aspect-auto md:h-24 p-1.5"
                     />
                   );
                 }
@@ -404,51 +396,51 @@ export default function StudyCalendar({
                     key={`day-${day.getDate()}`}
                     type="button"
                     onClick={() => setSelectedDay(day)}
-                    className={`text-left rounded-xl border p-1.5 md:p-2 flex flex-col justify-between aspect-square md:aspect-auto md:h-24 transition cursor-pointer select-none group relative ${
+                    className={`text-left rounded-xl border p-1.5 md:p-2 flex flex-col justify-between aspect-square md:aspect-auto md:h-24 transition-all cursor-pointer select-none relative hover:-translate-y-[1px] ${
                       isSelected
-                        ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)]/20 shadow-sm"
+                        ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)]/30"
                         : isToday
                         ? "border-amber-400 bg-amber-50/20"
-                        : "border-slate-800 hover:border-slate-700 bg-slate-900 text-slate-200"
+                        : "border-[var(--theme-border)]/20 hover:border-[var(--theme-border)]/40 bg-[var(--theme-card)] text-[var(--theme-text-dark)]"
                     }`}
                   >
                     {/* Day number with status dot */}
                     <div className="flex items-center justify-between w-full">
-                      <span className={`text-[11px] font-mono font-bold rounded-md px-1 py-0.5 ${
+                      <span className={`text-[10px] font-mono font-medium rounded-md px-1 py-0.5 ${
                         isToday 
                           ? "bg-amber-100 text-amber-800" 
                           : isSelected 
-                          ? "bg-[var(--theme-accent)] text-white" 
-                          : "text-slate-200"
+                          ? "bg-[var(--theme-accent)] text-[var(--theme-bg)]" 
+                          : "text-[var(--theme-text-dark)]"
                       }`}>
                         {day.getDate()}
                       </span>
                       
                       {dayCheckpoints.length > 0 && (
-                        <span className="text-[9px] bg-slate-100 text-slate-500 font-bold px-1.5 rounded-full md:hidden">
+                        <span className="text-[9px] bg-[var(--theme-beige)] border border-[var(--theme-border)]/25 text-[var(--theme-text-dark)] px-1.5 rounded-full md:hidden">
                           {dayCheckpoints.length}
                         </span>
                       )}
                     </div>
 
-                    {/* Checkpoint list inside day - Hidden on mobile, beautiful badges on desktop */}
+                    {/* Checkpoint list inside day - Hidden on mobile */}
                     <div className="hidden md:flex flex-col gap-1 w-full overflow-y-auto max-h-[50px] scrollbar-none mt-1">
                       {dayCheckpoints.slice(0, 3).map(cp => (
                         <div 
                           key={cp.id}
-                          className="text-[9px] truncate px-1 py-0.5 rounded flex items-center gap-1 text-slate-200 font-sans border border-slate-750 bg-slate-800"
+                          className="text-[9px] truncate px-1 py-0.5 rounded flex items-center gap-1 text-[var(--theme-text-dark)] border border-[var(--theme-border)]/15 bg-[var(--theme-beige)]/10"
                         >
                           <span 
                             className="w-1.5 h-1.5 rounded-full shrink-0" 
                             style={{ backgroundColor: cp.markerColor }}
                           />
-                          <span className={cp.status === "completed" ? "line-through text-slate-400" : ""}>
+                          <span className={cp.status === "completed" ? "line-through opacity-50" : ""}>
                             {cp.title}
                           </span>
                         </div>
                       ))}
                       {dayCheckpoints.length > 3 && (
-                        <span className="text-[8px] text-slate-400 font-bold font-mono pl-1">
+                        <span className="text-[8px] text-[var(--theme-text-main)] opacity-60 font-medium pl-1">
                           +{dayCheckpoints.length - 3} more
                         </span>
                       )}
@@ -471,101 +463,99 @@ export default function StudyCalendar({
           </div>
         </div>
 
-        {/* Selected Day Info Sidebar - 1 Column */}
-        <div className="xl:col-span-1 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
+        {/* Selected Day Agenda Sidebar - 1 Column */}
+        <div className="xl:col-span-1 bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4">
           <div>
-            <div className="border-b border-slate-800 pb-3.5 mb-3.5">
-              <h3 className="text-xs font-bold text-slate-200 font-sans flex items-center gap-2 mb-1">
-                📅 Day Agenda
+            <div className="border-b border-[var(--theme-border)]/15 pb-3.5 mb-3.5">
+              <h3 className="text-xs font-semibold text-[var(--theme-text-dark)] uppercase tracking-wider mb-1">
+                Agenda Checkpoints
               </h3>
               {selectedDay ? (
-                <p className="text-xs font-serif font-bold text-slate-300">
+                <p className="text-xs font-medium text-[var(--theme-text-main)]">
                   {selectedDay.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
               ) : (
-                <p className="text-xs text-slate-400">Select a day on the calendar to see agenda or schedule milestones.</p>
+                <p className="text-xs text-[var(--theme-text-main)] opacity-70">Select a day on the calendar.</p>
               )}
             </div>
 
             {selectedDay && (
               <div className="space-y-3">
                 {selectedDayCheckpoints.length === 0 ? (
-                  <div className="bg-slate-950/40 border border-dashed border-slate-800 p-6 rounded-xl text-center space-y-2">
-                    <AlertCircle size={22} className="text-slate-500 mx-auto" />
-                    <p className="text-[11px] font-medium text-slate-450">No checkpoints on this day.</p>
+                  <div className="bg-[var(--theme-beige)]/10 border border-dashed border-[var(--theme-border)]/30 p-6 rounded-xl text-center space-y-2">
+                    <p className="text-[11px] font-medium text-[var(--theme-text-main)] opacity-70">No checkpoints scheduled.</p>
                     <button
                       type="button"
                       onClick={() => handleOpenAddModal(selectedDay)}
-                      className="text-[10px] font-bold text-blue-500 hover:underline inline-flex items-center gap-1"
+                      className="text-[10px] font-semibold text-[var(--theme-accent)] hover:underline inline-flex items-center gap-1 cursor-pointer"
                     >
                       <Plus size={10} /> Schedule study event
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1">
+                  <div className="space-y-3 max-h-[300px] overflow-y-auto pr-1">
                     {selectedDayCheckpoints.map(cp => (
                       <div 
                         key={cp.id}
-                        className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between ${
+                        className={`p-3.5 rounded-xl border text-left transition relative flex flex-col justify-between ${
                           cp.status === "completed"
-                            ? "bg-slate-950/40 border-slate-800/80"
-                            : "bg-slate-950 border-slate-800 hover:shadow-xs"
+                            ? "bg-[var(--theme-beige)]/10 border-[var(--theme-border)]/15"
+                            : "bg-[var(--theme-card)] border-[var(--theme-border)]/30 hover:-translate-y-[1px] hover:shadow-xs"
                         }`}
                       >
-                        <div className="flex items-start gap-2">
+                        <div className="flex items-start gap-2.5">
                           <button
-                            type="button"
+                            type="button;button"
                             onClick={() => handleToggleComplete(cp.id)}
-                            className="p-0.5 mt-0.5 rounded hover:bg-slate-800 transition border-none bg-transparent cursor-pointer text-slate-400 hover:text-emerald-500"
-                            title={cp.status === "completed" ? "Mark incomplete" : "Complete Milestone!"}
+                            className="p-0.5 mt-0.5 rounded hover:bg-[var(--theme-beige)]/40 transition border-none bg-transparent cursor-pointer text-[var(--theme-text-main)] hover:text-emerald-600"
+                            title={cp.status === "completed" ? "Mark incomplete" : "Complete Milestone"}
                           >
                             {cp.status === "completed" ? (
-                              <CheckCircle size={15} className="text-emerald-500" />
+                              <CheckCircle size={15} className="text-emerald-600" />
                             ) : (
-                              <Circle size={15} />
+                              <Circle size={15} className="opacity-60" />
                             )}
                           </button>
 
                           <div className="flex-1 pr-4 min-w-0">
-                            <h4 className={`text-xs font-bold leading-snug truncate ${
-                              cp.status === "completed" ? "line-through text-slate-500" : "text-slate-100"
+                            <h4 className={`text-xs font-semibold leading-snug truncate ${
+                              cp.status === "completed" ? "line-through text-[var(--theme-text-main)] opacity-50" : "text-[var(--theme-text-dark)]"
                             }`}>
                               {cp.title}
                             </h4>
                             
                             {cp.description && (
-                              <p className="text-[10px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                              <p className="text-[10px] text-[var(--theme-text-main)] opacity-75 mt-1 line-clamp-2 leading-relaxed">
                                 {cp.description}
                               </p>
                             )}
 
                             <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                               {/* Subject Badge */}
-                              <span className="text-[9px] font-sans font-semibold px-1.5 py-0.5 rounded-md bg-slate-150 text-slate-400 border border-slate-200">
+                              <span className="text-[9px] font-semibold px-2 py-0.5 rounded bg-[var(--theme-beige)] border border-[var(--theme-border)]/15 text-[var(--theme-text-dark)]">
                                 {cp.subjectId === "general" ? "⭐ General" : subjects.find(s => s.id === cp.subjectId)?.name.substring(0, 15) || cp.subjectId}
                               </span>
 
                               {/* Custom Color Dot */}
                               <span 
-                                className="w-2 h-2 rounded-full border border-white shrink-0" 
+                                className="w-2.5 h-2.5 rounded-full border border-[var(--theme-border)]/10 shrink-0" 
                                 style={{ backgroundColor: cp.markerColor }}
-                                title="Custom Marker"
                               />
 
                               {/* Status badge */}
                               {cp.status === "in_progress" && (
-                                <span className="text-[9px] bg-amber-50 text-amber-700 font-bold px-1 rounded font-sans">In Progress</span>
+                                <span className="text-[9px] bg-amber-50 border border-amber-100 text-amber-800 font-medium px-1.5 rounded-lg">In Progress</span>
                               )}
                             </div>
                           </div>
                         </div>
 
-                        {/* Hover settings / Trash bin */}
+                        {/* Edit Button */}
                         <div className="absolute right-2.5 top-2.5 flex items-center gap-1">
                           <button
                             type="button"
                             onClick={() => handleOpenEditModal(cp)}
-                            className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-700 transition border-none bg-transparent cursor-pointer"
+                            className="p-1 hover:bg-[var(--theme-beige)]/30 rounded text-[var(--theme-text-main)] opacity-50 hover:opacity-90 transition border-none bg-transparent cursor-pointer"
                             title="Edit Checkpoint"
                           >
                             <Edit3 size={11} />
@@ -579,11 +569,11 @@ export default function StudyCalendar({
             )}
           </div>
 
-          {/* Quick study tips / quotes for motivation */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-3.5 space-y-1.5">
-            <h4 className="text-[9px] font-mono uppercase text-slate-500 tracking-wider">CANDIDATE STUDY PROTIP</h4>
-            <p className="text-[10px] text-slate-350 leading-relaxed italic">
-              "The secret of the CFA Level I curriculum is consistency. Break complex topics like derivatives or fixed income into small checkpoints and mark off one every single day."
+          {/* Quick study tips */}
+          <div className="bg-[var(--theme-beige)]/20 border border-[var(--theme-border)]/20 rounded-xl p-4 space-y-1.5 opacity-85">
+            <h4 className="text-[9px] font-semibold text-[var(--theme-text-main)] uppercase tracking-wider">Candidate Guideline</h4>
+            <p className="text-[10px] text-[var(--theme-text-main)] leading-relaxed italic opacity-95">
+              "Establish daily mini-checkpoints. Checking off even one micro-milestone per day builds massive exam consistency."
             </p>
           </div>
         </div>
@@ -591,44 +581,44 @@ export default function StudyCalendar({
 
       {/* --- ADD CHECKPOINT MODAL --- */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-fadeIn text-left text-slate-100">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl w-full max-w-md p-6 shadow-xl relative animate-fadeIn text-left">
             <button
               type="button"
               onClick={() => setIsAddModalOpen(false)}
-              className="absolute right-4 top-4 text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition border-none bg-transparent cursor-pointer"
+              className="absolute right-4 top-4 text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] p-1 rounded-full transition border-none bg-transparent cursor-pointer"
             >
               <X size={18} />
             </button>
 
-            <h3 className="text-sm font-bold text-slate-100 font-serif mb-4 flex items-center gap-1.5">
-              <CalendarIcon size={16} className="text-[var(--theme-accent)]" /> Add Study Checkpoint
+            <h3 className="text-sm font-semibold text-[var(--theme-text-dark)] mb-4 flex items-center gap-1.5">
+              <CalendarIcon size={16} className="text-[var(--theme-accent)] opacity-80" /> Add Study Checkpoint
             </h3>
 
             <form onSubmit={handleSaveCheckpoint} className="space-y-4">
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                   Checkpoint Title *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Finish Quant QM-2 Quiz"
+                  placeholder="e.g. Finish Quant Quiz"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-255 outline-none focus:border-blue-500 font-sans"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-3 py-2.5 text-xs text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] font-sans placeholder:opacity-30 transition shadow-xs"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                  <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                     Curriculum Subject
                   </label>
                   <select
                     value={newSubjectId}
                     onChange={(e) => setNewSubjectId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-850 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-2.5 py-2.5 text-xs text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] transition cursor-pointer"
                   >
                     <option value="general">⭐ General Study Milestone</option>
                     {subjects.map(s => (
@@ -638,7 +628,7 @@ export default function StudyCalendar({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                  <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                     Checkpoint Date
                   </label>
                   <input
@@ -646,14 +636,14 @@ export default function StudyCalendar({
                     required
                     value={newDateStr}
                     onChange={(e) => setNewDateStr(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-850 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 outline-none font-mono"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-2.5 py-2 text-xs text-[var(--theme-text-dark)] outline-none font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold text-slate-455 mb-1.5">
-                  Select Custom Marker Color (Visually Appealing!)
+                <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
+                  Visual Marker Color
                 </label>
                 <div className="grid grid-cols-4 gap-2">
                   {MARKER_COLORS.map(color => (
@@ -661,14 +651,14 @@ export default function StudyCalendar({
                       key={color.hex}
                       type="button"
                       onClick={() => setNewMarkerColor(color.hex)}
-                      className={`flex items-center gap-1.5 p-1.5 rounded-lg border text-[10px] font-sans transition ${
+                      className={`flex items-center gap-1.5 p-2 rounded-xl border text-[10px] transition-all cursor-pointer ${
                         newMarkerColor === color.hex 
-                          ? "border-[var(--theme-accent)] bg-slate-950/80 text-white font-bold" 
-                          : "border-slate-800 bg-slate-950/30 text-slate-400 hover:bg-slate-950/50"
+                          ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)] text-[var(--theme-accent)] font-semibold" 
+                          : "border-[var(--theme-border)]/30 bg-[var(--theme-beige)]/20 text-[var(--theme-text-main)] hover:bg-[var(--theme-beige)]"
                       }`}
                     >
                       <span 
-                        className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/20" 
+                        className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/25" 
                         style={{ backgroundColor: color.hex }}
                       />
                       <span>{color.name.split(" ")[0]}</span>
@@ -679,13 +669,13 @@ export default function StudyCalendar({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                  <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                     Initial Status
                   </label>
                   <select
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value as any)}
-                    className="w-full bg-slate-950 border border-slate-850 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-2.5 py-2.5 text-xs text-[var(--theme-text-dark)] outline-none cursor-pointer"
                   >
                     <option value="not_started">🔴 Not Started</option>
                     <option value="in_progress">🟡 In Progress</option>
@@ -695,20 +685,20 @@ export default function StudyCalendar({
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
-                  Description / Study Plan (Optional)
+                <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
+                  Plan Details (Optional)
                 </label>
                 <textarea
-                  placeholder="e.g. Read CFA study material, outline key formulas, then complete 15-question Practice Quiz."
+                  placeholder="Describe equations or sections to review..."
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-255 h-16 resize-none outline-none focus:border-blue-500"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-3 py-2 text-xs text-[var(--theme-text-dark)] h-16 resize-none outline-none focus:border-[var(--theme-accent)] placeholder:opacity-30 transition shadow-xs"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-white font-bold text-xs py-2.5 rounded-xl border-none shadow transition-all duration-150 mt-2"
+                className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] font-semibold text-xs py-3 rounded-xl border-none shadow-xs transition-all hover:-translate-y-[1px] cursor-pointer"
               >
                 Create Study Checkpoint
               </button>
@@ -719,23 +709,23 @@ export default function StudyCalendar({
 
       {/* --- EDIT CHECKPOINT MODAL --- */}
       {isEditModalOpen && activeCheckpoint && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-fadeIn text-left text-slate-100">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl w-full max-w-md p-6 shadow-xl relative animate-fadeIn text-left">
             <button
               type="button"
               onClick={() => setIsEditModalOpen(false)}
-              className="absolute right-4 top-4 text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition border-none bg-transparent cursor-pointer"
+              className="absolute right-4 top-4 text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] p-1 rounded-full transition border-none bg-transparent cursor-pointer"
             >
               <X size={18} />
             </button>
 
-            <h3 className="text-sm font-bold text-slate-100 font-serif mb-4 flex items-center gap-1.5">
-              <Edit3 size={16} className="text-[var(--theme-accent)]" /> Edit Study Checkpoint
+            <h3 className="text-sm font-semibold text-[var(--theme-text-dark)] mb-4 flex items-center gap-1.5">
+              <Edit3 size={16} className="text-[var(--theme-accent)] opacity-80" /> Edit Study Checkpoint
             </h3>
 
             <form onSubmit={handleSaveEditCheckpoint} className="space-y-4">
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                   Checkpoint Title *
                 </label>
                 <input
@@ -743,19 +733,19 @@ export default function StudyCalendar({
                   required
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-255 outline-none focus:border-blue-500"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-3 py-2.5 text-xs text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] font-sans"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                  <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                     Curriculum Subject
                   </label>
                   <select
                     value={newSubjectId}
                     onChange={(e) => setNewSubjectId(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-850 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-2.5 py-2.5 text-xs text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] transition cursor-pointer"
                   >
                     <option value="general">⭐ General Study Milestone</option>
                     {subjects.map(s => (
@@ -765,7 +755,7 @@ export default function StudyCalendar({
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                  <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                     Checkpoint Date
                   </label>
                   <input
@@ -773,13 +763,13 @@ export default function StudyCalendar({
                     required
                     value={newDateStr}
                     onChange={(e) => setNewDateStr(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-850 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 outline-none font-mono"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-2.5 py-2 text-xs text-[var(--theme-text-dark)] outline-none font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold text-slate-455 mb-1.5">
+                <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                   Marker Color Customize
                 </label>
                 <div className="grid grid-cols-4 gap-2">
@@ -788,14 +778,14 @@ export default function StudyCalendar({
                       key={color.hex}
                       type="button"
                       onClick={() => setNewMarkerColor(color.hex)}
-                      className={`flex items-center gap-1.5 p-1.5 rounded-lg border text-[10px] font-sans transition ${
+                      className={`flex items-center gap-1.5 p-2 rounded-xl border text-[10px] transition-all cursor-pointer ${
                         newMarkerColor === color.hex 
-                          ? "border-[var(--theme-accent)] bg-slate-950/80 text-white font-bold" 
-                          : "border-slate-800 bg-slate-950/30 text-slate-400 hover:bg-slate-950/50"
+                          ? "border-[var(--theme-accent)] bg-[var(--theme-accent-light)] text-[var(--theme-accent)] font-semibold" 
+                          : "border-[var(--theme-border)]/30 bg-[var(--theme-beige)]/20 text-[var(--theme-text-main)] hover:bg-[var(--theme-beige)]"
                       }`}
                     >
                       <span 
-                        className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/20" 
+                        className="w-2.5 h-2.5 rounded-full shrink-0 border border-white/25" 
                         style={{ backgroundColor: color.hex }}
                       />
                       <span>{color.name.split(" ")[0]}</span>
@@ -806,13 +796,13 @@ export default function StudyCalendar({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
+                  <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
                     Status
                   </label>
                   <select
                     value={newStatus}
                     onChange={(e) => setNewStatus(e.target.value as any)}
-                    className="w-full bg-slate-950 border border-slate-850 rounded-xl px-2.5 py-2 text-xs text-slate-200 outline-none"
+                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-2.5 py-2.5 text-xs text-[var(--theme-text-dark)] outline-none cursor-pointer"
                   >
                     <option value="not_started">🔴 Not Started</option>
                     <option value="in_progress">🟡 In Progress</option>
@@ -822,28 +812,28 @@ export default function StudyCalendar({
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-mono font-bold text-slate-450 mb-1.5">
-                  Description / Study Plan (Optional)
+                <label className="block text-[10px] uppercase font-medium text-[var(--theme-text-main)] mb-1.5">
+                  Plan Details (Optional)
                 </label>
                 <textarea
                   placeholder="e.g. Read CFA study material, outline key formulas."
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-850 rounded-xl px-3 py-2 text-xs text-slate-255 h-16 resize-none outline-none focus:border-blue-500"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 rounded-xl px-3 py-2 text-xs text-[var(--theme-text-dark)] h-16 resize-none outline-none focus:border-[var(--theme-accent)] placeholder:opacity-30 transition shadow-xs"
                 />
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => handleDeleteCheckpoint(activeCheckpoint.id)}
-                  className="flex items-center justify-center gap-1.5 bg-rose-950/35 hover:bg-rose-900/40 border border-rose-900 text-rose-450 hover:text-rose-200 font-bold text-xs px-4 py-2.5 rounded-xl cursor-pointer transition"
+                  className="flex items-center justify-center gap-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800 font-semibold text-xs px-4 py-2.5 rounded-xl cursor-pointer transition-all hover:-translate-y-[1px]"
                 >
-                  <Trash2 size={13} /> Delete
+                  <Trash2 size={13} className="opacity-80" /> Delete
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-white font-bold text-xs py-2.5 rounded-xl border-none shadow transition"
+                  className="flex-1 bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] font-semibold text-xs py-2.5 rounded-xl border-none shadow-xs transition-all hover:-translate-y-[1px]"
                 >
                   Save Changes
                 </button>
