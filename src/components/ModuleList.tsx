@@ -252,7 +252,7 @@ export default function ModuleList({
                                   <button
                                     type="button"
                                     onClick={() => onChangeModuleStatus(mod.id, ModuleStatus.COMPLETED)}
-                                    className="w-full bg-[#5A6344] hover:bg-[#484f36] text-white text-xs font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition shadow"
+                                    className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition shadow cursor-pointer"
                                   >
                                     ✓ Mark as Completed
                                   </button>
