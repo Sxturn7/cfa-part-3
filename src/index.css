@@ -179,12 +179,11 @@ aside,
 .text-slate-250,
 .text-slate-200,
 .text-slate-300 {
-  color: var(--theme-text-main) !important;
+  color: var(--theme-text-dark) !important;
 }
 .text-slate-400,
 .text-slate-500 {
   color: var(--theme-text-main) !important;
-  opacity: 0.8;
 }
 .text-slate-600 {
   color: var(--theme-beige-dark) !important;
@@ -201,21 +200,13 @@ aside,
 }
 
 /* Secondary alerts or metrics */
-.text-emerald-400, .text-emerald-500 {
-  color: var(--theme-accent) !important;
-}
 .bg-emerald-950\/40, .bg-emerald-950\/20 {
   background-color: var(--theme-beige) !important;
-  border-color: var(--theme-accent) !important;
 }
 
 /* Warnings and Overdue elements */
-.text-rose-400, .text-rose-500, .text-red-400 {
-  color: var(--theme-accent-rose) !important;
-}
 .bg-rose-950\/40, .bg-red-950\/40 {
   background-color: var(--theme-bg) !important;
-  border-color: var(--theme-accent-rose) !important;
 }
 
 /* Input boxes, selectors, and dynamic forms styling */
