@@ -1005,10 +1005,10 @@ export default function App() {
             <button
               id="tour-nav-dashboard"
               onClick={() => setActiveTab("dashboard")}
-              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 cursor-pointer ${
+              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0 cursor-pointer ${
                 activeTab === "dashboard"
                   ? "border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
-                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100"
+                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100 hover:text-[var(--theme-text-dark)]"
               }`}
             >
               <LayoutDashboard size={12} className="opacity-70" />
@@ -1018,10 +1018,10 @@ export default function App() {
             <button
               id="tour-nav-curriculum"
               onClick={() => setActiveTab("curriculum")}
-              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 cursor-pointer ${
+              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0 cursor-pointer ${
                 activeTab === "curriculum"
                   ? "border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
-                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100"
+                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100 hover:text-[var(--theme-text-dark)]"
               }`}
             >
               <BookOpen size={12} className="opacity-70" />
@@ -1031,10 +1031,10 @@ export default function App() {
             <button
               id="tour-nav-quiz"
               onClick={() => setActiveTab("quiz")}
-              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 cursor-pointer ${
+              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0 cursor-pointer ${
                 activeTab === "quiz"
                   ? "border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
-                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100"
+                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100 hover:text-[var(--theme-text-dark)]"
               }`}
             >
               <Brain size={12} className="opacity-70" />
@@ -1044,10 +1044,10 @@ export default function App() {
             <button
               id="tour-nav-growth"
               onClick={() => setActiveTab("growth")}
-              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 cursor-pointer ${
+              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0 cursor-pointer ${
                 activeTab === "growth"
                   ? "border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
-                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100"
+                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100 hover:text-[var(--theme-text-dark)]"
               }`}
             >
               <Sparkles size={12} className="opacity-70" />
@@ -1057,10 +1057,10 @@ export default function App() {
             <button
               id="tour-nav-calendar"
               onClick={() => setActiveTab("calendar")}
-              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 cursor-pointer ${
+              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0 cursor-pointer ${
                 activeTab === "calendar"
                   ? "border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
-                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100"
+                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100 hover:text-[var(--theme-text-dark)]"
               }`}
             >
               <Calendar size={12} className="opacity-70" />
@@ -1070,10 +1070,10 @@ export default function App() {
             <button
               id="tour-nav-flashcards"
               onClick={() => setActiveTab("flashcards")}
-              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 cursor-pointer ${
+              className={`py-3 px-1 text-xs font-medium border-b-2 font-sans flex items-center gap-2 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0 cursor-pointer ${
                 activeTab === "flashcards"
                   ? "border-b-2 border-[var(--theme-accent)] text-[var(--theme-text-dark)]"
-                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100"
+                  : "border-transparent text-[var(--theme-text-main)] opacity-70 hover:opacity-100 hover:text-[var(--theme-text-dark)]"
               }`}
             >
               <Brain size={12} className="opacity-70" />
