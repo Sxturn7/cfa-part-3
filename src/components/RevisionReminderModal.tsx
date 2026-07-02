@@ -20,7 +20,7 @@ export default function RevisionReminderModal({
     <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
       <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative">
         {/* Banner header decoration */}
-        <div className="h-2 bg-[#5A6344]" />
+        <div className="h-2 bg-blue-600" />
         
         {/* Close button */}
         <button
@@ -34,7 +34,7 @@ export default function RevisionReminderModal({
         <div className="p-6 space-y-5">
           {/* Banner Icon */}
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-[#5A6344]/20 border border-[#5A6344]/40 flex items-center justify-center text-xl">
+            <div className="w-12 h-12 rounded-xl bg-blue-950 border border-blue-900/60 flex items-center justify-center text-xl">
               📅
             </div>
             <div>
@@ -69,10 +69,10 @@ export default function RevisionReminderModal({
               <button
                 type="button"
                 onClick={() => onScheduleRevision(1)}
-                className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-[#5A6344]/10 border border-slate-800 hover:border-[#5A6344]/50 rounded-xl transition text-left group pointer-events-auto outline-none"
+                className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-blue-500/10 border border-slate-800 hover:border-blue-500/40 rounded-xl transition text-left group pointer-events-auto outline-none"
               >
                 <div className="flex items-start gap-2.5">
-                  <div className="text-xs font-mono bg-[#5A6344]/20 hover:bg-[#5A6344]/30 text-[#8E9B64] font-bold px-2 py-1 rounded-lg mt-0.5 min-w-[32px] text-center">
+                  <div className="text-xs font-mono bg-blue-950 hover:bg-blue-900/60 text-blue-400 font-bold px-2 py-1 rounded-lg mt-0.5 min-w-[32px] text-center">
                     1d
                   </div>
                   <div>
@@ -82,17 +82,17 @@ export default function RevisionReminderModal({
                     <p className="text-[10px] text-slate-500">Quick review of notes and core financial formulas.</p>
                   </div>
                 </div>
-                <ChevronRight size={14} className="text-slate-650 group-hover:text-[#8E9B64] group-hover:translate-x-0.5 transition" />
+                <ChevronRight size={14} className="text-slate-650 group-hover:text-blue-400 group-hover:translate-x-0.5 transition" />
               </button>
 
               {/* Option 2: 7 Days */}
               <button
                 type="button"
                 onClick={() => onScheduleRevision(7)}
-                className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-[#5A6344]/10 border border-slate-800 hover:border-[#5A6344]/50 rounded-xl transition text-left group pointer-events-auto outline-none"
+                className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-blue-500/10 border border-slate-800 hover:border-blue-500/40 rounded-xl transition text-left group pointer-events-auto outline-none"
               >
                 <div className="flex items-start gap-2.5">
-                  <div className="text-xs font-mono bg-[#5A6344]/20 hover:bg-[#5A6344]/30 text-[#8E9B64] font-bold px-2 py-1 rounded-lg mt-0.5 min-w-[32px] text-center">
+                  <div className="text-xs font-mono bg-blue-950 hover:bg-blue-900/60 text-blue-400 font-bold px-2 py-1 rounded-lg mt-0.5 min-w-[32px] text-center">
                     7d
                   </div>
                   <div>
@@ -102,17 +102,17 @@ export default function RevisionReminderModal({
                     <p className="text-[10px] text-slate-500">Runway concept assessment / practice test to drill memory.</p>
                   </div>
                 </div>
-                <ChevronRight size={14} className="text-slate-650 group-hover:text-[#8E9B64] group-hover:translate-x-0.5 transition" />
+                <ChevronRight size={14} className="text-slate-650 group-hover:text-blue-400 group-hover:translate-x-0.5 transition" />
               </button>
 
               {/* Option 3: 16 Days */}
               <button
                 type="button"
                 onClick={() => onScheduleRevision(16)}
-                className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-[#5A6344]/10 border border-slate-800 hover:border-[#5A6344]/50 rounded-xl transition text-left group pointer-events-auto outline-none"
+                className="w-full flex items-center justify-between p-3 bg-slate-950/40 hover:bg-blue-500/10 border border-slate-800 hover:border-blue-500/40 rounded-xl transition text-left group pointer-events-auto outline-none"
               >
                 <div className="flex items-start gap-2.5">
-                  <div className="text-xs font-mono bg-[#5A6344]/20 hover:bg-[#5A6344]/30 text-[#8E9B64] font-bold px-2 py-1 rounded-lg mt-0.5 min-w-[32px] text-center">
+                  <div className="text-xs font-mono bg-blue-950 hover:bg-blue-900/60 text-blue-400 font-bold px-2 py-1 rounded-lg mt-0.5 min-w-[32px] text-center">
                     16d
                   </div>
                   <div>
@@ -122,7 +122,7 @@ export default function RevisionReminderModal({
                     <p className="text-[10px] text-slate-500">Comprehensive custom check. Solidify concept map forever.</p>
                   </div>
                 </div>
-                <ChevronRight size={14} className="text-slate-650 group-hover:text-[#8E9B64] group-hover:translate-x-0.5 transition" />
+                <ChevronRight size={14} className="text-slate-650 group-hover:text-blue-400 group-hover:translate-x-0.5 transition" />
               </button>
             </div>
           </div>
