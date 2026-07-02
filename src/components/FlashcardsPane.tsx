@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { UserProfile, Flashcard, Subject } from "../types";
 import { 
-  Sparkles, 
   RotateCw, 
   Check, 
   X, 
   Plus, 
   Filter, 
-  BookOpen, 
-  Award, 
   Trash2, 
   HelpCircle,
   Bookmark
@@ -264,7 +261,6 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
   const [isFlipped, setIsFlipped] = useState(false);
   const [revealStreak, setRevealStreak] = useState(0);
   const [sessionCount, setSessionCount] = useState(0);
-  const [gradeHistory, setGradeHistory] = useState<Record<string, "mastered" | "review" | "new">>({});
 
   // Creator state
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
@@ -288,12 +284,6 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
   }, [activeSubject]);
 
   const handleGrade = (cardId: string, status: "mastered" | "review") => {
-    // Record in local grade history for active session visual cue
-    setGradeHistory(prev => ({
-      ...prev,
-      [cardId]: status
-    }));
-
     // Update streak and session reviewed counts
     setSessionCount(p => p + 1);
     if (status === "mastered") {
@@ -302,7 +292,7 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
       setRevealStreak(0);
     }
 
-    // Update global state inside userProfile for persistence and Supabase sync
+    // Update global state inside userProfile for persistence
     const currentHistory = userProfile.flashcardHistory || {};
     const cardHistory = currentHistory[cardId] || {
       correctCount: 0,
@@ -368,7 +358,7 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
     // Reset fields
     setNewFront("");
     setNewBack("");
-    setCreatorSuccess("Custom memory card added successfully to your candidates deck!");
+    setCreatorSuccess("Custom card added successfully!");
     setTimeout(() => setCreatorSuccess(""), 3500);
   };
 
@@ -393,62 +383,59 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
   return (
     <div className="space-y-6">
       {/* Upper header section */}
-      <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🎴</span>
-            <h2 className="text-lg font-serif font-bold text-slate-100">Formula & Definition Review</h2>
-          </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Review core CFA formulas and definitions using active recall. Your progress helps track recall rates.
+          <h2 className="text-xl font-semibold text-[var(--theme-text-dark)] tracking-tight">Active Recall Review</h2>
+          <p className="text-xs text-[var(--theme-text-main)] mt-1.5 opacity-75 max-w-xl leading-relaxed">
+            Review core CFA Level I formulas, definitions, and high-yield concepts using spaced repetition and active recall.
           </p>
         </div>
 
         {/* Mini scorecard details */}
-        <div className="flex gap-4 bg-slate-800 p-2.5 rounded-xl border border-slate-700 shrink-0 w-full md:w-auto">
+        <div className="flex gap-4 bg-[var(--theme-beige)]/30 p-3 rounded-xl border border-[var(--theme-border)]/30 shrink-0 w-full md:w-auto">
           <div className="text-center px-2">
-            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wide">Recall Rate</div>
-            <div className="text-sm font-bold text-slate-200 font-mono">{recallMasteryPercent}%</div>
+            <div className="text-[10px] text-[var(--theme-text-main)] uppercase tracking-wide opacity-60 font-medium">Recall Rate</div>
+            <div className="text-sm font-semibold text-[var(--theme-text-dark)] mt-0.5">{recallMasteryPercent}%</div>
           </div>
-          <div className="text-center px-2 border-l border-slate-700">
-            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wide">Mastered</div>
-            <div className="text-sm font-bold text-emerald-500 font-mono">{masteredCount} cards</div>
+          <div className="text-center px-3 border-l border-[var(--theme-border)]/30">
+            <div className="text-[10px] text-[var(--theme-text-main)] uppercase tracking-wide opacity-60 font-medium">Mastered</div>
+            <div className="text-sm font-semibold text-emerald-700 mt-0.5">{masteredCount} cards</div>
           </div>
-          <div className="text-center px-2 border-l border-slate-700">
-            <div className="text-[10px] text-slate-500 font-mono uppercase tracking-wide">Active Streak</div>
-            <div className="text-sm font-bold text-amber-500 font-mono">🔥 {revealStreak}</div>
+          <div className="text-center px-2 border-l border-[var(--theme-border)]/30">
+            <div className="text-[10px] text-[var(--theme-text-main)] uppercase tracking-wide opacity-60 font-medium">Streak</div>
+            <div className="text-sm font-semibold text-amber-700 mt-0.5">🔥 {revealStreak}</div>
           </div>
         </div>
       </div>
 
       {/* Main Flashcard Interactive Stage */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Left Hand Controller Section */}
         <div className="space-y-4">
-          <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-lg space-y-4">
-            <h3 className="text-xs font-bold uppercase font-mono text-slate-300 tracking-wider flex items-center gap-1.5">
-              <Filter size={13} className="text-blue-400" /> Deck Navigation
+          <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 p-5 rounded-2xl space-y-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--theme-text-dark)] flex items-center gap-2 mb-2 pb-2 border-b border-[var(--theme-border)]/20">
+              <Filter size={13} className="text-[var(--theme-accent)] opacity-70" /> Deck Navigation
             </h3>
 
             {/* Subject Filters */}
-            <div className="space-y-1">
-              <span className="text-[10px] text-slate-500 font-mono block mb-1">SELECT TARGET AREA:</span>
-              <div className="grid grid-cols-2 gap-1.5">
+            <div className="space-y-2">
+              <span className="text-[10px] text-[var(--theme-text-main)] opacity-60 font-medium block">SUBJECT FOCUS:</span>
+              <div className="grid grid-cols-2 gap-2">
                 {subjectList.map(s => {
                   const cardCount = allCards.filter(c => s.id === "all" || c.moduleId === s.id).length;
                   return (
                     <button
                       key={s.id}
                       onClick={() => setActiveSubject(s.id)}
-                      className={`text-[10px] py-2 px-2.5 rounded-lg border text-left flex items-center justify-between transition ${
+                      className={`text-[10px] py-2 px-2.5 rounded-lg border text-left flex items-center justify-between transition-all cursor-pointer ${
                         activeSubject === s.id
-                          ? "bg-slate-800 border-blue-500 text-blue-400 font-bold"
-                          : "bg-slate-950 border-slate-850 text-slate-400 hover:bg-slate-850 hover:text-slate-200"
+                          ? "bg-[var(--theme-accent-light)] border-[var(--theme-accent)]/30 text-[var(--theme-accent)] font-semibold"
+                          : "bg-[var(--theme-card)] border-[var(--theme-border)]/30 text-[var(--theme-text-main)] hover:bg-[var(--theme-beige)] hover:text-[var(--theme-text-dark)]"
                       }`}
                     >
                       <span className="truncate pr-1">{s.name}</span>
-                      <span className="text-[8px] px-1 py-0.2 bg-slate-900 rounded font-mono font-medium border border-slate-800 text-slate-400 shrink-0">
+                      <span className="text-[8px] px-1.5 py-0.2 bg-[var(--theme-beige)] border border-[var(--theme-border)]/20 rounded font-mono text-[var(--theme-text-main)]">
                         {cardCount}
                       </span>
                     </button>
@@ -458,44 +445,44 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
             </div>
 
             {/* Quick Guidelines */}
-            <div className="bg-slate-950 p-3 rounded-lg border border-slate-850 text-[10px] text-slate-400 leading-relaxed space-y-1.5">
-              <h4 className="font-semibold text-slate-300 flex items-center gap-1 font-mono">
-                <HelpCircle size={11} /> GUIDELINES
+            <div className="bg-[var(--theme-beige)]/20 p-4 rounded-xl border border-[var(--theme-border)]/20 text-[10px] text-[var(--theme-text-main)] leading-relaxed space-y-1.5 opacity-85">
+              <h4 className="font-semibold text-[var(--theme-text-dark)] flex items-center gap-1.5">
+                <HelpCircle size={12} className="opacity-70" /> Quick Guide
               </h4>
-              <p>• Click the main card to flip and view the answer key.</p>
-              <p>• Grade your retention level using the buttons below.</p>
-              <p>• Mix custom candidate notes with default preloaded cards for comprehensive mastery.</p>
+              <p>• Click the card to flip and reveal the answer key.</p>
+              <p>• Grade your active recall memory strength after flipping.</p>
+              <p>• Mix custom candidate cards with high-yield default cards.</p>
             </div>
           </div>
 
           {/* Quick Creator Toggle */}
           <button
             onClick={() => setIsCreatorOpen(!isCreatorOpen)}
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition shadow border-none cursor-pointer"
+            className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] text-xs font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-all hover:-translate-y-[1px] cursor-pointer active:scale-98"
           >
-            <Plus size={14} />
-            {isCreatorOpen ? "Hide Custom Creator" : "Create Custom Flashcard"}
+            <Plus size={14} className="opacity-80" />
+            <span>{isCreatorOpen ? "Hide custom builder" : "Create custom flashcard"}</span>
           </button>
 
           {/* Custom Card Creator drawer */}
           {isCreatorOpen && (
-            <form onSubmit={handleAddCustomCard} className="bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-lg space-y-3 animate-fadeIn">
-              <h3 className="text-xs font-bold uppercase font-mono text-slate-300 tracking-wider">
+            <form onSubmit={handleAddCustomCard} className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 p-5 rounded-2xl space-y-4 animate-fadeIn">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--theme-text-dark)]">
                 Create Custom Card
               </h3>
 
               {creatorSuccess && (
-                <div className="p-2 bg-emerald-950/40 text-emerald-400 border border-emerald-900/30 rounded text-[10px] font-semibold text-center leading-relaxed">
+                <div className="p-2.5 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-xl text-[10px] font-semibold text-center">
                   {creatorSuccess}
                 </div>
               )}
 
               <div>
-                <label className="block text-[9px] uppercase font-mono font-bold text-slate-500 mb-1">CFA Subject Area</label>
+                <label className="block text-[10px] font-medium text-[var(--theme-text-main)] mb-1.5">Subject Area</label>
                 <select
                   value={newSubject}
                   onChange={(e) => setNewSubject(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-300 text-xs px-2.5 py-1.5 rounded outline-none focus:border-blue-500"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 text-[var(--theme-text-dark)] text-xs px-2.5 py-2 rounded-xl outline-none focus:border-[var(--theme-accent)] transition cursor-pointer"
                 >
                   {subjects.map(s => (
                     <option key={s.id} value={s.id}>{s.name}</option>
@@ -504,31 +491,31 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
               </div>
 
               <div>
-                <label className="block text-[9px] uppercase font-mono font-bold text-slate-500 mb-1">Front Text (Concept / formula / question)</label>
+                <label className="block text-[10px] font-medium text-[var(--theme-text-main)] mb-1.5">Front Question / Formula</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Gordon Growth model valuation formula?"
                   value={newFront}
                   onChange={(e) => setNewFront(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-300 text-xs px-2.5 py-1.5 rounded outline-none focus:border-blue-500"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 text-[var(--theme-text-dark)] text-xs px-3 py-2.5 rounded-xl outline-none focus:border-[var(--theme-accent)] transition placeholder:opacity-30"
                 />
               </div>
 
               <div>
-                <label className="block text-[9px] uppercase font-mono font-bold text-slate-500 mb-1">Back Text (Explanation / Definition / Breakdown)</label>
+                <label className="block text-[10px] font-medium text-[var(--theme-text-main)] mb-1.5">Back Explanation / Answer</label>
                 <textarea
                   required
-                  placeholder="e.g. V0 = D1 / (ke - g). Perfect calculation detail."
+                  placeholder="e.g. V0 = D1 / (ke - g)"
                   value={newBack}
                   onChange={(e) => setNewBack(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-300 text-xs p-2.5 rounded h-20 outline-none focus:border-blue-500 resize-none"
+                  className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)]/40 text-[var(--theme-text-dark)] text-xs p-3 rounded-xl h-24 outline-none focus:border-[var(--theme-accent)] transition resize-none placeholder:opacity-30"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#8E9B64] hover:bg-[#7d8a57] text-slate-950 text-xs font-bold py-2 rounded-lg border-none cursor-pointer transition"
+                className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] text-[var(--theme-bg)] text-xs font-semibold py-2.5 rounded-xl border-none cursor-pointer transition-all hover:-translate-y-[1px]"
               >
                 Add Card to Active Deck
               </button>
@@ -540,14 +527,14 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
         <div className="lg:col-span-2 space-y-4">
           
           {filteredCards.length === 0 ? (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center flex flex-col items-center justify-center space-y-4 shadow-lg min-h-[350px]">
-              <div className="w-16 h-16 rounded-full bg-slate-950 border border-slate-850 flex items-center justify-center text-2xl">
+            <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/35 rounded-2xl p-12 text-center flex flex-col items-center justify-center space-y-4 shadow-xs min-h-[350px]">
+              <div className="w-16 h-16 rounded-full bg-[var(--theme-beige)] border border-[var(--theme-border)]/20 flex items-center justify-center text-2xl">
                 📭
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-200">No Flashcards Found</h4>
-                <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto leading-relaxed">
-                  There are no cards in the "{subjectList.find(s => s.id === activeSubject)?.name}" category. Create your own custom card below to start active recall!
+                <h4 className="text-sm font-semibold text-[var(--theme-text-dark)]">No Flashcards Found</h4>
+                <p className="text-xs text-[var(--theme-text-main)] opacity-70 mt-1.5 max-w-xs mx-auto leading-relaxed">
+                  There are no cards in the selected category. Create your own custom card to start testing your knowledge!
                 </p>
               </div>
             </div>
@@ -555,19 +542,19 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
             <div className="space-y-4">
               
               {/* Deck progress indicators */}
-              <div className="flex justify-between items-center text-xs text-slate-400 px-1 font-mono">
+              <div className="flex justify-between items-center text-xs text-[var(--theme-text-main)] px-1">
                 <span>
-                  Card <strong className="text-slate-200 font-bold">{currentIndex + 1}</strong> of <strong className="text-slate-200 font-bold">{filteredCards.length}</strong>
+                  Card <strong className="text-[var(--theme-text-dark)] font-semibold">{currentIndex + 1}</strong> of <strong className="text-[var(--theme-text-dark)] font-semibold">{filteredCards.length}</strong>
                 </span>
-                <span className="text-[10px] text-slate-500">
-                  {sessionCount} total ratings this session
+                <span className="text-[10px] opacity-60">
+                  {sessionCount} graded this session
                 </span>
               </div>
 
               {/* Progress bar container */}
-              <div className="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden border border-slate-850">
+              <div className="w-full bg-[var(--theme-beige)]/60 h-2 rounded-full overflow-hidden">
                 <div 
-                  className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full transition-all duration-300"
+                  className="bg-[var(--theme-accent)] h-full transition-all duration-300"
                   style={{ width: `${((currentIndex + 1) / filteredCards.length) * 100}%` }}
                 />
               </div>
@@ -575,69 +562,70 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
               {/* Interactive Flipping Card Stage */}
               <div 
                 onClick={() => setIsFlipped(!isFlipped)}
-                className="relative h-[280px] w-full cursor-pointer select-none group"
+                className="relative h-[290px] w-full cursor-pointer select-none group"
               >
-                {/* Unified transition card block */}
                 <div 
-                  className={`w-full h-full border border-slate-800 rounded-2xl p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden transition-all duration-300 ${
-                    isFlipped ? "bg-slate-950" : "bg-slate-900"
+                  className={`w-full h-full border rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden shadow-xs hover:shadow-sm ${
+                    isFlipped 
+                      ? "bg-[var(--theme-card)] border-[var(--theme-accent)]/30" 
+                      : "bg-[var(--theme-card)] border-[var(--theme-border)]/35"
                   }`}
                 >
                   {!isFlipped ? (
                     /* Card Front Component */
                     <div className="flex-1 flex flex-col justify-between animate-fadeIn">
                       {/* Gloss background highlight */}
-                      <div className="absolute -top-12 -right-12 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+                      <div className="absolute -top-12 -right-12 w-48 h-48 bg-[var(--theme-accent)]/5 rounded-full blur-3xl pointer-events-none" />
                       
                       {/* Header */}
                       <div className="flex justify-between items-center z-10">
-                        <span className="text-[8px] font-mono tracking-widest font-bold uppercase bg-blue-950/50 border border-blue-900 text-blue-400 px-2 py-0.5 rounded-full">
+                        <span className="text-[8px] font-mono tracking-wider font-semibold uppercase bg-[var(--theme-accent-light)] border border-[var(--theme-accent)]/10 text-[var(--theme-accent)] px-2.5 py-0.5 rounded-full">
                           {subjects.find(s => s.id === activeCard?.moduleId)?.name || "CFA Concept"}
                         </span>
-                        <Bookmark size={14} className="text-slate-600 group-hover:text-slate-400 transition" />
+                        <Bookmark size={13} className="text-[var(--theme-text-main)] opacity-40 group-hover:opacity-75 transition" />
                       </div>
 
                       {/* Question text content */}
                       <div className="text-center py-4 z-10 my-auto">
-                        <p className="text-sm md:text-base font-serif font-semibold text-slate-100 leading-relaxed max-w-md mx-auto">
+                        <p className="text-sm md:text-base font-semibold text-[var(--theme-text-dark)] leading-relaxed max-w-md mx-auto">
                           {activeCard?.front}
                         </p>
                       </div>
 
                       {/* Footer cue */}
-                      <div className="text-center z-10 flex justify-center items-center gap-1.5 text-[9px] text-slate-500 uppercase tracking-widest font-mono">
-                        <RotateCw size={10} className="animate-spin-slow" />
-                        <span>Click card to reveal recall answer</span>
+                      <div className="text-center z-10 flex justify-center items-center gap-1.5 text-[9px] text-[var(--theme-text-main)] opacity-50 uppercase tracking-wider font-mono">
+                        <RotateCw size={10} className="animate-spin-slow opacity-60" />
+                        <span>Click card to reveal key breakdown</span>
                       </div>
                     </div>
                   ) : (
                     /* Card Back Component */
                     <div className="flex-1 flex flex-col justify-between animate-fadeIn overflow-y-auto">
                       {/* Gloss background highlight */}
-                      <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+                      <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-[var(--theme-accent)]/5 rounded-full blur-3xl pointer-events-none" />
 
                       {/* Header */}
                       <div className="flex justify-between items-center mb-2 z-10">
-                        <span className="text-[8px] font-mono tracking-widest font-bold uppercase bg-blue-950/40 border border-blue-900/60 text-blue-400 px-2 py-0.5 rounded-full">
-                          Answer Key & Breakdown
+                        <span className="text-[8px] font-mono tracking-wider font-semibold uppercase bg-[var(--theme-accent-light)] border border-[var(--theme-accent)]/10 text-[var(--theme-accent)] px-2.5 py-0.5 rounded-full">
+                          Answer Key & Reference
                         </span>
                         {userProfile.flashcardHistory?.[activeCard?.id] && (
-                          <span className="text-[8px] font-mono font-semibold text-slate-500">
-                            Last session: {userProfile.flashcardHistory[activeCard.id].status.toUpperCase()}
+                          <span className="text-[8px] font-mono font-medium text-[var(--theme-text-main)] opacity-60">
+                            Last rating: {userProfile.flashcardHistory[activeCard.id].status}
                           </span>
                         )}
                       </div>
 
                       {/* Answer text content */}
                       <div className="my-auto py-2 z-10">
-                        <pre className="text-xs text-slate-200 leading-relaxed font-sans whitespace-pre-wrap text-left bg-slate-900/65 p-4 rounded-xl border border-slate-850 overflow-x-auto max-h-[160px]">
+                        <pre className="text-xs text-[var(--theme-text-dark)] leading-relaxed font-sans whitespace-pre-wrap text-left bg-[var(--theme-beige)]/30 p-4 rounded-xl border border-[var(--theme-border)]/20 overflow-x-auto max-h-[160px]">
                           {activeCard?.back}
                         </pre>
                       </div>
 
                       {/* Footer visual indicators */}
-                      <div className="text-center mt-2 text-[9px] text-slate-500 uppercase tracking-wider font-mono z-10">
-                        Click anywhere to flip back
+                      <div className="text-center mt-2 text-[9px] text-[var(--theme-text-main)] opacity-50 uppercase tracking-wider font-mono z-10">
+                        Click card to flip back
                       </div>
                     </div>
                   )}
@@ -645,17 +633,17 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
               </div>
 
               {/* Tactile Grading Dashboard Buttons */}
-              <div className="grid grid-cols-2 gap-3.5 pt-1.5">
+              <div className="grid grid-cols-2 gap-4 pt-1.5">
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (activeCard) handleGrade(activeCard.id, "review");
                   }}
-                  className="flex items-center justify-center gap-2 py-3 px-4 bg-rose-950/20 hover:bg-rose-950/40 border border-rose-900 text-rose-400 font-bold text-xs rounded-xl transition cursor-pointer"
+                  className="flex items-center justify-center gap-2 py-3.5 px-4 bg-rose-50/80 hover:bg-rose-100 border border-rose-200 text-rose-800 font-medium text-xs rounded-xl transition-all cursor-pointer hover:-translate-y-[1px]"
                 >
-                  <X size={14} />
-                  <span>Forgot / Needs Review</span>
+                  <X size={14} className="opacity-75" />
+                  <span>Forgot / Review Needed</span>
                 </button>
 
                 <button
@@ -664,9 +652,9 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
                     e.stopPropagation();
                     if (activeCard) handleGrade(activeCard.id, "mastered");
                   }}
-                  className="flex items-center justify-center gap-2 py-3 px-4 bg-emerald-950/20 hover:bg-emerald-950/40 border border-emerald-900 text-emerald-400 font-bold text-xs rounded-xl transition cursor-pointer"
+                  className="flex items-center justify-center gap-2 py-3.5 px-4 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-medium text-xs rounded-xl transition-all cursor-pointer hover:-translate-y-[1px]"
                 >
-                  <Check size={14} />
+                  <Check size={14} className="opacity-75" />
                   <span>Correct / Got It</span>
                 </button>
               </div>
@@ -677,9 +665,9 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
                   <button
                     type="button"
                     onClick={() => handleDeleteCustomCard(activeCard.id)}
-                    className="flex items-center gap-1.5 text-[10px] text-rose-400/80 hover:text-rose-400 bg-transparent border-none cursor-pointer py-1"
+                    className="flex items-center gap-1.5 text-[10px] text-rose-600 hover:text-rose-700 bg-transparent border-none cursor-pointer py-1 font-medium transition-colors"
                   >
-                    <Trash2 size={11} />
+                    <Trash2 size={11} className="opacity-80" />
                     <span>Delete custom card from deck</span>
                   </button>
                 </div>
