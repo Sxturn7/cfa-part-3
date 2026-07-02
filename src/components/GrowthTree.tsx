@@ -21,6 +21,7 @@ interface GrowthTreeProps {
   subjects: Subject[];
   progress: Record<string, ModuleProgress>;
   totalStudyTime: number;
+  isDashboard?: boolean;
 }
 
 interface Point {
@@ -56,7 +57,7 @@ const SPRING_COLORS: Record<string, { fill: string; hover: string; glow: string 
   portfolio:   { fill: "#047857", hover: "#065F46", glow: "rgba(4, 120, 87, 0.4)" }, // Deep Emerald
 };
 
-export default function GrowthTree({ subjects, progress, totalStudyTime }: GrowthTreeProps) {
+export default function GrowthTree({ subjects, progress, totalStudyTime, isDashboard = false }: GrowthTreeProps) {
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>("quant");
   const [paletteMode, setPaletteMode] = useState<"autumn" | "spring">("autumn");
   const [canopyMode, setCanopyMode] = useState<"dynamic" | "preview">("dynamic");
@@ -183,31 +184,31 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-slate-100 shadow-xl relative overflow-hidden font-sans">
+    <div className="bg-[var(--theme-card)] border border-[var(--theme-border)]/50 rounded-2xl p-6 text-[var(--theme-text-dark)] shadow-sm relative overflow-hidden font-sans transition-all duration-300 hover:shadow-md">
       
       {/* 1. Header controls */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-slate-800 pb-5">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-[var(--theme-border)]/50 pb-5">
         <div>
-          <span className="text-[10px] uppercase tracking-wider bg-emerald-950/80 text-emerald-400 border border-emerald-900/60 font-semibold font-mono px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 mb-2">
+          <span className="text-[10px] uppercase tracking-wider bg-[var(--theme-accent-light)] text-[var(--theme-accent)] border border-[var(--theme-accent)]/10 font-semibold font-mono px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 mb-2.5">
             <Sparkles size={11} className="animate-spin-slow" /> Level I Progress Biome
           </span>
-          <h3 className="text-lg font-serif font-bold text-slate-100 tracking-tight leading-none">
-            Interactive Growth Canopy
+          <h3 className="text-lg font-semibold text-[var(--theme-text-dark)] tracking-tight leading-none">
+            Knowledge Tree
           </h3>
-          <p className="text-xs text-slate-400 mt-1.5 leading-relaxed max-w-xl">
-            A dynamic representation of your CFA Level I syllabus. Completed modules bloom into magnificent autumn crimson and amber leaves. Unstarted modules are delicate grey buds that form slowly as you complete modules!
+          <p className="text-xs text-[var(--theme-text-main)] mt-2 leading-relaxed max-w-xl opacity-85">
+            Your study progress, transformed into a living ecosystem that grows with every completed module.
           </p>
         </div>
 
         {/* Action Widgets Toolbar */}
-        <div className="flex flex-wrap items-center gap-2 select-none">
+        <div className="flex flex-wrap items-center gap-3 select-none">
           {/* Canopy Mode Selector */}
-          <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800">
+          <div className="flex bg-[var(--theme-beige)]/60 p-0.5 rounded-xl border border-[var(--theme-border)]/50">
             <button
               type="button"
               onClick={() => setCanopyMode("dynamic")}
-              className={`px-3 py-1.5 text-[11px] font-semibold rounded-md transition flex items-center gap-1 cursor-pointer ${
-                canopyMode === "dynamic" ? "bg-amber-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-200"
+              className={`px-3 py-1.5 text-[11px] font-semibold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer ${
+                canopyMode === "dynamic" ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs" : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
               }`}
               title="Grow leaves only as you complete curriculum modules"
             >
@@ -217,8 +218,8 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
             <button
               type="button"
               onClick={() => setCanopyMode("preview")}
-              className={`px-3 py-1.5 text-[11px] font-semibold rounded-md transition flex items-center gap-1 cursor-pointer ${
-                canopyMode === "preview" ? "bg-amber-600 text-white shadow-sm" : "text-slate-400 hover:text-slate-200"
+              className={`px-3 py-1.5 text-[11px] font-semibold rounded-lg transition-all duration-200 flex items-center gap-1 cursor-pointer ${
+                canopyMode === "preview" ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs" : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
               }`}
               title="View how gorgeous the full tree canopy looks"
             >
@@ -228,12 +229,12 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
           </div>
 
           {/* Palette Selector */}
-          <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800">
+          <div className="flex bg-[var(--theme-beige)]/60 p-0.5 rounded-xl border border-[var(--theme-border)]/50">
             <button
               type="button"
               onClick={() => setPaletteMode("autumn")}
-              className={`px-2.5 py-1 text-[10px] font-bold rounded transition cursor-pointer ${
-                paletteMode === "autumn" ? "bg-slate-800 text-amber-400 border border-amber-900/40" : "text-slate-500 hover:text-slate-300"
+              className={`px-2.5 py-1.5 text-[10px] font-semibold rounded-lg transition-all duration-200 cursor-pointer ${
+                paletteMode === "autumn" ? "bg-[var(--theme-card)] text-amber-700 shadow-xs" : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
               }`}
             >
               🍁 Autumn
@@ -241,8 +242,8 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
             <button
               type="button"
               onClick={() => setPaletteMode("spring")}
-              className={`px-2.5 py-1 text-[10px] font-bold rounded transition cursor-pointer ${
-                paletteMode === "spring" ? "bg-slate-800 text-emerald-400 border border-emerald-900/40" : "text-slate-500 hover:text-slate-300"
+              className={`px-2.5 py-1.5 text-[10px] font-semibold rounded-lg transition-all duration-200 cursor-pointer ${
+                paletteMode === "spring" ? "bg-[var(--theme-card)] text-emerald-700 shadow-xs" : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
               }`}
             >
               🌿 Spring
@@ -252,13 +253,13 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
       </div>
 
       {/* 2. Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+      <div className={`grid grid-cols-1 ${isDashboard ? "lg:grid-cols-1" : "lg:grid-cols-3"} gap-6 items-stretch`}>
         
         {/* Left Side: The Interactive SVG Canvas */}
-        <div className="lg:col-span-2 bg-slate-950 rounded-2xl border border-slate-800 p-4 relative overflow-hidden flex items-center justify-center min-h-[500px]">
+        <div className={`${isDashboard ? "w-full" : "lg:col-span-2"} bg-slate-950 rounded-2xl border border-slate-800 p-4 relative overflow-hidden flex items-center justify-center min-h-[500px]`}>
           
           <svg
-            className="w-full max-w-[660px] h-[500px] select-none"
+            className={`w-full ${isDashboard ? "max-w-full h-[550px]" : "max-w-[660px] h-[500px]"} select-none`}
             viewBox="0 0 800 600"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -700,6 +701,7 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
         </div>
 
         {/* Right Side: Beautiful Interactive Details Sidebar Panel */}
+        {!isDashboard && (
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-inner flex flex-col justify-between">
           <div className="space-y-4">
             
@@ -824,6 +826,7 @@ export default function GrowthTree({ subjects, progress, totalStudyTime }: Growt
           </div>
 
         </div>
+        )}
 
       </div>
     </div>
