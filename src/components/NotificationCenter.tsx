@@ -28,13 +28,13 @@ export default function NotificationCenter({
   const getIcon = (type: AppNotification["type"]) => {
     switch (type) {
       case "achievement":
-        return <Trophy className="text-amber-500 w-3.5 h-3.5 shrink-0 mt-0.5" />;
+        return <Trophy className="text-amber-500 w-3.5 h-3.5 shrink-0 mt-0.5 opacity-80" />;
       case "completed":
-        return <CheckCircle className="text-emerald-500 w-3.5 h-3.5 shrink-0 mt-0.5" />;
+        return <CheckCircle className="text-emerald-600 w-3.5 h-3.5 shrink-0 mt-0.5 opacity-80" />;
       case "reminder":
-        return <Calendar className="text-blue-400 w-3.5 h-3.5 shrink-0 mt-0.5" />;
+        return <Calendar className="text-stone-500 w-3.5 h-3.5 shrink-0 mt-0.5 opacity-80" />;
       default:
-        return <Bell className="text-[var(--theme-accent)] w-3.5 h-3.5 shrink-0 mt-0.5" />;
+        return <Bell className="text-[var(--theme-accent)] w-3.5 h-3.5 shrink-0 mt-0.5 opacity-80" />;
     }
   };
 
@@ -63,20 +63,27 @@ export default function NotificationCenter({
         onClick={onClose}
       />
 
-      {/* Compact Floating Popover styled with dynamic theme properties */}
-      <div className="fixed right-4 top-16 w-80 bg-[var(--theme-card)] border border-[var(--theme-border)] rounded-xl shadow-xl z-50 flex flex-col animate-fadeIn overflow-hidden">
+      {/* Popover styled with premium, low-noise aesthetic */}
+      <div className="fixed right-4 top-16 w-80 bg-[var(--theme-card)] border border-[var(--theme-border)]/40 rounded-xl shadow-lg z-50 flex flex-col animate-fadeIn overflow-hidden">
         
         {/* Header */}
-        <div className="p-3 border-b border-[var(--theme-border)] flex items-center justify-between bg-[var(--theme-bg)]/20">
-          <span className="text-[11px] font-bold text-[var(--theme-text-dark)] flex items-center gap-1.5 font-mono uppercase tracking-wider">
-            <Bell size={13} className="text-[var(--theme-accent)] animate-pulse" /> Notifications
-          </span>
+        <div className="p-3.5 border-b border-[var(--theme-border)]/30 flex items-center justify-between">
           <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-[var(--theme-text-dark)]">
+              Notifications
+            </span>
+            {unreadCount > 0 && (
+              <span className="bg-[var(--theme-accent-light)] text-[var(--theme-accent)] text-[10px] font-medium px-2 py-0.5 rounded-full">
+                {unreadCount} new
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2.5">
             {notifications.length > 0 && (
               <button 
                 type="button"
                 onClick={onClearAll}
-                className="text-[10px] font-semibold text-[var(--theme-text-main)] hover:text-rose-500 transition-colors cursor-pointer font-mono"
+                className="text-[10px] font-medium text-[var(--theme-text-main)] hover:text-rose-600 transition-colors cursor-pointer"
                 title="Clear all notifications"
               >
                 Clear all
@@ -85,7 +92,7 @@ export default function NotificationCenter({
             <button
               type="button"
               onClick={onClose}
-              className="text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] opacity-60 p-0.5 rounded cursor-pointer"
+              className="text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)] opacity-50 p-0.5 rounded cursor-pointer transition-colors"
             >
               <X size={12} />
             </button>
@@ -93,34 +100,34 @@ export default function NotificationCenter({
         </div>
 
         {/* Scroll List */}
-        <div className="max-h-[300px] overflow-y-auto divide-y divide-[var(--theme-border)]/50">
+        <div className="max-h-[300px] overflow-y-auto divide-y divide-[var(--theme-border)]/20">
           {notifications.length === 0 ? (
             <div className="py-8 px-4 text-center flex flex-col items-center justify-center">
-              <Bell size={18} className="text-[var(--theme-text-main)] opacity-30 mb-1" />
-              <p className="text-[11px] font-medium text-[var(--theme-text-main)] opacity-75">All caught up</p>
+              <Bell size={16} className="text-[var(--theme-text-main)] opacity-20 mb-1.5" />
+              <p className="text-[11px] text-[var(--theme-text-main)] opacity-70">All caught up</p>
             </div>
           ) : (
             notifications.map((notif) => (
               <div 
                 key={notif.id} 
-                className={`p-3 flex gap-2.5 items-start transition-colors relative group hover:bg-[var(--theme-bg)]/30 cursor-pointer ${
-                  !notif.read ? "bg-[var(--theme-accent-light)]/20" : ""
+                className={`p-3.5 flex gap-2.5 items-start transition-colors relative group hover:bg-[var(--theme-bg)]/20 cursor-pointer ${
+                  !notif.read ? "bg-[var(--theme-accent-light)]/10" : ""
                 }`}
                 onClick={() => onToggleRead(notif.id)}
                 title={notif.read ? "Mark unread" : "Mark read"}
               >
                 {getIcon(notif.type)}
 
-                <div className="flex-1 min-w-0 pr-3">
+                <div className="flex-1 min-w-0 pr-3.5">
                   <div className="flex items-center justify-between gap-1.5">
-                    <p className={`text-[11px] leading-tight truncate ${!notif.read ? "font-bold text-[var(--theme-text-dark)]" : "font-medium text-[var(--theme-text-main)]"}`}>
+                    <p className={`text-[11px] leading-tight truncate ${!notif.read ? "font-semibold text-[var(--theme-text-dark)]" : "font-normal text-[var(--theme-text-main)]"}`}>
                       {notif.title}
                     </p>
-                    <span className="text-[9px] text-[var(--theme-text-main)] opacity-60 whitespace-nowrap font-mono shrink-0">
+                    <span className="text-[9px] text-[var(--theme-text-main)] opacity-50 whitespace-nowrap shrink-0">
                       {formatTime(notif.timestamp)}
                     </span>
                   </div>
-                  <p className="text-[10px] text-[var(--theme-text-main)] opacity-80 leading-normal mt-0.5">
+                  <p className="text-[10px] text-[var(--theme-text-main)] opacity-75 leading-relaxed mt-1">
                     {notif.message}
                   </p>
                 </div>
@@ -132,7 +139,7 @@ export default function NotificationCenter({
                     e.stopPropagation();
                     onDelete(notif.id);
                   }}
-                  className="absolute right-2.5 top-2.5 text-[var(--theme-text-main)] hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 cursor-pointer"
+                  className="absolute right-2.5 top-2.5 text-[var(--theme-text-main)] hover:text-rose-600 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 cursor-pointer"
                   title="Delete notification"
                 >
                   <X size={10} />
@@ -147,9 +154,9 @@ export default function NotificationCenter({
           <button
             type="button"
             onClick={onMarkAllRead}
-            className="w-full text-center py-2 bg-[var(--theme-bg)]/30 hover:bg-[var(--theme-bg)]/50 text-[10px] font-semibold text-[var(--theme-accent)] border-t border-[var(--theme-border)] transition-colors cursor-pointer font-mono"
+            className="w-full text-center py-2.5 bg-[var(--theme-bg)]/20 hover:bg-[var(--theme-bg)]/40 text-[10px] font-medium text-[var(--theme-accent)] border-t border-[var(--theme-border)]/20 transition-all cursor-pointer"
           >
-            ✓ MARK ALL AS READ
+            Mark all as read
           </button>
         )}
       </div>
