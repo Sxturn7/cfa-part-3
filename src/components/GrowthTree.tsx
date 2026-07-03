@@ -190,7 +190,7 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-[var(--theme-border)]/50 pb-5">
         <div>
           <span className="text-[10px] uppercase tracking-wider bg-[var(--theme-accent-light)] text-[var(--theme-accent)] border border-[var(--theme-accent)]/10 font-semibold font-mono px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 mb-2.5">
-            <Sparkles size={11} className="animate-spin-slow" /> Level I Progress Biome
+            <Sparkles size={11} className="animate-spin-slow" /> Level I Progress
           </span>
           <h3 className="text-lg font-semibold text-[var(--theme-text-dark)] tracking-tight leading-none">
             Knowledge Tree
