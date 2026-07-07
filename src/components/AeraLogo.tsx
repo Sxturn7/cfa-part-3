@@ -16,7 +16,7 @@ export default function AeraLogo({
   preset = "light"
 }: AeraLogoProps) {
   // Triple check that these file names and extensions match your public/audio/ folder exactly!
-  const logoSrc = preset === "light" ? "/audio/AAERALight.png" : "/audio/AERA.png";
+  const logoSrc = preset === "light" ? "/audio/aarealight.png" : "/audio/aarea.png";
 
   return (
     <div 
