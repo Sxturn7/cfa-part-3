@@ -2,8 +2,8 @@ import React from "react";
 
 // 📦 Explicitly import the image assets dynamically
 // (Adjust the relative paths "../assets/..." based on where you save them)
-import aaeraDarkLogo from "../audio/aaera.png";
-import aaeraLightLogo from "../audio/aaeralight.png";
+import aaeraDarkLogo from "./audio/aaera.png";
+import aaeraLightLogo from "./audio/aaeralight.png";
 
 interface AeraLogoProps {
   className?: string;
