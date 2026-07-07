@@ -61,89 +61,90 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
 
-  const steps: TourStep[] = [
+ const steps: TourStep[] = [
     {
       tab: "dashboard",
       elementId: null,
-      title: "Welcome to AAERA",
-      icon: <Sparkles size={18} />,
+      title: "WELCOME TO AAERA! 🚀",
+      icon: <Sparkles size={20} />,
       iconColor: "text-amber-500",
-      text: "AAERA is your personal study companion for mastering the CFA® Level I curriculum. Built around five core pillars—Aim, Analyze, Execute, Reflect, and Elevate—it helps you maintain focus, track progress, and build long-term momentum.",
-      actionTip: "Take the workspace tour to discover how to navigate the platform."
+      text: "AAERA is your personal companion for mastering the CFA Level I curriculum through structured planning, progress tracking, and focused revision. Built around five core pillars, Aim • Analyze • Execute • Reflect • Elevate, it helps you stay organized, strengthen your understanding, and build consistent momentum every day. From your first module to exam day, AAERA keeps your preparation focused, measurable, and moving forward.",
+      actionTip: "Tip: Complete the workspace tour to discover everything AAERA has to offer."
     },
     {
       tab: "dashboard",
       elementId: "tour-study-tracker",
-      title: "Focus Stopwatch",
-      icon: <LayoutDashboard size={18} />,
+      title: "AAERA FOCUS TRACKER ⏱️",
+      icon: <LayoutDashboard size={20} />,
       iconColor: "text-blue-500",
-      text: "Record your study sessions directly against specific curriculum modules. Start the live stopwatch to build your daily study streaks, log focused efforts, and enjoy curated ambient soundscapes that keep you in a deep focus state.",
-      actionTip: "The Focus Tracker is your primary tool for recording study sessions."
+      text: "Stay accountable with AAERA's built in Focus Tracker. Select the curriculum module you're studying, start a timed session, and let AAERA automatically record your study time, build daily streaks, and track your consistency. Optional ambient soundscapes help you maintain focus and make every session distraction free.",
+      actionTip: "Tip: The Focus Tracker below is where you'll start and record every study session."
     },
     {
       tab: "curriculum",
       elementId: "tour-nav-curriculum",
-      title: "Syllabus Curriculum",
-      icon: <BookOpen size={18} />,
+      title: "ACTIVE CURRICULUM NOTES 📚",
+      icon: <BookOpen size={20} />,
       iconColor: "text-emerald-500",
-      text: "Navigate all 93 CFA Level I curriculum modules seamlessly. Track reading status (Active, Review, Completed), capture notes for future revisions, and monitor your cumulative progress.",
-      actionTip: "Update module progress as you study to keep coverage metrics accurate."
+      text: "The Curriculum is organized into all 93 CFA Level I readings, making it easy to study one topic at a time. Mark each reading as Active, Review, or Completed, keep your personal notes alongside every module, and pick up exactly where you left off across all your devices.",
+      actionTip: "Tip: Update the status of each reading as you progress to maintain an accurate view of your syllabus coverage."
     },
     {
       tab: "quiz",
       elementId: "tour-nav-quiz",
-      title: "Adaptive Practice Quizzes",
-      icon: <HelpCircle size={18} />,
+      title: "ADAPTIVE PRACTICE QUIZZES ✍️",
+      icon: <HelpCircle size={20} />,
       iconColor: "text-violet-500",
-      text: "Test your retention by generating customizable practice sessions. Every vignette and question is followed by detailed, step-by-step solutions to address knowledge gaps.",
-      actionTip: "Generate a quiz after finishing a module to test your mastery."
+      text: "Generate personalized quizzes for any CFA Level I topic and challenge yourself at the right difficulty. Every question includes detailed explanations and step by step solutions to help you learn from every attempt.",
+      actionTip: "Tip: Use Practice Quizzes after completing each reading to measure retention and build confidence before revision."
     },
     {
       tab: "growth",
       elementId: "tour-nav-growth",
-      title: "Your Knowledge Tree",
-      icon: <TrendingUp size={18} />,
+      title: "KNOWLEDGE TREE 🌳",
+      icon: <TrendingUp size={20} />,
       iconColor: "text-teal-500",
-      text: "Watch your knowledge grow visually. As you complete readings, log sessions, and submit quizzes, your study tree evolves, reflecting your dedication and progress.",
-      actionTip: "Check your Knowledge Tree regularly to review your study milestones."
+      text: "Visualize your progress as you work through the CFA Level I curriculum. Every completed reading, quiz, and milestone contributes to the growth of your Knowledge Tree, giving you a clear picture of how far you've come and what still lies ahead.",
+      actionTip: "Tip: Visit your Knowledge Tree regularly to monitor your progress and celebrate every milestone."
     },
     {
       tab: "calendar",
       elementId: "tour-nav-calendar",
-      title: "Dynamic Study Calendar",
-      icon: <Calendar size={18} />,
+      title: "SMART STUDY CALENDAR 📅",
+      icon: <Calendar size={20} />,
       iconColor: "text-rose-500",
-      text: "Enter your target exam date, and AAERA will map out your study calendar across the remaining days, leaving ample room for review.",
-      actionTip: "Keep your exam date up-to-date to balance your daily study targets."
+      text: "Build a personalized study plan in seconds. Simply enter your target exam date, and AAERA automatically schedules all 93 CFA Level I readings across your available study days. Your plan updates dynamically, helping you stay consistent while leaving enough time for revision before exam day.",
+      actionTip: "Tip: Keep your target exam date up to date so your study schedule remains accurate and balanced."
     },
     {
       tab: "flashcards",
       elementId: "tour-nav-flashcards",
-      title: "Recall Flashcards",
-      icon: <Brain size={18} />,
+      title: "AAERA RECALL FLASHCARDS 🧠",
+      icon: <Brain size={20} />,
       iconColor: "text-indigo-500",
-      text: "Reinforce key definitions, formulas, and concepts. Spaced repetition schedules cards based on your confidence level for optimal recall.",
-      actionTip: "Spend five minutes reviewing cards daily to boost long-term retention."
+      text: "Strengthen long term retention with intelligent flashcards powered by spaced repetition. Review key concepts, formulas, and definitions at the right time, rate your confidence after each card, and let AAERA automatically schedule future reviews for maximum recall.",
+      actionTip: "Tip: Spend a few minutes reviewing flashcards each day to reinforce concepts and improve long term retention."
     },
     {
       tab: "dashboard",
       elementId: null,
-      title: "Personalize Workspace Theme",
-      icon: <Palette size={18} />,
+      title: "PERSONALIZE YOUR WORKSPACE 🎨",
+      icon: <Palette size={20} />,
       iconColor: "text-blue-500",
-      text: "Customize your environment. Choose between Light or Dark sage modes, select a custom accent color, and adjust the theme to match your design system preference.",
-      actionTip: "Refine theme styles to make your study environment distraction-free."
+      text: "Create a study environment that works best for you. Switch between light and dark themes, choose your favorite accent color, and customize the interface to match your workflow and help you stay focused during every study session.",
+      actionTip: "Tip: Personalize your workspace to create a comfortable and distraction free study experience."
     },
     {
       tab: "dashboard",
       elementId: null,
-      title: "Aim. Analyze. Execute. Reflect. Achieve.",
-      icon: <Sparkles size={18} />,
+      title: "AAERA : Aim • Analyze • Execute • Reflect • Achieve",
+      icon: <Sparkles size={20} />,
       iconColor: "text-amber-500",
-      text: "Your CFA Level I curriculum companion is fully set up.\n\nAll the best with your prep!\n- Satvik",
-      actionTip: "Click 'Start Prep' to close the tour and begin your study session!"
+      text: "Prep well\nAll the best :-)\n-Satvik",
+      actionTip: "Click 'Done' to close the walkthrough and let AAERA guide you to success!"
     }
   ];
+
 
   const handleSelectPreset = (presetKey: "light" | "dark") => {
     const selected = THEME_PRESETS[presetKey];
