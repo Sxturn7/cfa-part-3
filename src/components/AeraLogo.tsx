@@ -15,7 +15,7 @@ export default function AeraLogo({
   showText = false,
   preset = "light"
 }: AeraLogoProps) {
-  const logoSrc = preset === "light" ? "/audio/AAERA_Light.png" : "/audio/AERA.png";
+  const logoSrc = preset === "light" ? "/audio/AAERALight.png" : "/audio/AERA.png";
 
   return (
     <div 
