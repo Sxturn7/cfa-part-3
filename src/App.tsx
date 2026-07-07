@@ -54,7 +54,7 @@ export default function App() {
   });
 
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
-  const [authChosen, setAuthChosen] = useState<boolean>(true);
+  const [authChosen, setAuthChosen] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -141,12 +141,8 @@ export default function App() {
     // Save study duration with high accuracy (including fractional support for accurate increments)
     const studyMins = parseFloat((timerSeconds / 60).toFixed(2)) || 1;
     handleLogStudySession(timerModuleId, studyMins, "study");
-    
-    // Reset timer variables synchronously before states batch to avoid useEffect race conditions
-    setTimerStartTime(null);
-    setTimerAccumulated(0);
-    setTimerSeconds(0);
     setIsTimerRunning(false);
+    setTimerSeconds(0);
     setIsFullscreenTimerOpen(false);
     setActiveAmbientId(null); // Stop ambient sound when session ends!
   };
@@ -482,7 +478,7 @@ export default function App() {
     setAuthError("");
     setAuthSuccess("");
     setIsOnboarded(false);
-    setAuthChosen(true);
+    setAuthChosen(false);
     setSignedIn(false);
   };
 
@@ -926,7 +922,7 @@ export default function App() {
         </div>
       )}
 
-         {/* 2. Authentication splash screen */}
+      {/* 2. Authentication splash screen */}
       {!signedIn ? (
         <main className="flex-1 flex items-center justify-center p-6 bg-transparent relative overflow-hidden z-10">
           {/* subtle ambient background elements */}
