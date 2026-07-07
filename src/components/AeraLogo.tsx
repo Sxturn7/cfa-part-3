@@ -15,6 +15,7 @@ export default function AeraLogo({
   showText = false,
   preset = "light"
 }: AeraLogoProps) {
+  // Triple check that these file names and extensions match your public/audio/ folder exactly!
   const logoSrc = preset === "light" ? "/audio/AAERALight.png" : "/audio/AERA.png";
 
   return (
@@ -24,9 +25,13 @@ export default function AeraLogo({
     >
       <img
         src={logoSrc}
-        alt="AAERA"
+        alt="AERA Logo"
         className="w-full h-full object-cover select-none"
         referrerPolicy="no-referrer"
+        onError={(e) => {
+          // Fallback UI placeholder if Vercel still blocks the path
+          e.currentTarget.style.display = 'none';
+        }}
       />
     </div>
   );
