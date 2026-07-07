@@ -856,7 +856,7 @@ export default function App() {
           <div className="flex items-center gap-3.5">
             <div className="hidden sm:flex flex-col text-right">
               <span className="text-xs text-[var(--theme-text-dark)] font-medium max-w-[150px] truncate">{userProfile.email}</span>
-              <span className="text-[9px] text-[var(--theme-accent)] font-semibold tracking-wider uppercase opacity-85">CFA Candidate</span>
+              <span className="text-[9px] text-[var(--theme-accent)] font-semibold tracking-wider uppercase opacity-85">CFA Level 1 Candidate</span>
             </div>
 
             {/* Premium Button Deck with unified aesthetics */}
