@@ -1,0 +1,91 @@
+.dock-outer {
+  margin: 0 auto;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.dock-panel {
+  position: absolute;
+  top: 0;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 0.65rem;
+  border-radius: 9999px; /* Perfect capsule */
+  background-color: color-mix(in srgb, var(--theme-card) 65%, transparent);
+  backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in srgb, var(--theme-border) 45%, transparent);
+  padding: 0 0.75rem;
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04);
+  z-index: 50;
+  overflow: visible;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.dock-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px; /* Perfect circle for items */
+  background-color: transparent; /* Transparent so they float */
+  border: 1px solid transparent;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.dock-item:hover {
+  background-color: color-mix(in srgb, var(--theme-text-dark) 4%, transparent);
+}
+
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-dark);
+  opacity: 0.8;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.dock-item:hover .dock-icon {
+  opacity: 1;
+  color: var(--theme-accent);
+}
+
+.dock-label {
+  position: absolute;
+  top: auto;
+  bottom: -2.25rem;
+  left: 50%;
+  width: fit-content;
+  white-space: pre;
+  border-radius: 6px;
+  background-color: var(--theme-text-dark);
+  padding: 0.25rem 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--theme-bg);
+  transform: translateX(-50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  z-index: 60;
+  border: none;
+}
+
+.dock-item.active-dock-item {
+  background-color: color-mix(in srgb, var(--theme-accent) 15%, transparent) !important;
+  border-color: color-mix(in srgb, var(--theme-accent) 25%, transparent) !important;
+}
+
+.dock-item.active-dock-item .dock-icon {
+  color: var(--theme-accent) !important;
+  opacity: 1 !important;
+}
