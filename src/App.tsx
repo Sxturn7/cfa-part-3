@@ -926,7 +926,7 @@ export default function App() {
         </div>
       )}
 
-      {/* 2. Authentication splash screen */}
+         {/* 2. Authentication splash screen */}
       {!signedIn ? (
         <main className="flex-1 flex items-center justify-center p-6 bg-transparent relative overflow-hidden z-10">
           {/* subtle ambient background elements */}
@@ -946,143 +946,178 @@ export default function App() {
               </p>
             </div>
 
-            <div className="animate-fadeIn">
-              {/* Centralized Mode Tabs */}
-              <div className="grid grid-cols-2 gap-1 bg-[var(--theme-beige)]/40 p-1 rounded-xl border border-[var(--theme-border)]/35 mb-6">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthMode("login");
-                    setAuthError("");
-                    setAuthSuccess("");
-                  }}
-                  className={`py-2 text-center rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer border-none ${
-                    authMode === "login"
-                      ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs"
-                      : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
-                  }`}
-                >
-                  Sign In
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthMode("signup");
-                    setAuthError("");
-                    setAuthSuccess("");
-                  }}
-                  className={`py-2 text-center rounded-lg text-xs font-semibold tracking-wide transition-all cursor-pointer border-none ${
-                    authMode === "signup"
-                      ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs"
-                      : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
-                  }`}
-                >
-                  Create Account
-                </button>
-              </div>
-
-              {/* Error & Success Messages */}
-              {authError && (
-                <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-xs rounded-lg font-medium">
-                  ⚠️ {authError}
+            {!authChosen ? (
+              <div className="space-y-4 animate-fadeIn">
+                <div className="text-center pb-2">
+                  <p className="text-xs text-[var(--theme-text-main)] opacity-75 leading-relaxed">
+                  Select an option below to continue.
+                  </p>
                 </div>
-              )}
-              {authSuccess && (
-                <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs rounded-lg font-medium">
-                  ✨ {authSuccess}
-                </div>
-              )}
-
-              <form onSubmit={handleAuthSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
-                    Candidate Email
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="Enter your candidate email..."
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (authError) setAuthError("");
+                
+                <div className="space-y-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode("login");
+                      setAuthChosen(true);
+                      setAuthError("");
+                      setAuthSuccess("");
                     }}
-                    className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
-                  />
+                    className="w-full text-center bg-[var(--theme-input-bg)] hover:bg-[var(--theme-beige)] border border-[var(--theme-border)]/60 rounded-xl p-4 transition duration-250 cursor-pointer active:scale-[0.99] group flex flex-col items-center justify-center gap-1 shadow-xs"
+                  >
+                    <span className="text-sm font-semibold text-[var(--theme-text-dark)] group-hover:text-[var(--theme-accent)] transition">
+                      Sign in
+                    </span>
+                    <span className="text-[11px] text-[var(--theme-text-main)] opacity-70 leading-normal max-w-xs mx-auto">
+                      Continue your study journey, resume active modules, and keep your progress in sync.
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthMode("signup");
+                      setAuthChosen(true);
+                      setAuthError("");
+                      setAuthSuccess("");
+                    }}
+                    className="w-full text-center bg-[var(--theme-input-bg)] hover:bg-[var(--theme-beige)] border border-[var(--theme-border)]/60 rounded-xl p-4 transition duration-250 cursor-pointer active:scale-[0.99] group flex flex-col items-center justify-center gap-1 shadow-xs"
+                  >
+                    <span className="text-sm font-semibold text-[var(--theme-text-dark)] group-hover:text-[var(--theme-accent)] transition">
+                      Create account
+                    </span>
+                    <span className="text-[11px] text-[var(--theme-text-main)] opacity-70 leading-normal max-w-xs mx-auto">
+                      Set your exam date, personalize your study plan, and start tracking your progress.
+                    </span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="animate-fadeIn">
+                {/* Mode header indicators */}
+                <div className="text-center mb-5 pb-2 border-b border-[var(--theme-border)]/30">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--theme-text-dark)]">
+                    {authMode === "login" ? "Sign In to AAERA" : "Create Candidate Account"}
+                  </h3>
                 </div>
 
-                <div>
-                  <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
-                    Secure Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      required
-                      placeholder={authMode === "signup" ? "Choose secure password (6+ chars)..." : "Enter password..."}
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        if (authError) setAuthError("");
-                      }}
-                      className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl pl-3.5 pr-10 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--theme-text-main)] opacity-60 hover:opacity-90 outline-none p-1 flex items-center justify-center cursor-pointer"
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
+                {/* Error & Success Messages */}
+                {authError && (
+                  <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-xs rounded-lg font-medium">
+                    ⚠️ {authError}
                   </div>
-                </div>
+                )}
+                {authSuccess && (
+                  <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs rounded-lg font-medium">
+                    ✨ {authSuccess}
+                  </div>
+                )}
 
-                {authMode === "signup" && (
-                  <div className="animate-fadeIn">
+                <form onSubmit={handleAuthSubmit} className="space-y-4">
+                  <div>
                     <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
-                      Confirm Password
+                      Candidate Email
                     </label>
                     <input
-                      type={showPassword ? "text" : "password"}
+                      type="email"
                       required
-                      placeholder="Verify your password..."
-                      value={confirmPassword}
+                      placeholder="Enter your candidate email..."
+                      value={email}
                       onChange={(e) => {
-                        setConfirmPassword(e.target.value);
+                        setEmail(e.target.value);
                         if (authError) setAuthError("");
                       }}
                       className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
                     />
                   </div>
-                )}
 
-                <button
-                  type="submit"
-                  disabled={isAuthLoading}
-                  className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] disabled:opacity-50 text-[var(--theme-bg)] font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm mt-4 border-none flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  {isAuthLoading ? (
-                    <>
-                      <svg className="animate-spin h-3.5 w-3.5 text-[var(--theme-bg)]" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      Verifying Candidate...
-                    </>
-                  ) : (
-                    authMode === "login" ? "Sign In & Access Curriculum" : "Register CFA Candidate Account"
+                  <div>
+                    <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
+                      Secure Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        required
+                        placeholder={authMode === "signup" ? "Choose secure password (6+ chars)..." : "Enter password..."}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          if (authError) setAuthError("");
+                        }}
+                        className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl pl-3.5 pr-10 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--theme-text-main)] opacity-60 hover:opacity-90 outline-none p-1 flex items-center justify-center cursor-pointer"
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {authMode === "signup" && (
+                    <div className="animate-fadeIn">
+                      <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
+                        Confirm Password
+                      </label>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        required
+                        placeholder="Verify your password..."
+                        value={confirmPassword}
+                        onChange={(e) => {
+                          setConfirmPassword(e.target.value);
+                          if (authError) setAuthError("");
+                        }}
+                        className="w-full bg-[var(--theme-input-bg)] border border-[var(--theme-border)] rounded-xl px-3.5 py-2.5 text-sm text-[var(--theme-text-dark)] outline-none focus:border-[var(--theme-accent)] placeholder:text-[var(--theme-text-main)] placeholder:opacity-40 transition font-mono shadow-sm"
+                      />
+                    </div>
                   )}
-                </button>
-              </form>
 
-              <div className="mt-6 text-center text-[10px] text-[var(--theme-text-main)] opacity-60 leading-relaxed max-w-sm mx-auto font-sans">
-                {authMode === "login" ? (
-                  <span>Sign in to access your dashboard, monitor your progress, and continue preparing for the CFA Level I exam.</span>
-                ) : (
-                  <span>Create an account to organize your CFA Level I preparation, track every completed module, and monitor your overall progress.</span>
-                )}
+                  <button
+                    type="submit"
+                    disabled={isAuthLoading}
+                    className="w-full bg-[var(--theme-accent)] hover:bg-[var(--theme-accent-hover)] disabled:opacity-50 text-[var(--theme-bg)] font-bold text-xs py-3 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-95 shadow-sm mt-4 border-none flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {isAuthLoading ? (
+                      <>
+                        <svg className="animate-spin h-3.5 w-3.5 text-[var(--theme-bg)]" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Verifying Candidate...
+                      </>
+                    ) : (
+                      authMode === "login" ? "Sign In & Access Curriculum" : "Register CFA Candidate Account"
+                    )}
+                  </button>
+                </form>
+
+                <div className="mt-5 flex justify-center border-t border-[var(--theme-border)]/20 pt-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthChosen(false);
+                      setAuthError("");
+                      setAuthSuccess("");
+                    }}
+                    className="text-[10px] uppercase font-bold tracking-widest text-[var(--theme-accent)] hover:underline opacity-80 cursor-pointer"
+                  >
+                    ← Back to Choices
+                  </button>
+                </div>
+
+                <div className="mt-4 text-center text-[10px] text-[var(--theme-text-main)] opacity-60 leading-relaxed">
+                  {authMode === "login" ? (
+                    <span>Sign in to access your dashboard, monitor your progress, and continue preparing for the CFA Level I exam.</span>
+                  ) : (
+                    <span>Create an account to organize your CFA Level I preparation, track every completed module, and monitor your overall progress.</span>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </main>
       ) : !isOnboarded ? (
