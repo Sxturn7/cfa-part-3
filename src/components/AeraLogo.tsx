@@ -1,7 +1,7 @@
 import React from "react";
 // 📦 Import images directly so Vite bundles and routes them perfectly on Vercel
 import aaeraDarkLogo from "/audio/AERA.png"; // Adjust relative path to where your audio folder actually is
-import aaeraLightLogo from "/audio/aaeralight.png";
+import aaeraLightLogo from "/audio/Aaera light.png";
 
 interface AeraLogoProps {
   className?: string;
