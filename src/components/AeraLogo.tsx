@@ -1,8 +1,7 @@
 import React from "react";
-
-// 📦 Use direct public static paths as standard string constants
-const aaeraDarkLogo = "/audio/aaera.png";
-const aaeraLightLogo = "/audio/aaeralight.png";
+// 📦 Import images directly so Vite bundles and routes them perfectly on Vercel
+import aaeraDarkLogo from "./audio/aaera.png"; // Adjust relative path to where your audio folder actually is
+import aaeraLightLogo from "./audio/aaeralight.png";
 
 interface AeraLogoProps {
   className?: string;
@@ -20,7 +19,7 @@ export default function AeraLogo({
   preset = "light"
 }: AeraLogoProps) {
 
-  // Vite will handle the exact structural path mapping on Vercel automatically
+  // Vite resolves these imports to the correct URL string automatically
   const logoSrc = preset === "light" ? aaeraLightLogo : aaeraDarkLogo;
 
   return (
@@ -34,15 +33,16 @@ export default function AeraLogo({
         className="w-full h-full object-cover select-none"
         referrerPolicy="no-referrer"
         onError={(e) => {
-          // Absolute fallback safety: if rendering completely fails on Vercel,
-          // hide the broken square and show an elegant text monogram letter alternative instead
+          // If rendering fails, hide image and display fallback text monogram
           e.currentTarget.style.display = 'none';
           const sibling = e.currentTarget.nextElementSibling as HTMLElement;
-          if (sibling) sibling.style.display = 'block';
+          if (sibling) {
+            sibling.style.display = 'flex'; // Use flex to center the letter "A"
+          }
         }}
       />
       <span 
-        className="hidden font-bold text-sm tracking-wider" 
+        className="hidden font-bold text-sm tracking-wider w-full h-full items-center justify-center" 
         style={{ color: preset === "dark" ? "#f8fafc" : "#171717" }}
       >
         A
