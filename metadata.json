@@ -1,0 +1,6 @@
+{
+  "name": "AAERA",
+  "description": "An adaptive Study System and visual Growth Tree (Aim • Analyze • Execute • Reflect • Achieve) for the full 93-module CFA Level I curriculum, featuring interactive study schedules, practice quizzes, analytics, and a personal study mentor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
