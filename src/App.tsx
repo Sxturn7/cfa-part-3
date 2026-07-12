@@ -157,12 +157,28 @@ export default function App() {
     };
   }, [isTimerRunning, timerStartTime, timerAccumulated]);
 
+  const handleResetTimer = () => {
+    setTimerStartTime(null);
+    setTimerAccumulated(0);
+    setTimerSeconds(0);
+    setIsTimerRunning(false);
+  };
+
   const handleSaveUnifiedSession = () => {
     // Save study duration with high accuracy (including fractional support for accurate increments)
-    const studyMins = parseFloat((timerSeconds / 60).toFixed(2)) || 1;
+    let finalSeconds = timerSeconds;
+    if (isTimerRunning && timerStartTime !== null) {
+      const elapsed = Math.floor((Date.now() - timerStartTime) / 1000);
+      finalSeconds = timerAccumulated + elapsed;
+    }
+    const studyMins = parseFloat((finalSeconds / 60).toFixed(2)) || 1;
     handleLogStudySession(timerModuleId, studyMins, "study");
-    setIsTimerRunning(false);
+    
+    // Clear all timer states completely so the useEffect doesn't calculate/overwrite
+    setTimerStartTime(null);
+    setTimerAccumulated(0);
     setTimerSeconds(0);
+    setIsTimerRunning(false);
     setIsFullscreenTimerOpen(false);
     setActiveAmbientId(null); // Stop ambient sound when session ends!
   };
@@ -1305,6 +1321,7 @@ export default function App() {
                 setIsFullscreenTimerOpen={setIsFullscreenTimerOpen}
                 timerModuleId={timerModuleId}
                 setTimerModuleId={setTimerModuleId}
+                onResetTimer={handleResetTimer}
                 activeAmbientId={activeAmbientId}
                 setActiveAmbientId={setActiveAmbientId}
                 ambientVolume={ambientVolume}
@@ -1424,10 +1441,7 @@ export default function App() {
         timerSeconds={timerSeconds}
         isTimerRunning={isTimerRunning}
         onToggleTimer={() => setIsTimerRunning(!isTimerRunning)}
-        onResetTimer={() => {
-          setIsTimerRunning(false);
-          setTimerSeconds(0);
-        }}
+        onResetTimer={handleResetTimer}
         onSaveSession={handleSaveUnifiedSession}
         activeModuleName={getModuleById(timerModuleId, userProfile.targetExamDate)?.name || "Module"}
         activeSubjectName={getModuleById(timerModuleId, userProfile.targetExamDate)?.subjectName || "CFA Subject"}
@@ -1484,10 +1498,7 @@ export default function App() {
               </button>
               
               <button
-                onClick={() => {
-                  setIsTimerRunning(false);
-                  setTimerSeconds(0);
-                }}
+                onClick={handleResetTimer}
                 className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-slate-350 transition cursor-pointer"
                 title="Reset study timer"
               >
