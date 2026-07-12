@@ -10,7 +10,7 @@ import {
   VolumeX, 
   Compass, 
   Award,
-  Settings
+  Settings,
 } from "lucide-react";
 import ElasticSlider from "./ElasticSlider";
 
@@ -292,6 +292,8 @@ export default function FullscreenTimer({
               </div>
             </div>
           )}
+
+
 
           {/* Control Buttons Panel */}
           <div className="grid grid-cols-3 gap-3 w-full">
