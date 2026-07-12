@@ -28,6 +28,8 @@ export default function ModuleList({
   });
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
   const [confirmSubject, setConfirmSubject] = useState<Subject | null>(null);
+  const [confirmAction, setConfirmAction] = useState<"check" | "uncheck" | null>(null);
+  const [showGlobalResetConfirm, setShowGlobalResetConfirm] = useState(false);
 
   const toggleSubject = (subjectId: string) => {
     setExpandedSubjects((prev) => ({ ...prev, [subjectId]: !prev[subjectId] }));
@@ -65,11 +67,18 @@ export default function ModuleList({
     return matchesSearch && matchesStatus;
   };
 
+  const hasAnyProgress = subjects.some(subj =>
+    subj.modules.some(m => {
+      const prog = progress[m.id];
+      return prog && prog.status !== ModuleStatus.NOT_STARTED;
+    })
+  );
+
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
-      <SpotlightCard className="bg-[var(--theme-card)] border border-[var(--theme-border)]/15 p-5 shadow-[var(--theme-shadow)] flex flex-col md:flex-row gap-4 items-center justify-between" borderRadius="24px">
-        <div className="relative w-full md:w-80">
+      <SpotlightCard className="bg-[var(--theme-card)] border border-[var(--theme-border)]/15 p-5 shadow-[var(--theme-shadow)] flex flex-col lg:flex-row gap-4 items-center justify-between animate-fadeIn" borderRadius="24px">
+        <div className="relative w-full lg:w-80">
           <Search className="absolute left-3.5 top-3 w-4 h-4 text-[var(--theme-text-main)] opacity-50" />
           <input
             type="text"
@@ -80,25 +89,64 @@ export default function ModuleList({
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <span className="text-[11px] font-medium text-[var(--theme-text-main)] opacity-80">Filter Status:</span>
-          <div className="grid grid-cols-4 gap-1 bg-[var(--theme-beige)]/40 p-1 rounded-xl border border-[var(--theme-border)]/30 w-full md:w-auto">
-            {(["all", ModuleStatus.NOT_STARTED, ModuleStatus.IN_PROGRESS, ModuleStatus.COMPLETED] as const).map(
-              (f) => (
-                <button
-                  key={f}
-                  onClick={() => setStatusFilter(f)}
-                  className={`text-[10px] font-medium py-1.5 px-3 rounded-lg transition-all cursor-pointer ${
-                    statusFilter === f
-                      ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs"
-                      : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
-                  }`}
-                >
-                  {f === "all" ? "All" : f === "not_started" ? "Not started" : f === "in_progress" ? "In progress" : "Done"}
-                </button>
-              )
-            )}
+        <div className="flex items-center gap-3 w-full lg:w-auto flex-wrap justify-between lg:justify-start">
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-medium text-[var(--theme-text-main)] opacity-80">Filter Status:</span>
+            <div className="grid grid-cols-4 gap-1 bg-[var(--theme-beige)]/40 p-1 rounded-xl border border-[var(--theme-border)]/30 w-full md:w-auto">
+              {(["all", ModuleStatus.NOT_STARTED, ModuleStatus.IN_PROGRESS, ModuleStatus.COMPLETED] as const).map(
+                (f) => (
+                  <button
+                    key={f}
+                    onClick={() => setStatusFilter(f)}
+                    className={`text-[10px] font-medium py-1.5 px-3 rounded-lg transition-all cursor-pointer ${
+                      statusFilter === f
+                        ? "bg-[var(--theme-card)] text-[var(--theme-text-dark)] shadow-xs"
+                        : "text-[var(--theme-text-main)] hover:text-[var(--theme-text-dark)]"
+                    }`}
+                  >
+                    {f === "all" ? "All" : f === "not_started" ? "Not started" : f === "in_progress" ? "In progress" : "Done"}
+                  </button>
+                )
+              )}
+            </div>
           </div>
+
+          {hasAnyProgress && (
+            <div className="shrink-0">
+              {showGlobalResetConfirm ? (
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-rose-500/10 border border-rose-500/20 rounded-xl animate-fadeIn text-[10px] select-none">
+                  <span className="text-rose-700 dark:text-rose-400 font-bold">Uncheck all modules?</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const allModuleIds = subjects.flatMap(s => s.modules.map(m => m.id));
+                      onBatchChangeModuleStatus(allModuleIds, ModuleStatus.NOT_STARTED);
+                      setShowGlobalResetConfirm(false);
+                    }}
+                    className="px-2 py-0.5 bg-rose-600 hover:bg-rose-500 text-white rounded-md font-bold cursor-pointer transition duration-150"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowGlobalResetConfirm(false)}
+                    className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-md font-semibold cursor-pointer transition duration-150"
+                  >
+                    No
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowGlobalResetConfirm(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-rose-600 hover:text-white hover:bg-rose-650 bg-rose-50 dark:bg-rose-950/20 border border-rose-200/40 rounded-xl transition duration-200 cursor-pointer select-none"
+                  title="Mark all modules in the entire study syllabus as incomplete"
+                >
+                  <span>Uncheck All Modules</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </SpotlightCard>
 
@@ -113,6 +161,12 @@ export default function ModuleList({
             (m) => progress[m.id]?.status === ModuleStatus.COMPLETED
           ).length;
           const progressPercent = Math.round((completedCount / subj.modules.length) * 100);
+          const hasSubjectProgress = subj.modules.some(
+            (m) => {
+              const prog = progress[m.id];
+              return prog && prog.status !== ModuleStatus.NOT_STARTED;
+            }
+          );
 
           return (
             <SpotlightCard
@@ -141,50 +195,74 @@ export default function ModuleList({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {progressPercent < 100 && (
-                    confirmSubject?.id === subj.id ? (
-                      <div 
-                        className="flex items-center gap-2 px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-xl animate-fadeIn text-[10px] select-none"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <span className="text-amber-700 dark:text-amber-400 font-bold">Check all?</span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const moduleIds = subj.modules.map(m => m.id);
-                            onBatchChangeModuleStatus(moduleIds, ModuleStatus.COMPLETED);
-                            setConfirmSubject(null);
-                          }}
-                          className="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-bold cursor-pointer transition duration-150"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setConfirmSubject(null);
-                          }}
-                          className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-md font-semibold cursor-pointer transition duration-150"
-                        >
-                          No
-                        </button>
-                      </div>
-                    ) : (
+                  {confirmSubject?.id === subj.id ? (
+                    <div 
+                      className="flex items-center gap-2 px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-xl animate-fadeIn text-[10px] select-none"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <span className="text-amber-700 dark:text-amber-400 font-bold">
+                        {confirmAction === "check" ? "Check all?" : "Uncheck all?"}
+                      </span>
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setConfirmSubject(subj);
+                          const moduleIds = subj.modules.map(m => m.id);
+                          onBatchChangeModuleStatus(
+                            moduleIds,
+                            confirmAction === "check" ? ModuleStatus.COMPLETED : ModuleStatus.NOT_STARTED
+                          );
+                          setConfirmSubject(null);
+                          setConfirmAction(null);
                         }}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-[var(--theme-accent)] hover:text-[var(--theme-bg)] hover:bg-[var(--theme-accent)] bg-[var(--theme-accent-light)]/25 border border-[var(--theme-accent)]/20 rounded-xl transition duration-200 cursor-pointer select-none"
-                        title={`Mark all ${subj.modules.length} readings in ${subj.name} as completed`}
+                        className="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-bold cursor-pointer transition duration-150"
                       >
-                        <CheckCircle size={12} />
-                        <span>Check All</span>
+                        Yes
                       </button>
-                    )
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setConfirmSubject(null);
+                          setConfirmAction(null);
+                        }}
+                        className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-md font-semibold cursor-pointer transition duration-150"
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5">
+                      {progressPercent < 100 && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmSubject(subj);
+                            setConfirmAction("check");
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-[var(--theme-accent)] hover:text-[var(--theme-bg)] hover:bg-[var(--theme-accent)] bg-[var(--theme-accent-light)]/25 border border-[var(--theme-accent)]/20 rounded-xl transition duration-200 cursor-pointer select-none"
+                          title={`Mark all ${subj.modules.length} readings in ${subj.name} as completed`}
+                        >
+                          <CheckCircle size={12} />
+                          <span>Check All</span>
+                        </button>
+                      )}
+                      {hasSubjectProgress && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmSubject(subj);
+                            setConfirmAction("uncheck");
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-rose-600 hover:text-white hover:bg-rose-650 bg-rose-50 dark:bg-rose-950/20 border border-rose-200/40 rounded-xl transition duration-200 cursor-pointer select-none"
+                          title={`Mark all completed or in-progress readings in ${subj.name} as incomplete`}
+                        >
+                          <span>Uncheck All</span>
+                        </button>
+                      )}
+                    </div>
                   )}
                   <div className="hidden sm:block w-36 bg-[var(--theme-beige)] h-2 rounded-full overflow-hidden border border-[var(--theme-border)]/20">
                     <div
