@@ -67,6 +67,7 @@ interface DashboardProps {
   setIsFullscreenTimerOpen: React.Dispatch<React.SetStateAction<boolean>>;
   timerModuleId: string;
   setTimerModuleId: React.Dispatch<React.SetStateAction<string>>;
+  onResetTimer?: () => void;
   // Ambient Sound Props
   activeAmbientId: string | null;
   setActiveAmbientId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -101,6 +102,7 @@ export default function Dashboard({
   setIsFullscreenTimerOpen,
   timerModuleId,
   setTimerModuleId,
+  onResetTimer,
   activeAmbientId,
   setActiveAmbientId,
   ambientVolume,
@@ -257,8 +259,12 @@ export default function Dashboard({
   };
 
   const resetTimer = () => {
-    setIsTimerRunning(false);
-    setTimerSeconds(0);
+    if (onResetTimer) {
+      onResetTimer();
+    } else {
+      setIsTimerRunning(false);
+      setTimerSeconds(0);
+    }
   };
 
   const handleSaveUnifiedSession = () => {
