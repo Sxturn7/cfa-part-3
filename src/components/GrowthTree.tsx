@@ -58,6 +58,22 @@ const SPRING_COLORS: Record<string, { fill: string; hover: string; glow: string 
   portfolio:   { fill: "#047857", hover: "#065F46", glow: "rgba(4, 120, 87, 0.4)" }, // Deep Emerald
 };
 
+const SECONDARY_BRANCHES = [
+  // Left side branches sprouting from the left limb (around 310, 310 or 250, 280)
+  { d: "M 320,320 Q 310,230 330,140", w: 4 }, // to ethics
+  { d: "M 310,310 Q 270,250 230,180", w: 4 }, // to econ
+  { d: "M 315,315 Q 310,280 310,240", w: 3 }, // to corporate
+  { d: "M 250,280 Q 220,275 190,270", w: 3 }, // to fixed
+  { d: "M 325,325 Q 290,335 260,340", w: 3 }, // to alt
+
+  // Right side branches sprouting from the right limb (around 450, 295 or 540, 250)
+  { d: "M 445,305 Q 460,210 470,130", w: 4 }, // to quant
+  { d: "M 450,295 Q 510,230 570,180", w: 4 }, // to fsa
+  { d: "M 448,300 Q 470,270 490,245", w: 3 }, // to equity
+  { d: "M 540,250 Q 580,260 610,270", w: 3 }, // to derivatives
+  { d: "M 440,310 Q 490,330 540,345", w: 3 }  // to portfolio
+];
+
 export default function GrowthTree({ subjects, progress, totalStudyTime, isDashboard = false }: GrowthTreeProps) {
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>("quant");
   const [paletteMode, setPaletteMode] = useState<"autumn" | "spring">("autumn");
@@ -152,9 +168,9 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
       const N = subj.modules.length;
       
       subj.modules.forEach((mod, idx) => {
-        // Distribute leaf nodes using a beautiful phyllotaxis spiral around center point
+        // Distribute leaf nodes using a beautiful phyllotaxis spiral around center point with generous spacing
         const angle = (idx * 137.5 * Math.PI) / 180; // Golden angle phyllotaxis
-        const radius = 22 + Math.sqrt(idx) * 14; // Even distribution spreading outwards
+        const radius = 24 + Math.sqrt(idx) * 16.5; // Wider distribution to allow breathing room
         
         const x = center.x + radius * Math.cos(angle);
         const y = center.y + radius * Math.sin(angle);
@@ -289,6 +305,14 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
                 <stop offset="100%" stopColor="#8C5C38" />
               </linearGradient>
 
+              {/* Spring Meadow Sky Gradient */}
+              <linearGradient id="springSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#020617" />
+                <stop offset="60%" stopColor="#0E1E2A" />
+                <stop offset="85%" stopColor="#064E3B" />
+                <stop offset="100%" stopColor="#022C22" />
+              </linearGradient>
+
               {/* Trunk textured gradient */}
               <linearGradient id="trunkGrad" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0%" stopColor="#1E1510" />
@@ -308,6 +332,17 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
                 <stop offset="100%" stopColor="#451A03" />
               </linearGradient>
 
+              {/* Spring Meadow grass background gradient */}
+              <linearGradient id="springMeadow" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#059669" />
+                <stop offset="100%" stopColor="#064E3B" />
+              </linearGradient>
+              
+              <linearGradient id="springMeadowBack" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#10B981" />
+                <stop offset="100%" stopColor="#047857" />
+              </linearGradient>
+
               {/* Shadow filter for realistic canvas leaves */}
               <filter id="leafShadow" x="-20%" y="-20%" width="140%" height="140%">
                 <feDropShadow dx="0" dy="1" stdDeviation="1.2" floodColor="#000000" floodOpacity="0.45" />
@@ -315,7 +350,7 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
             </defs>
 
             {/* A. Landscape Backdrop */}
-            <rect width="800" height="600" rx="16" fill="url(#autumnSky)" />
+            <rect width="800" height="600" rx="16" fill={paletteMode === "autumn" ? "url(#autumnSky)" : "url(#springSky)"} />
 
             {/* Gentle ambient floating white clouds */}
             <g opacity="0.12" fill="#FFFFFF">
@@ -328,16 +363,16 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
             {/* Back meadow hill */}
             <path
               d="M -50,500 Q 150,460 380,510 T 850,480 L 850,620 L -50,620 Z"
-              fill="url(#meadowBackGrad)"
+              fill={paletteMode === "autumn" ? "url(#meadowBackGrad)" : "url(#springMeadowBack)"}
             />
             {/* Front meadow hill */}
             <path
               d="M -50,540 Q 220,500 480,550 T 850,530 L 850,620 L -50,620 Z"
-              fill="url(#meadowGrad)"
+              fill={paletteMode === "autumn" ? "url(#meadowGrad)" : "url(#springMeadow)"}
             />
 
             {/* Meadow wildflowers dots */}
-            <g fill="#FEF08A" opacity="0.7">
+            <g fill={paletteMode === "autumn" ? "#FEF08A" : "#F472B6"} opacity="0.75">
               <circle cx="60" cy="560" r="1.5" />
               <circle cx="120" cy="570" r="2" />
               <circle cx="210" cy="555" r="1.5" />
@@ -347,10 +382,10 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
               <circle cx="560" cy="560" r="1.5" />
               <circle cx="680" cy="580" r="2" />
               <circle cx="740" cy="565" r="1.5" />
-              {/* cute red flowers too */}
-              <circle cx="150" cy="585" r="1.5" fill="#EF4444" />
-              <circle cx="410" cy="580" r="2" fill="#EF4444" />
-              <circle cx="630" cy="575" r="1.5" fill="#EF4444" />
+              {/* cute secondary spring flowers (white & lavender vs red) */}
+              <circle cx="150" cy="585" r="1.5" fill={paletteMode === "autumn" ? "#EF4444" : "#E879F9"} />
+              <circle cx="410" cy="580" r="2" fill={paletteMode === "autumn" ? "#EF4444" : "#FFFFFF"} />
+              <circle cx="630" cy="575" r="1.5" fill={paletteMode === "autumn" ? "#EF4444" : "#E879F9"} />
             </g>
 
             {/* C. The Magnificent Winding Wood Trunk */}
@@ -382,43 +417,51 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
               <path d="M 416,350 C 445,325 475,310 510,290" strokeWidth="0.8" />
             </g>
 
+            {/* Secondary Organic Wood Branches connecting main trunk limbs to subject centers */}
+            <g stroke="url(#trunkGrad)" fill="none" strokeLinecap="round" opacity="0.85">
+              {SECONDARY_BRANCHES.map((branch, idx) => (
+                <path
+                  key={`branch-${idx}`}
+                  d={branch.d}
+                  strokeWidth={branch.w}
+                />
+              ))}
+            </g>
+
             {/* D. Elegant Background Foliage Clouds (Adds lush depth & full crown visual) */}
             {subjects.map((subj) => {
               const center = SUBJECT_CENTERS[subj.id];
-              const stat = subjectStats.find(s => s.id === subj.id);
+              const col = colors[subj.id] || { fill: "#FFF" };
               const isActive = hoveredSubjectId === subj.id || selectedSubjectId === subj.id;
               
               if (!center) return null;
 
-              // Foliage puff color: warmer golden red in autumn, soft emerald green in spring
-              const puffColor = paletteMode === "autumn" ? "#EA580C" : "#10B981";
-
               return (
                 <g key={`foliage-back-${subj.id}`}>
-                  {/* Fluffy surrounding organic circles */}
+                  {/* Fluffy surrounding organic circles of the subject area's brand color */}
                   <circle
                     cx={center.x}
                     cy={center.y}
-                    r={isActive ? "54" : "44"}
-                    fill={puffColor}
-                    opacity={isActive ? "0.08" : "0.035"}
-                    style={{ filter: "blur(12px)", transition: "all 0.4s" }}
+                    r={isActive ? "60" : "46"}
+                    fill={col.fill}
+                    opacity={isActive ? "0.14" : "0.05"}
+                    style={{ filter: "blur(14px)", transition: "all 0.4s" }}
                   />
                   <circle
-                    cx={center.x - 15}
-                    cy={center.y + 10}
-                    r="30"
-                    fill={puffColor}
-                    opacity="0.02"
-                    style={{ filter: "blur(10px)" }}
-                  />
-                  <circle
-                    cx={center.x + 18}
-                    cy={center.y - 12}
+                    cx={center.x - 12}
+                    cy={center.y + 8}
                     r="32"
-                    fill={puffColor}
-                    opacity="0.02"
-                    style={{ filter: "blur(10px)" }}
+                    fill={col.fill}
+                    opacity={isActive ? "0.06" : "0.03"}
+                    style={{ filter: "blur(10px)", transition: "all 0.4s" }}
+                  />
+                  <circle
+                    cx={center.x + 14}
+                    cy={center.y - 10}
+                    r="34"
+                    fill={col.fill}
+                    opacity={isActive ? "0.06" : "0.03"}
+                    style={{ filter: "blur(10px)", transition: "all 0.4s" }}
                   />
                 </g>
               );
@@ -490,72 +533,98 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
               );
             })}
 
+            {/* E. Delicate Twigs sprouting from Subject Centers to Leaves */}
+            <g strokeLinecap="round" fill="none">
+              {leafNodes.map((node, leafIdx) => {
+                const p = progress[node.module.id] || { status: ModuleStatus.NOT_STARTED };
+                const isCompleted = p.status === ModuleStatus.COMPLETED;
+                const isInProgress = p.status === ModuleStatus.IN_PROGRESS;
+                const col = colors[node.subjectId] || { fill: "#FFF" };
+
+                const isHidden = canopyMode === "dynamic" && !isCompleted && !isInProgress;
+                const center = SUBJECT_CENTERS[node.subjectId] || { x: 400, y: 250 };
+
+                // Draw a beautiful, organic curved path instead of a straight line!
+                const mx = (center.x + node.x) / 2;
+                const my = (center.y + node.y) / 2;
+                const dx = node.x - center.x;
+                const dy = node.y - center.y;
+                const len = Math.sqrt(dx*dx + dy*dy);
+                const nx = -dy / (len || 1);
+                const ny = dx / (len || 1);
+                const offset = 8 * Math.sin(leafIdx + 1); // deterministic curve offset
+                const cx = mx + nx * offset;
+                const cy = my + ny * offset;
+
+                // Style based on state
+                let strokeColor = "#475569";
+                let strokeWidth = "0.4";
+                let opacity = "0.15";
+
+                if (isCompleted) {
+                  strokeColor = col.fill;
+                  strokeWidth = "0.8";
+                  opacity = "0.45";
+                } else if (isInProgress) {
+                  strokeColor = "#F59E0B";
+                  strokeWidth = "0.7";
+                  opacity = "0.4";
+                } else {
+                  opacity = isHidden ? "0.08" : "0.18";
+                }
+
+                return (
+                  <path
+                    key={`stem-${node.module.id}`}
+                    d={`M ${center.x},${center.y} Q ${cx},${cy} ${node.x},${node.y}`}
+                    stroke={strokeColor}
+                    strokeWidth={strokeWidth}
+                    opacity={opacity}
+                  />
+                );
+              })}
+            </g>
+
             {/* F. The Growing Leaf Nodes representing 93 modules */}
             {leafNodes.map((node) => {
               const p = progress[node.module.id] || {
                 status: ModuleStatus.NOT_STARTED,
-                studyTimeMinutes: 0,
-                quizScore: null,
-                notes: "",
-                lastStudiedAt: null,
-                revisionCycle: 0,
               };
 
-              // Determine visual state of this leaf
               const isCompleted = p.status === ModuleStatus.COMPLETED;
               const isInProgress = p.status === ModuleStatus.IN_PROGRESS;
               
-              // If Dynamic Study Progress mode, hide or minimize unstudied leaves
               const isHidden = canopyMode === "dynamic" && !isCompleted && !isInProgress;
-              
-              if (isHidden) {
-                // Render a tiny bare twigs skeleton instead of leaf (adds massive organic feel!)
-                return (
-                  <g key={`bare-bud-${node.module.id}`} className="opacity-20">
-                    <circle cx={node.x} cy={node.y} r="1.5" fill="#475569" />
-                    <line
-                      x1={SUBJECT_CENTERS[node.subjectId]?.x || 400}
-                      y1={SUBJECT_CENTERS[node.subjectId]?.y || 250}
-                      x2={node.x}
-                      y2={node.y}
-                      stroke="#475569"
-                      strokeWidth="0.4"
-                    />
-                  </g>
-                );
-              }
+              if (isHidden) return null; // Already rendered bare twig in the stems group!
 
-              // Determine leaf colors
               const col = colors[node.subjectId] || { fill: "#FFF", hover: "#FFF", glow: "rgba(0,0,0,0.1)" };
               
-              let leafColor = "#334155"; // Bare default
+              let leafColor = "#334155";
               let strokeColor = "none";
-              let leafOpacity = 0.2;
+              let leafOpacity = 0.25;
+              let scale = 0.52;
               let isGlow = false;
-              let scale = 0.85;
 
               if (isCompleted) {
                 leafColor = col.fill;
                 leafOpacity = 0.95;
+                scale = 0.76;
                 isGlow = true;
-                scale = 1.15;
               } else if (isInProgress) {
-                leafColor = "#F59E0B"; // Glowing bright gold bud
-                leafOpacity = 0.85;
+                leafColor = "#F59E0B";
                 strokeColor = "#D97706";
-                scale = 0.95;
+                leafOpacity = 0.9;
+                scale = 0.65;
               } else {
-                // In Canopy preview mode, unstarted modules are shown as delicate, pale copper/green outlines
-                leafColor = "none";
-                strokeColor = paletteMode === "autumn" ? "#78350F" : "#064E3B";
-                leafOpacity = 0.45;
-                scale = 0.8;
+                leafColor = paletteMode === "autumn" ? "#7C2D12" : "#064E3B";
+                strokeColor = paletteMode === "autumn" ? "#B45309" : "#047857";
+                leafOpacity = 0.35;
+                scale = 0.55;
               }
 
-              // Calculate angle of leaf outwards to create high fidelity radial alignment
               const center = SUBJECT_CENTERS[node.subjectId] || { x: 400, y: 250 };
               const angleRad = Math.atan2(node.y - center.y, node.x - center.x);
-              const angleDeg = (angleRad * 180) / Math.PI + 90; // Add 90 so leaves point outward
+              const angleDeg = (angleRad * 180) / Math.PI + 90; // Point leaf outward
 
               return (
                 <g
@@ -563,7 +632,7 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
                   transform={`translate(${node.x}, ${node.y}) rotate(${angleDeg}) scale(${scale})`}
                   className="cursor-pointer transition-all duration-300"
                   onClick={() => setSelectedSubjectId(node.subjectId)}
-                  onMouseEnter={(e) => {
+                  onMouseEnter={() => {
                     setHoveredSubjectId(node.subjectId);
                     setHoveredLeaf({
                       module: node.module,
@@ -578,41 +647,41 @@ export default function GrowthTree({ subjects, progress, totalStudyTime, isDashb
                     setHoveredLeaf(null);
                   }}
                 >
-                  {/* Stem connection line back to center */}
-                  <line
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2={node.radius * 0.6}
-                    stroke={isCompleted ? col.fill : "#475569"}
-                    strokeWidth={isCompleted ? "0.75" : "0.4"}
-                    opacity="0.3"
-                    transform={`rotate(${-angleDeg})`}
-                  />
-
-                  {/* Leaf Visual Polygon Outer Aura */}
+                  {/* Soft glow radial background behind the leaf */}
                   {isGlow && (
-                    <path
-                      d="M 0,0 C -6,-5 -11,-15 -5,-21 C 1,-27 7,-17 5,0 Z"
+                    <circle
+                      cx="0"
+                      cy="-10"
+                      r="14"
                       fill={col.fill}
-                      opacity="0.18"
+                      opacity="0.25"
                       className="animate-pulse"
-                      transform="scale(1.3)"
                     />
                   )}
 
-                  {/* High Quality Styled Leaf Path */}
+                  {/* High Quality Styled Leaf Path with glowing outline */}
                   <path
-                    d="M 0,0 C -5,-4 -9,-12 -4,-17 C 1,-22 6,-12 4,0 Z"
-                    fill={leafColor}
-                    stroke={strokeColor}
-                    strokeWidth="1.2"
-                    opacity={leafOpacity}
+                    d="M 0,0 C -6,-5 -10,-15 0,-24 C 10,-15 6,-5 0,0 Z"
+                    fill={isCompleted ? col.fill : leafColor}
+                    stroke={isCompleted ? col.hover : strokeColor}
+                    strokeWidth={isCompleted ? "1.6" : "1.2"}
+                    fillOpacity={isCompleted ? "0.9" : "0.35"}
+                    strokeOpacity={isCompleted ? "1" : "0.55"}
                     filter="url(#leafShadow)"
                   />
 
-                  {/* Interactive Dot */}
-                  <circle cx="0" cy="-8" r="2.5" fill="#FFF" opacity={isCompleted ? "0.85" : "0"} />
+                  {/* Elegant, delicate central vein of leaf */}
+                  <path
+                    d="M 0,0 L 0,-18"
+                    fill="none"
+                    stroke={isCompleted ? "#FFFFFF" : isInProgress ? "#B45309" : (paletteMode === "autumn" ? "#9A3412" : "#047857")}
+                    strokeWidth="0.8"
+                    opacity={isCompleted ? "0.7" : isInProgress ? "0.5" : "0.3"}
+                    strokeLinecap="round"
+                  />
+
+                  {/* Invisible Large Pointer Target circle to ensure smooth, pleasant mouse interaction */}
+                  <circle cx="0" cy="-10" r="15" fill="transparent" />
                 </g>
               );
             })}
