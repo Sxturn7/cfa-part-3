@@ -90,6 +90,8 @@ export default function App() {
   const [timerStartTime, setTimerStartTime] = useState<number | null>(null);
   const [timerAccumulated, setTimerAccumulated] = useState<number>(0);
 
+
+
   // Synchronize timerModuleId with current curriculum modules if empty or invalid
   useEffect(() => {
     if (currentFlatModules.length > 0 && (!timerModuleId || !currentFlatModules.some(m => m.id === timerModuleId))) {
@@ -1437,10 +1439,30 @@ export default function App() {
 
       {/* Floating Timer Corner Widget (counting in corner, can maximize or pause/reset/save) */}
       {(!isFullscreenTimerOpen && (timerSeconds > 0 || isTimerRunning)) && (
-        <div className="fixed bottom-6 right-6 z-40 bg-slate-950/95 backdrop-blur-md border border-slate-800/80 text-slate-100 rounded-xl shadow-2xl flex items-center justify-between w-[120px] h-[40px] px-2.5 animate-fadeIn transition-all">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isTimerRunning ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`} />
-            <span className="text-[11px] font-mono font-bold tracking-tight text-white select-none">
+        <div className="fixed bottom-6 right-6 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-800 text-slate-100 p-4 rounded-2xl shadow-2xl flex flex-col gap-2.5 max-w-[280px] w-full animate-fadeIn transition-all">
+          <div className="flex items-center justify-between border-b border-slate-800/60 pb-1.5">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <div className="min-w-0">
+                <span className="text-[9px] font-mono font-bold text-slate-500 uppercase tracking-wider block">FOCUS RUNNING</span>
+                <span className="text-[10px] text-slate-300 truncate font-serif font-medium block">
+                  {getModuleById(timerModuleId, userProfile.targetExamDate)?.name || "Module"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                onClick={() => setIsFullscreenTimerOpen(true)}
+                className="p-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 hover:text-white transition cursor-pointer"
+                title="Maximize Focus Screen"
+              >
+                <Maximize2 size={13} />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <span className="text-xl font-mono font-bold tracking-tight text-white">
               {(() => {
                 const hrs = Math.floor(timerSeconds / 3600);
                 const mins = Math.floor((timerSeconds % 3600) / 60);
@@ -1448,23 +1470,38 @@ export default function App() {
                 return `${hrs.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
               })()}
             </span>
-          </div>
+            
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setIsTimerRunning(!isTimerRunning)}
+                className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                  isTimerRunning 
+                    ? "bg-amber-950/40 border-amber-800/50 text-amber-400 hover:bg-amber-950/60" 
+                    : "bg-blue-950/40 border-blue-800/50 text-blue-400 hover:bg-blue-950/60"
+                }`}
+              >
+                {isTimerRunning ? <Pause size={12} /> : <Play size={12} />}
+              </button>
+              
+              <button
+                onClick={() => {
+                  setIsTimerRunning(false);
+                  setTimerSeconds(0);
+                }}
+                className="p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-slate-350 transition cursor-pointer"
+                title="Reset study timer"
+              >
+                <RotateCcw size={12} />
+              </button>
 
-          <div className="flex items-center gap-1 shrink-0">
-            <button
-              onClick={() => setIsTimerRunning(!isTimerRunning)}
-              className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition cursor-pointer"
-              title={isTimerRunning ? "Pause" : "Play"}
-            >
-              {isTimerRunning ? <Pause size={10} /> : <Play size={10} />}
-            </button>
-            <button
-              onClick={() => setIsFullscreenTimerOpen(true)}
-              className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition cursor-pointer"
-              title="Maximize"
-            >
-              <Maximize2 size={10} />
-            </button>
+              <button
+                onClick={handleSaveUnifiedSession}
+                className="p-1.5 bg-emerald-950/40 border border-emerald-900/50 text-emerald-400 hover:bg-emerald-950/60 rounded-lg transition cursor-pointer"
+                title="Save & log session to stats"
+              >
+                <CheckCircle size={12} />
+              </button>
+            </div>
           </div>
         </div>
       )}
