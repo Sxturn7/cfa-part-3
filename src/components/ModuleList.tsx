@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Subject, ModuleStatus, ModuleProgress, LearningModule } from "../types";
-import { Search, ChevronDown, ChevronRight, CheckCircle, BookOpen, Clock, FileText, RotateCw } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, CheckCircle, BookOpen, Clock, FileText, RotateCw, Check, AlertCircle } from "lucide-react";
 import SpotlightCard from "./SpotlightCard";
 
 interface ModuleListProps {
@@ -10,6 +10,7 @@ interface ModuleListProps {
   onChangeModuleNotes: (moduleId: string, notes: string) => void;
   onRecordQuizScore: (moduleId: string, score: number) => void;
   onProgressRevisionCycle: (moduleId: string) => void;
+  onBatchChangeModuleStatus: (moduleIds: string[], status: ModuleStatus) => void;
 }
 
 export default function ModuleList({
@@ -18,6 +19,7 @@ export default function ModuleList({
   onChangeModuleStatus,
   onChangeModuleNotes,
   onProgressRevisionCycle,
+  onBatchChangeModuleStatus,
 }: ModuleListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ModuleStatus>("all");
@@ -25,6 +27,7 @@ export default function ModuleList({
     quant: true, // Expand quant by default
   });
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
+  const [confirmSubject, setConfirmSubject] = useState<Subject | null>(null);
 
   const toggleSubject = (subjectId: string) => {
     setExpandedSubjects((prev) => ({ ...prev, [subjectId]: !prev[subjectId] }));
@@ -118,10 +121,9 @@ export default function ModuleList({
               borderRadius="24px"
             >
               {/* Subject Banner Header */}
-              <button
-                type="button"
+              <div
                 onClick={() => toggleSubject(subj.id)}
-                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-[var(--theme-beige)]/20 transition-all cursor-pointer"
+                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-[var(--theme-beige)]/20 transition-all cursor-pointer select-none"
               >
                 <div className="flex items-center gap-3">
                   {isExpanded ? <ChevronDown className="text-[var(--theme-text-main)] opacity-60 w-5 h-5" /> : <ChevronRight className="text-[var(--theme-text-main)] opacity-60 w-5 h-5" />}
@@ -138,7 +140,52 @@ export default function ModuleList({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  {progressPercent < 100 && (
+                    confirmSubject?.id === subj.id ? (
+                      <div 
+                        className="flex items-center gap-2 px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-xl animate-fadeIn text-[10px] select-none"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <span className="text-amber-700 dark:text-amber-400 font-bold">Check all?</span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const moduleIds = subj.modules.map(m => m.id);
+                            onBatchChangeModuleStatus(moduleIds, ModuleStatus.COMPLETED);
+                            setConfirmSubject(null);
+                          }}
+                          className="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-md font-bold cursor-pointer transition duration-150"
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmSubject(null);
+                          }}
+                          className="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-md font-semibold cursor-pointer transition duration-150"
+                        >
+                          No
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setConfirmSubject(subj);
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-[var(--theme-accent)] hover:text-[var(--theme-bg)] hover:bg-[var(--theme-accent)] bg-[var(--theme-accent-light)]/25 border border-[var(--theme-accent)]/20 rounded-xl transition duration-200 cursor-pointer select-none"
+                        title={`Mark all ${subj.modules.length} readings in ${subj.name} as completed`}
+                      >
+                        <CheckCircle size={12} />
+                        <span>Check All</span>
+                      </button>
+                    )
+                  )}
                   <div className="hidden sm:block w-36 bg-[var(--theme-beige)] h-2 rounded-full overflow-hidden border border-[var(--theme-border)]/20">
                     <div
                       className="h-full rounded-full transition-all"
@@ -152,7 +199,7 @@ export default function ModuleList({
                     {progressPercent}%
                   </span>
                 </div>
-              </button>
+              </div>
 
               {/* Collapsed Modules listing */}
               {isExpanded && (
