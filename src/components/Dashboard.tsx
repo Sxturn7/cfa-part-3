@@ -23,7 +23,7 @@ import {
   Database,
   Plus,
   Trash2,
-  Check
+  Check,
 } from "lucide-react";
 import GrowthTree from "./GrowthTree";
 import FullscreenTimer from "./FullscreenTimer";
@@ -105,7 +105,6 @@ export default function Dashboard({
   setActiveAmbientId,
   ambientVolume,
   setAmbientVolume,
-  
   isSupabaseConfigured,
   dbUrl,
   setDbUrl,
@@ -547,7 +546,7 @@ export default function Dashboard({
                   <button
                     type="button"
                     onClick={() => setIsFullscreenTimerOpen(true)}
-                    className="bg-[var(--theme-accent-light)] hover:bg-[var(--theme-accent-light)]/80 text-[var(--theme-accent)] px-3.5 py-2 rounded-lg text-[10px] font-medium transition-all duration-200 flex items-center gap-1.5 border-none cursor-pointer"
+                    className="bg-[var(--theme-accent-light)] hover:bg-[var(--theme-accent-light)]/80 text-[var(--theme-accent)] px-3 py-2 rounded-lg text-[10px] font-medium transition-all duration-200 flex items-center gap-1.5 border-none cursor-pointer"
                     title="Enter Fullscreen Focus mode"
                   >
                     <Maximize2 size={11} />
