@@ -316,18 +316,35 @@ export const CURRICULUM_L2_2026: Subject[] = [
 
 export const CURRICULUM_L2_2027: Subject[] = [
   {
+    id: "ethics",
+    name: "Ethical and Professional Standards",
+    weight: "10-15%",
+    color: "purple",
+    modules: [
+      { id: "et-l2-27-1", name: "Code of Ethics and Standards of Professional Conduct", order: 1 },
+      { id: "et-l2-27-2", name: "Standard I: Professionalism", order: 2 },
+      { id: "et-l2-27-3", name: "Standard II: Integrity of Capital Markets", order: 3 },
+      { id: "et-l2-27-4", name: "Standard III: Duties to Clients", order: 4 },
+      { id: "et-l2-27-5", name: "Standard IV: Duties to Employers", order: 5 },
+      { id: "et-l2-27-6", name: "Standard V: Investment Analysis, Recommendations, and Actions", order: 6 },
+      { id: "et-l2-27-7", name: "Standard VI: Conflicts of Interest", order: 7 },
+      { id: "et-l2-27-8", name: "Standard VII: Responsibilities as a CFA Institute Member or CFA Candidate", order: 8 },
+      { id: "et-l2-27-9", name: "Application of the Code and Standards: Level II", order: 9 }
+    ]
+  },
+  {
     id: "quant",
     name: "Quantitative Methods",
     weight: "5-10%",
     color: "emerald",
     modules: [
-      { id: "qm-l2-27-1", name: "Basics of Multiple Regression and Underlying Assumptions", order: 1 },
-      { id: "qm-l2-27-2", name: "Evaluating Regression Model Fit and Interpreting Model Results", order: 2 },
-      { id: "qm-l2-27-3", name: "Model Misspecification", order: 3 },
-      { id: "qm-l2-27-4", name: "Extensions of Multiple Regression", order: 4 },
-      { id: "qm-l2-27-5", name: "Time-Series Analysis", order: 5 },
-      { id: "qm-l2-27-6", name: "Machine Learning", order: 6 },
-      { id: "qm-l2-27-7", name: "Big Data Projects", order: 7 }
+      { id: "qm-l2-27-1", name: "Basics of Multiple Regression and Underlying Assumptions", order: 10 },
+      { id: "qm-l2-27-2", name: "Evaluating Regression Model Fit and Interpreting Model Results", order: 11 },
+      { id: "qm-l2-27-3", name: "Model Misspecification", order: 12 },
+      { id: "qm-l2-27-4", name: "Extensions of Multiple Regression", order: 13 },
+      { id: "qm-l2-27-5", name: "Time-Series Analysis", order: 14 },
+      { id: "qm-l2-27-6", name: "Machine Learning", order: 15 },
+      { id: "qm-l2-27-7", name: "Big Data Projects", order: 16 }
     ]
   },
   {
@@ -336,8 +353,8 @@ export const CURRICULUM_L2_2027: Subject[] = [
     weight: "5-10%",
     color: "blue",
     modules: [
-      { id: "ec-l2-27-1", name: "Currency Exchange Rates: Understanding Equilibrium Value", order: 8 },
-      { id: "ec-l2-27-2", name: "Economic Growth", order: 9 }
+      { id: "ec-l2-27-1", name: "Currency Exchange Rates: Understanding Equilibrium Value", order: 17 },
+      { id: "ec-l2-27-2", name: "Economic Growth", order: 18 }
     ]
   },
   {
@@ -346,38 +363,37 @@ export const CURRICULUM_L2_2027: Subject[] = [
     weight: "10-15%",
     color: "indigo",
     modules: [
-      { id: "fsa-l2-27-1", name: "Intercorporate Investments", order: 10 },
-      { id: "fsa-l2-27-2", name: "Employee Compensation: Post-Employment and Share-Based", order: 11 },
-      { id: "fsa-l2-27-3", name: "Multinational Operations", order: 12 },
-      { id: "fsa-l2-27-4", name: "Analysis of Financial Institutions", order: 13 },
-      { id: "fsa-l2-27-5", name: "Evaluating Quality of Financial Reports", order: 14 },
-      { id: "fsa-l2-27-6", name: "Integration of Financial Statement Analysis Techniques", order: 15 }
+      { id: "fsa-l2-27-1", name: "Intercorporate Investments", order: 19 },
+      { id: "fsa-l2-27-2", name: "Employee Compensation: Post-Employment and Share-Based", order: 20 },
+      { id: "fsa-l2-27-3", name: "Multinational Operations", order: 21 },
+      { id: "fsa-l2-27-4", name: "Analysis of Financial Institutions", order: 22 },
+      { id: "fsa-l2-27-5", name: "Evaluating the Quality of Financial Reports", order: 23 },
+      { id: "fsa-l2-27-6", name: "Integration of Financial Statement Analysis Techniques", order: 24 }
     ]
   },
   {
     id: "corporate",
-    name: "Corporate Issuers",
+    name: "Corporate Finance",
     weight: "5-10%",
     color: "cyan",
     modules: [
-      { id: "ci-l2-27-1", name: "Analysis of Dividends and Share Repurchases", order: 16 },
-      { id: "ci-l2-27-2", name: "Environmental, Social, and Governance (ESG) Considerations in Investment Analysis", order: 17 },
-      { id: "ci-l2-27-3", name: "Cost of Capital: Advanced Topics", order: 18 },
-      { id: "ci-l2-27-4", name: "Corporate Restructuring", order: 19 }
+      { id: "ci-l2-27-1", name: "Environmental, Social, and Governance (ESG) Considerations in Investment Analysis", order: 25 },
+      { id: "ci-l2-27-2", name: "Cost of Capital: Advanced Topics", order: 26 },
+      { id: "ci-l2-27-3", name: "Corporate Restructuring", order: 27 }
     ]
   },
   {
     id: "equity",
-    name: "Equity Investments",
+    name: "Equities",
     weight: "10-15%",
     color: "pink",
     modules: [
-      { id: "eq-l2-27-1", name: "Equity Valuation: Applications and Processes", order: 20 },
-      { id: "eq-l2-27-2", name: "Discounted Dividend Valuation", order: 21 },
-      { id: "eq-l2-27-3", name: "Free Cash Flow Valuation", order: 22 },
-      { id: "eq-l2-27-4", name: "Market-Based Valuation: Price and Enterprise Value Multiples", order: 23 },
-      { id: "eq-l2-27-5", name: "Residual Income Valuation", order: 24 },
-      { id: "eq-l2-27-6", name: "Private Company Valuation", order: 25 }
+      { id: "eq-l2-27-1", name: "Equity Valuation: Applications and Processes", order: 28 },
+      { id: "eq-l2-27-2", name: "Discounted Dividend Valuation", order: 29 },
+      { id: "eq-l2-27-3", name: "Free Cash Flow Valuation", order: 30 },
+      { id: "eq-l2-27-4", name: "Market-Based Valuation: Price and Enterprise Value Multiples", order: 31 },
+      { id: "eq-l2-27-5", name: "Residual Income Valuation", order: 32 },
+      { id: "eq-l2-27-6", name: "Private Company Valuation", order: 33 }
     ]
   },
   {
@@ -386,11 +402,11 @@ export const CURRICULUM_L2_2027: Subject[] = [
     weight: "10-15%",
     color: "rose",
     modules: [
-      { id: "fi-l2-27-1", name: "The Term Structure and Interest Rate Dynamics", order: 26 },
-      { id: "fi-l2-27-2", name: "The Arbitrage-Free Valuation Framework", order: 27 },
-      { id: "fi-l2-27-3", name: "Valuation and Analysis of Bonds with Embedded Options", order: 28 },
-      { id: "fi-l2-27-4", name: "Credit Analysis Models", order: 29 },
-      { id: "fi-l2-27-5", name: "Credit Default Swaps", order: 30 }
+      { id: "fi-l2-27-1", name: "The Term Structure & Interest Rate Dynamics", order: 34 },
+      { id: "fi-l2-27-2", name: "The Arbitrage-Free Valuation Framework", order: 35 },
+      { id: "fi-l2-27-3", name: "Valuation & Analysis of Bonds with Embedded Options", order: 36 },
+      { id: "fi-l2-27-4", name: "Credit Analysis Models", order: 37 },
+      { id: "fi-l2-27-5", name: "Credit Default Swaps", order: 38 }
     ]
   },
   {
@@ -399,8 +415,8 @@ export const CURRICULUM_L2_2027: Subject[] = [
     weight: "5-10%",
     color: "violet",
     modules: [
-      { id: "de-l2-27-1", name: "Pricing and Valuation of Forward Commitments", order: 31 },
-      { id: "de-l2-27-2", name: "Valuation of Contingent Claims", order: 32 }
+      { id: "de-l2-27-1", name: "Pricing & Valuation of Forward Commitments", order: 39 },
+      { id: "de-l2-27-2", name: "Valuation of Contingent Claims", order: 40 }
     ]
   },
   {
@@ -409,24 +425,25 @@ export const CURRICULUM_L2_2027: Subject[] = [
     weight: "5-10%",
     color: "amber",
     modules: [
-      { id: "ai-l2-27-1", name: "Introduction to Commodities and Commodity Derivatives", order: 33 },
-      { id: "ai-l2-27-2", name: "Overview of Types of Real Estate Investment", order: 34 },
-      { id: "ai-l2-27-3", name: "Investments in Real Estate Through Publicly Traded Securities", order: 35 },
-      { id: "ai-l2-27-4", name: "Hedge Fund Strategies", order: 36 }
+      { id: "ai-l2-27-1", name: "Introduction to Commodities & Commodity Derivatives", order: 41 },
+      { id: "ai-l2-27-2", name: "Overview of Types of Real Estate Investment", order: 42 },
+      { id: "ai-l2-27-3", name: "Investments in Real Estate Through Publicly Traded Securities", order: 43 },
+      { id: "ai-l2-27-4", name: "Hedge Fund Strategies", order: 44 },
+      { id: "ai-l2-27-5", name: "Private Equity Valuation", order: 45 }
     ]
   },
   {
     id: "portfolio",
-    name: "Portfolio Management",
+    name: "Portfolio Construction",
     weight: "10-15%",
     color: "teal",
     modules: [
-      { id: "pm-l2-27-1", name: "Economics and Investment Markets", order: 37 },
-      { id: "pm-l2-27-2", name: "Analysis of Active Portfolio Management", order: 38 },
-      { id: "pm-l2-27-3", name: "Exchange-Traded Funds: Mechanics and Applications", order: 39 },
-      { id: "pm-l2-27-4", name: "Using Multifactor Models", order: 40 },
-      { id: "pm-l2-27-5", name: "Measuring and Managing Market Risk", order: 41 },
-      { id: "pm-l2-27-6", name: "Backtesting and Simulation", order: 42 }
+      { id: "pm-l2-27-1", name: "Exchange-Traded Funds: Mechanics & Applications", order: 46 },
+      { id: "pm-l2-27-2", name: "Using Multifactor Models", order: 47 },
+      { id: "pm-l2-27-3", name: "Measuring & Managing Market Risk", order: 48 },
+      { id: "pm-l2-27-4", name: "Economics and Investment Markets", order: 49 },
+      { id: "pm-l2-27-5", name: "Analysis of Active Portfolio Management", order: 50 },
+      { id: "pm-l2-27-6", name: "Backtesting and Simulation", order: 51 }
     ]
   }
 ];
@@ -1102,20 +1119,20 @@ export const SAMPLE_QUESTIONS_L2_2027: Question[] = [
     id: "q-27-l2-ci-1",
     subjectId: "corporate",
     moduleId: "ci-l2-27-1",
-    question: "Which share repurchase method is characterized by a company offering to buy back a specific number of shares where shareholders specify the minimum price they are willing to accept?",
+    question: "Under the CFA Level II curriculum, which of the following is most accurate regarding the integration of ESG factors into the investment analysis process?",
     options: [
-      "Open market share repurchase",
-      "Dutch auction tender offer",
-      "Fixed-price tender offer",
-      "Direct negotiation repurchase"
+      "ESG factors are only relevant for designated socially responsible investment (SRI) funds.",
+      "Integrating ESG factors involves identifying and assessing material ESG risks and opportunities that may affect a company's performance.",
+      "ESG integration requires a mandate to sacrifice financial returns to achieve environmental goals.",
+      "ESG analysis is strictly qualitative and cannot be integrated into quantitative valuation models."
     ],
     correctAnswerIndex: 1,
-    explanation: "In a Dutch auction tender offer, the company specifies a price range and the number of shares it wants to repurchase. Shareholders submit bids indicating how many shares they are willing to sell and at what price. The company then determines the single lowest price that allows it to buy back the desired number of shares."
+    explanation: "ESG integration is the practice of systematically incorporating material ESG factors into investment analysis and decisions to better manage risk and improve long-term returns, without sacrificing performance."
   },
   {
     id: "q-27-l2-eq-1",
     subjectId: "equity",
-    moduleId: "eq-l2-27-1",
+    moduleId: "eq-l2-27-2",
     question: "Using the Gordon Growth Model, if a stock just paid a dividend (D0) of $2.00, has a required rate of return of 10%, and dividends are expected to grow at a constant rate of 6% forever, what is the intrinsic value?",
     options: ["$50.00", "$53.00", "$20.00", "$47.17"],
     correctAnswerIndex: 1,
@@ -1124,7 +1141,7 @@ export const SAMPLE_QUESTIONS_L2_2027: Question[] = [
   {
     id: "q-27-l2-fi-1",
     subjectId: "fixed",
-    moduleId: "fi-l2-27-1",
+    moduleId: "fi-l2-27-3",
     question: "For a callable bond, as interest rates decrease, the value of the embedded call option held by the issuer:",
     options: [
       "Decreases, causing the callable bond to outperform an otherwise identical straight bond.",
@@ -1166,7 +1183,7 @@ export const SAMPLE_QUESTIONS_L2_2027: Question[] = [
   {
     id: "q-27-l2-et-1",
     subjectId: "ethics",
-    moduleId: "et-l2-27-2",
+    moduleId: "et-l2-27-3",
     question: "Under the CFA Institute Standards of Professional Conduct, an analyst is permitted to use nonpublic and nonmaterial information in conjunction with public information to arrive at an investment thesis. This is known as:",
     options: [
       "The Material Information Doctrine",
