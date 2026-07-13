@@ -320,7 +320,7 @@ export default function Dashboard({
         {/* 1. Upper Metrics Dashboard Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1: Exam Countdown */}
-          <SpotlightCard className="bg-[var(--theme-card)] border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
+          <SpotlightCard className="bg-transparent border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
             <div>
               <div className="flex items-center gap-1.5 text-[10px] text-[var(--theme-text-main)] font-semibold uppercase tracking-wider opacity-70">
                 <Calendar size={12} className="text-rose-500" />
@@ -349,7 +349,7 @@ export default function Dashboard({
           </SpotlightCard>
 
           {/* Card 2: Total Study Time */}
-          <SpotlightCard className="bg-[var(--theme-card)] border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
+          <SpotlightCard className="bg-transparent border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
             {(() => {
               const studyLogs = activityLogs.filter(l => l.type === "study");
               const quizLogs = activityLogs.filter(l => l.type === "quiz");
@@ -388,7 +388,7 @@ export default function Dashboard({
           </SpotlightCard>
 
           {/* Card 3: Today's Effort */}
-          <SpotlightCard className="bg-[var(--theme-card)] border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
+          <SpotlightCard className="bg-transparent border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
             <div>
               <div className="flex items-center gap-1.5 text-[10px] text-[var(--theme-text-main)] font-semibold uppercase tracking-wider opacity-70">
                 <Activity size={12} className="text-emerald-500 animate-pulse" />
@@ -410,7 +410,7 @@ export default function Dashboard({
                   <svg className="w-full h-full transform -rotate-90" viewBox="0 0 32 32">
                     <circle cx="16" cy="16" r="13" className="stroke-[var(--theme-border)]/15 fill-none" strokeWidth="2.5" />
                     <circle 
-                      cx="16" cy="16" r="13" 
+                     cx="16" cy="16" r="13" 
                       className="stroke-emerald-500 fill-none transition-all duration-500 ease-out" 
                       strokeWidth="2.5" 
                       strokeDasharray={2 * Math.PI * 13} 
@@ -437,7 +437,7 @@ export default function Dashboard({
           </SpotlightCard>
 
           {/* Card 4: Syllabus Coverage */}
-          <SpotlightCard className="bg-[var(--theme-card)] border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
+          <SpotlightCard className="bg-transparent border border-[var(--theme-border)]/15 p-5 relative overflow-hidden transition-all duration-300 shadow-[var(--theme-shadow)] hover:shadow-[var(--theme-shadow-hover)] hover:-translate-y-[1.5px] flex flex-col justify-between min-h-[175px]" borderRadius="16px">
             <div>
               <div className="flex items-center gap-1.5 text-[10px] text-[var(--theme-text-main)] font-semibold uppercase tracking-wider opacity-70">
                 <BookOpen size={12} className="text-rose-400" />
