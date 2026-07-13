@@ -1,9 +1,90 @@
-import { Question, getExamYear, CURRICULUM_2026, CURRICULUM_2027 } from "../curriculum";
+import { Question, getExamYear, CURRICULUM_2026, CURRICULUM_2027, CURRICULUM_L2_2026, CURRICULUM_L2_2027 } from "../curriculum";
 
 // Standard Subject ID Mapping
 const SUBJECTS = ["quant", "econ", "portfolio", "corporate", "fsa", "equity", "fixed", "derivatives", "alt", "ethics"];
 
-export function getProceduralQuestion(subjectId: string, difficulty: string, targetExamDate?: string): Question {
+function getL2QuestionOverride(subjectId: string, difficulty: string, year: number): Omit<Question, "id"> | null {
+  const pattern = Math.floor(Math.random() * 2);
+  if (subjectId === "quant") {
+    if (pattern === 0) {
+      return {
+        subjectId: "quant",
+        moduleId: year === 2027 ? "qm-l2-27-1" : "qm-l2-1",
+        question: "In multiple linear regression, when independent variables are highly correlated with each other, which condition most likely exists?",
+        options: [
+          "Homoscedasticity",
+          "Multicollinearity",
+          "Positive serial correlation",
+          "Heteroscedasticity"
+        ],
+        correctAnswerIndex: 1,
+        explanation: "Multicollinearity occurs when two or more independent variables in a multiple regression model are highly correlated, leading to inflated standard errors of the regression coefficients."
+      };
+    } else {
+      return {
+        subjectId: "quant",
+        moduleId: year === 2027 ? "qm-l2-27-5" : "qm-l2-5",
+        question: "Which of the following models is most appropriate for a time-series with a prominent, constant trend?",
+        options: [
+          "First-differenced autoregressive (AR) model",
+          "Autoregressive conditional heteroscedasticity (ARCH) model",
+          "Linear trend model",
+          "Random walk with drift"
+        ],
+        correctAnswerIndex: 2,
+        explanation: "A linear trend model is suitable for a time-series that exhibits a stable, linear trend over time, represented as Yt = b0 + b1(t) + et."
+      };
+    }
+  }
+  if (subjectId === "fsa") {
+    return {
+      subjectId: "fsa",
+      moduleId: year === 2027 ? "fsa-l2-27-1" : "fsa-l2-1",
+      question: "Under IFRS 9, how are equity investments classified if the business model is to hold them for long-term strategic purposes rather than trading, with no recycling of gains?",
+      options: [
+        "Amortized Cost",
+        "Fair Value through Profit or Loss (FVTPL)",
+        "Fair Value through Other Comprehensive Income (FVOCI)",
+        "Held-to-Maturity (HTM)"
+      ],
+      correctAnswerIndex: 2,
+      explanation: "Under IFRS 9, an irrevocable option exists at inception to designate strategic equity investments as Fair Value through Other Comprehensive Income (FVOCI), where gains/losses are not recycled to the income statement upon sale."
+    };
+  }
+  if (subjectId === "equity") {
+    return {
+      subjectId: "equity",
+      moduleId: year === 2027 ? "eq-l2-27-3" : "eq-l2-1",
+      question: "Free Cash Flow to Firm (FCFF) is most accurately defined as the cash flow available to:",
+      options: [
+        "Common equity holders only.",
+        "All of the firm's capital providers, including debt holders and equity holders.",
+        "Preferred and common shareholders after paying interest and principal.",
+        "The firm's operating managers for capital expenditures."
+      ],
+      correctAnswerIndex: 1,
+      explanation: "FCFF is the cash flow from operations minus capital expenditures available to all providers of capital (both debt and equity) since interest payments have not been deducted (or are added back)."
+    };
+  }
+  if (subjectId === "fixed") {
+    return {
+      subjectId: "fixed",
+      moduleId: year === 2027 ? "fi-l2-27-3" : "fi-l2-3",
+      question: "In the valuation of a bond with an embedded put option, as interest rate volatility increases, the value of the put option and the value of the putable bond most likely:",
+      options: [
+        "Option value increases, bond value increases.",
+        "Option value decreases, bond value decreases.",
+        "Option value increases, bond value decreases.",
+        "Option value remains unchanged, bond value increases."
+      ],
+      correctAnswerIndex: 0,
+      explanation: "Since a putable bond is represented as Price_putable = Price_straight + Price_put, an increase in interest rate volatility increases the value of the embedded put option, which in turn increases the value of the putable bond."
+    };
+  }
+  return null;
+}
+
+export function getProceduralQuestion(subjectId: string, difficulty: string, targetExamDate?: string, cfaLevel?: number): Question {
   // If "all" is selected, choose a random subject
   const activeSubject = subjectId === "all" ? SUBJECTS[Math.floor(Math.random() * SUBJECTS.length)] : subjectId;
   const subjId = activeSubject || "quant";
@@ -47,8 +128,37 @@ export function getProceduralQuestion(subjectId: string, difficulty: string, tar
       break;
   }
 
-  // If 2027, map the 2026 moduleId to its corresponding 2027 moduleId
-  if (targetExamDate && getExamYear(targetExamDate) === 2027) {
+  const level = cfaLevel || 1;
+  const year = getExamYear(targetExamDate);
+
+  if (level === 2) {
+    // Check for custom Level 2 question override
+    const l2Override = getL2QuestionOverride(subjId, difficulty, year);
+    if (l2Override) {
+      quest = {
+        ...l2Override,
+        id: randomId
+      };
+    } else {
+      // Map generated L1 question modules to L2 modules so stats/progress track correctly
+      const subId = quest.subjectId;
+      const l1Subj = year === 2027 ? CURRICULUM_2027.find(s => s.id === subId) : CURRICULUM_2026.find(s => s.id === subId);
+      const l2Subj = year === 2027 ? CURRICULUM_L2_2027.find(s => s.id === subId) : CURRICULUM_L2_2026.find(s => s.id === subId);
+      
+      if (l1Subj && l2Subj) {
+        const idx = l1Subj.modules.findIndex(m => m.id === quest.moduleId);
+        if (idx !== -1) {
+          const mappedMod = l2Subj.modules[idx % l2Subj.modules.length];
+          if (mappedMod) {
+            quest.moduleId = mappedMod.id;
+          }
+        } else {
+          quest.moduleId = l2Subj.modules[0].id;
+        }
+      }
+    }
+  } else if (targetExamDate && year === 2027) {
+    // Level 1, Year 2027 mapping
     const subId = quest.subjectId;
     const subj2026 = CURRICULUM_2026.find(s => s.id === subId);
     const subj2027 = CURRICULUM_2027.find(s => s.id === subId);
