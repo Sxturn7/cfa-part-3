@@ -762,7 +762,7 @@ export default function Dashboard({
 
           {/* Growth Tree - Occupies 2 columns (Visually stunning interactive epicenter) */}
           <div className="lg:col-span-2">
-            <GrowthTree subjects={subjects} progress={progress} totalStudyTime={totalStudyMinutes} isDashboard={true} />
+            <GrowthTree subjects={subjects} progress={progress} totalStudyTime={totalStudyMinutes} isDashboard={true} cfaLevel={userProfile.cfaLevel || 1} />
           </div>
         </div>
 
@@ -943,6 +943,60 @@ export default function Dashboard({
                   <span className="text-[10px] text-[var(--theme-text-main)] opacity-60 block mt-1 leading-normal">
                     💡 Click anywhere on the calendar field above to easily select a custom target date.
                   </span>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[var(--theme-text-main)] uppercase tracking-wider opacity-75 mb-1.5 font-mono">
+                    CFA Exam Level Plan
+                  </label>
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nextLevel = 1;
+                        setUserProfile({ ...userProfile, cfaLevel: nextLevel });
+                        localStorage.setItem(`cfa_profile_${userProfile.email}`, JSON.stringify({
+                          ...userProfile,
+                          cfaLevel: nextLevel
+                        }));
+                        addNotification?.(
+                          "achievement",
+                          "Study Plan Adjusted",
+                          "Your curriculum and progress trackers have been successfully adapted to CFA Level I."
+                        );
+                      }}
+                      className={`p-4 rounded-xl border text-center transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                        (userProfile.cfaLevel || 1) === 1
+                          ? "bg-[var(--theme-accent-light)] border-[var(--theme-accent)] text-[var(--theme-accent)] font-black text-sm"
+                          : "bg-[var(--theme-card)] border border-[var(--theme-border)]/60 text-[var(--theme-text-dark)] opacity-70 hover:opacity-100 text-xs"
+                      }`}
+                    >
+                      <span>Level I</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nextLevel = 2;
+                        setUserProfile({ ...userProfile, cfaLevel: nextLevel });
+                        localStorage.setItem(`cfa_profile_${userProfile.email}`, JSON.stringify({
+                          ...userProfile,
+                          cfaLevel: nextLevel
+                        }));
+                        addNotification?.(
+                          "achievement",
+                          "Study Plan Adjusted",
+                          "Your curriculum and progress trackers have been successfully adapted to CFA Level II."
+                        );
+                      }}
+                      className={`p-4 rounded-xl border text-center transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                        (userProfile.cfaLevel || 1) === 2
+                          ? "bg-[var(--theme-accent-light)] border-[var(--theme-accent)] text-[var(--theme-accent)] font-black text-sm"
+                          : "bg-[var(--theme-card)] border border-[var(--theme-border)]/60 text-[var(--theme-text-dark)] opacity-70 hover:opacity-100 text-xs"
+                      }`}
+                    >
+                      <span>Level II</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
