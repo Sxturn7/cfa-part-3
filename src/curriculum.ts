@@ -186,6 +186,251 @@ export const CURRICULUM_2026: Subject[] = [
   }
 ];
 
+export const CURRICULUM_L2_2026: Subject[] = [
+  {
+    id: "quant",
+    name: "Quantitative Methods",
+    weight: "5-10%",
+    color: "emerald",
+    modules: [
+      { id: "qm-l2-1", name: "Basics of Multiple Regression and Underlying Assumptions", order: 1 },
+      { id: "qm-l2-2", name: "Evaluating Regression Model Fit and Interpreting Model Results", order: 2 },
+      { id: "qm-l2-3", name: "Model Misspecification", order: 3 },
+      { id: "qm-l2-4", name: "Extensions of Multiple Regression", order: 4 },
+      { id: "qm-l2-5", name: "Time-Series Analysis", order: 5 },
+      { id: "qm-l2-6", name: "Machine Learning (Note: One advanced LOS on neural networks removed in 2026)", order: 6 },
+      { id: "qm-l2-7", name: "Big Data Projects", order: 7 }
+    ]
+  },
+  {
+    id: "econ",
+    name: "Economics",
+    weight: "5-10%",
+    color: "blue",
+    modules: [
+      { id: "ec-l2-1", name: "Currency Exchange Rates: Understanding Equilibrium Value", order: 8 },
+      { id: "ec-l2-2", name: "Economic Growth", order: 9 }
+    ]
+  },
+  {
+    id: "fsa",
+    name: "Financial Statement Analysis",
+    weight: "10-15%",
+    color: "indigo",
+    modules: [
+      { id: "fsa-l2-1", name: "Intercorporate Investments", order: 10 },
+      { id: "fsa-l2-2", name: "Employee Compensation: Post-Employment and Share-Based", order: 11 },
+      { id: "fsa-l2-3", name: "Multinational Operations", order: 12 },
+      { id: "fsa-l2-4", name: "Analysis of Financial Institutions", order: 13 },
+      { id: "fsa-l2-5", name: "Evaluating Quality of Financial Reports", order: 14 },
+      { id: "fsa-l2-6", name: "Integration of Financial Statement Analysis Techniques", order: 15 }
+    ]
+  },
+  {
+    id: "corporate",
+    name: "Corporate Issuers",
+    weight: "5-10%",
+    color: "cyan",
+    modules: [
+      { id: "ci-l2-1", name: "Analysis of Dividends and Share Repurchases", order: 16 },
+      { id: "ci-l2-2", name: "Environmental, Social, and Governance (ESG) Considerations in Investment Analysis", order: 17 },
+      { id: "ci-l2-3", name: "Cost of Capital: Advanced Topics", order: 18 },
+      { id: "ci-l2-4", name: "Corporate Restructuring", order: 19 }
+    ]
+  },
+  {
+    id: "equity",
+    name: "Equity Investments",
+    weight: "10-15%",
+    color: "pink",
+    modules: [
+      { id: "eq-l2-1", name: "Equity Valuation: Applications and Processes", order: 20 },
+      { id: "eq-l2-2", name: "Discounted Dividend Valuation", order: 21 },
+      { id: "eq-l2-3", name: "Free Cash Flow Valuation", order: 22 },
+      { id: "eq-l2-4", name: "Market-Based Valuation: Price and Enterprise Value Multiples", order: 23 },
+      { id: "eq-l2-5", name: "Residual Income Valuation", order: 24 },
+      { id: "eq-l2-6", name: "Private Company Valuation", order: 25 }
+    ]
+  },
+  {
+    id: "fixed",
+    name: "Fixed Income",
+    weight: "10-15%",
+    color: "rose",
+    modules: [
+      { id: "fi-l2-1", name: "The Term Structure and Interest Rate Dynamics", order: 26 },
+      { id: "fi-l2-2", name: "The Arbitrage-Free Valuation Framework", order: 27 },
+      { id: "fi-l2-3", name: "Valuation and Analysis of Bonds with Embedded Options", order: 28 },
+      { id: "fi-l2-4", name: "Credit Analysis Models", order: 29 },
+      { id: "fi-l2-5", name: "Credit Default Swaps", order: 30 }
+    ]
+  },
+  {
+    id: "derivatives",
+    name: "Derivatives",
+    weight: "5-10%",
+    color: "violet",
+    modules: [
+      { id: "de-l2-1", name: "Pricing and Valuation of Forward Commitments", order: 31 },
+      { id: "de-l2-2", name: "Valuation of Contingent Claims", order: 32 }
+    ]
+  },
+  {
+    id: "alt",
+    name: "Alternative Investments",
+    weight: "5-10%",
+    color: "amber",
+    modules: [
+      { id: "ai-l2-1", name: "Introduction to Commodities and Commodity Derivatives", order: 33 },
+      { id: "ai-l2-2", name: "Overview of Types of Real Estate Investment", order: 34 },
+      { id: "ai-l2-3", name: "Investments in Real Estate Through Publicly Traded Securities", order: 35 },
+      { id: "ai-l2-4", name: "Hedge Fund Strategies", order: 36 }
+    ]
+  },
+  {
+    id: "portfolio",
+    name: "Portfolio Management",
+    weight: "10-15%",
+    color: "teal",
+    modules: [
+      { id: "pm-l2-1", name: "Economics and Investment Markets", order: 37 },
+      { id: "pm-l2-2", name: "Analysis of Active Portfolio Management", order: 38 },
+      { id: "pm-l2-3", name: "Exchange-Traded Funds: Mechanics and Applications", order: 39 },
+      { id: "pm-l2-4", name: "Using Multifactor Models", order: 40 },
+      { id: "pm-l2-5", name: "Measuring and Managing Market Risk", order: 41 },
+      { id: "pm-l2-6", name: "Backtesting and Simulation", order: 42 }
+    ]
+  },
+  {
+    id: "ethics",
+    name: "Ethical and Professional Standards",
+    weight: "10-15%",
+    color: "purple",
+    modules: [
+      { id: "et-l2-1", name: "Code of Ethics and Standards of Professional Conduct", order: 43 },
+      { id: "et-l2-2", name: "Guidance for Standards I–VII", order: 44 },
+      { id: "et-l2-3", name: "Application of the Code and Standards: Level II", order: 45 }
+    ]
+  }
+];
+
+export const CURRICULUM_L2_2027: Subject[] = [
+  {
+    id: "quant",
+    name: "Quantitative Methods",
+    weight: "5-10%",
+    color: "emerald",
+    modules: [
+      { id: "qm-l2-27-1", name: "Basics of Multiple Regression and Underlying Assumptions", order: 1 },
+      { id: "qm-l2-27-2", name: "Evaluating Regression Model Fit and Interpreting Model Results", order: 2 },
+      { id: "qm-l2-27-3", name: "Model Misspecification", order: 3 },
+      { id: "qm-l2-27-4", name: "Extensions of Multiple Regression", order: 4 },
+      { id: "qm-l2-27-5", name: "Time-Series Analysis", order: 5 },
+      { id: "qm-l2-27-6", name: "Machine Learning", order: 6 },
+      { id: "qm-l2-27-7", name: "Big Data Projects", order: 7 }
+    ]
+  },
+  {
+    id: "econ",
+    name: "Economics",
+    weight: "5-10%",
+    color: "blue",
+    modules: [
+      { id: "ec-l2-27-1", name: "Currency Exchange Rates: Understanding Equilibrium Value", order: 8 },
+      { id: "ec-l2-27-2", name: "Economic Growth", order: 9 }
+    ]
+  },
+  {
+    id: "fsa",
+    name: "Financial Statement Analysis",
+    weight: "10-15%",
+    color: "indigo",
+    modules: [
+      { id: "fsa-l2-27-1", name: "Intercorporate Investments", order: 10 },
+      { id: "fsa-l2-27-2", name: "Employee Compensation: Post-Employment and Share-Based", order: 11 },
+      { id: "fsa-l2-27-3", name: "Multinational Operations", order: 12 },
+      { id: "fsa-l2-27-4", name: "Analysis of Financial Institutions", order: 13 },
+      { id: "fsa-l2-27-5", name: "Evaluating Quality of Financial Reports", order: 14 },
+      { id: "fsa-l2-27-6", name: "Integration of Financial Statement Analysis Techniques", order: 15 }
+    ]
+  },
+  {
+    id: "corporate",
+    name: "Corporate Issuers",
+    weight: "5-10%",
+    color: "cyan",
+    modules: [
+      { id: "ci-l2-27-1", name: "Analysis of Dividends and Share Repurchases", order: 16 },
+      { id: "ci-l2-27-2", name: "Environmental, Social, and Governance (ESG) Considerations in Investment Analysis", order: 17 },
+      { id: "ci-l2-27-3", name: "Cost of Capital: Advanced Topics", order: 18 },
+      { id: "ci-l2-27-4", name: "Corporate Restructuring", order: 19 }
+    ]
+  },
+  {
+    id: "equity",
+    name: "Equity Investments",
+    weight: "10-15%",
+    color: "pink",
+    modules: [
+      { id: "eq-l2-27-1", name: "Equity Valuation: Applications and Processes", order: 20 },
+      { id: "eq-l2-27-2", name: "Discounted Dividend Valuation", order: 21 },
+      { id: "eq-l2-27-3", name: "Free Cash Flow Valuation", order: 22 },
+      { id: "eq-l2-27-4", name: "Market-Based Valuation: Price and Enterprise Value Multiples", order: 23 },
+      { id: "eq-l2-27-5", name: "Residual Income Valuation", order: 24 },
+      { id: "eq-l2-27-6", name: "Private Company Valuation", order: 25 }
+    ]
+  },
+  {
+    id: "fixed",
+    name: "Fixed Income",
+    weight: "10-15%",
+    color: "rose",
+    modules: [
+      { id: "fi-l2-27-1", name: "The Term Structure and Interest Rate Dynamics", order: 26 },
+      { id: "fi-l2-27-2", name: "The Arbitrage-Free Valuation Framework", order: 27 },
+      { id: "fi-l2-27-3", name: "Valuation and Analysis of Bonds with Embedded Options", order: 28 },
+      { id: "fi-l2-27-4", name: "Credit Analysis Models", order: 29 },
+      { id: "fi-l2-27-5", name: "Credit Default Swaps", order: 30 }
+    ]
+  },
+  {
+    id: "derivatives",
+    name: "Derivatives",
+    weight: "5-10%",
+    color: "violet",
+    modules: [
+      { id: "de-l2-27-1", name: "Pricing and Valuation of Forward Commitments", order: 31 },
+      { id: "de-l2-27-2", name: "Valuation of Contingent Claims", order: 32 }
+    ]
+  },
+  {
+    id: "alt",
+    name: "Alternative Investments",
+    weight: "5-10%",
+    color: "amber",
+    modules: [
+      { id: "ai-l2-27-1", name: "Introduction to Commodities and Commodity Derivatives", order: 33 },
+      { id: "ai-l2-27-2", name: "Overview of Types of Real Estate Investment", order: 34 },
+      { id: "ai-l2-27-3", name: "Investments in Real Estate Through Publicly Traded Securities", order: 35 },
+      { id: "ai-l2-27-4", name: "Hedge Fund Strategies", order: 36 }
+    ]
+  },
+  {
+    id: "portfolio",
+    name: "Portfolio Management",
+    weight: "10-15%",
+    color: "teal",
+    modules: [
+      { id: "pm-l2-27-1", name: "Economics and Investment Markets", order: 37 },
+      { id: "pm-l2-27-2", name: "Analysis of Active Portfolio Management", order: 38 },
+      { id: "pm-l2-27-3", name: "Exchange-Traded Funds: Mechanics and Applications", order: 39 },
+      { id: "pm-l2-27-4", name: "Using Multifactor Models", order: 40 },
+      { id: "pm-l2-27-5", name: "Measuring and Managing Market Risk", order: 41 },
+      { id: "pm-l2-27-6", name: "Backtesting and Simulation", order: 42 }
+    ]
+  }
+];
+
 export const CURRICULUM_2027: Subject[] = [
   {
     id: "quant",
@@ -383,8 +628,13 @@ export function getExamYear(targetExamDate?: string): number {
   }
 }
 
-export function getCurriculum(targetExamDate?: string): Subject[] {
-  return getExamYear(targetExamDate) === 2027 ? CURRICULUM_2027 : CURRICULUM_2026;
+export function getCurriculum(targetExamDate?: string, cfaLevel?: number): Subject[] {
+  const level = cfaLevel || 1;
+  const year = getExamYear(targetExamDate);
+  if (level === 2) {
+    return year === 2027 ? CURRICULUM_L2_2027 : CURRICULUM_L2_2026;
+  }
+  return year === 2027 ? CURRICULUM_2027 : CURRICULUM_2026;
 }
 
 export const FLAT_MODULES_2026 = CURRICULUM_2026.flatMap(subj => 
@@ -407,17 +657,47 @@ export const FLAT_MODULES_2027 = CURRICULUM_2027.flatMap(subj =>
   }))
 );
 
-export function getFlatModules(targetExamDate?: string) {
-  return getExamYear(targetExamDate) === 2027 ? FLAT_MODULES_2027 : FLAT_MODULES_2026;
+export const FLAT_MODULES_L2_2026 = CURRICULUM_L2_2026.flatMap(subj => 
+  subj.modules.map(mod => ({
+    ...mod,
+    subjectId: subj.id,
+    subjectName: subj.name,
+    color: subj.color,
+    weight: subj.weight
+  }))
+);
+
+export const FLAT_MODULES_L2_2027 = CURRICULUM_L2_2027.flatMap(subj => 
+  subj.modules.map(mod => ({
+    ...mod,
+    subjectId: subj.id,
+    subjectName: subj.name,
+    color: subj.color,
+    weight: subj.weight
+  }))
+);
+
+export function getFlatModules(targetExamDate?: string, cfaLevel?: number) {
+  const level = cfaLevel || 1;
+  const year = getExamYear(targetExamDate);
+  if (level === 2) {
+    return year === 2027 ? FLAT_MODULES_L2_2027 : FLAT_MODULES_L2_2026;
+  }
+  return year === 2027 ? FLAT_MODULES_2027 : FLAT_MODULES_2026;
 }
 
-export function getModuleById(id: string, targetExamDate?: string) {
-  const flatModules = getFlatModules(targetExamDate);
+export function getModuleById(id: string, targetExamDate?: string, cfaLevel?: number) {
+  const flatModules = getFlatModules(targetExamDate, cfaLevel);
   const found = flatModules.find(m => m.id === id);
   if (found) return found;
   
   // Search fallback
-  const allFlat = [...FLAT_MODULES_2026, ...FLAT_MODULES_2027];
+  const allFlat = [
+    ...FLAT_MODULES_2026, 
+    ...FLAT_MODULES_2027,
+    ...FLAT_MODULES_L2_2026,
+    ...FLAT_MODULES_L2_2027
+  ];
   return allFlat.find(m => m.id === id);
 }
 
@@ -651,8 +931,261 @@ export const SAMPLE_QUESTIONS_2027: Question[] = [
   }
 ];
 
+export const SAMPLE_QUESTIONS_L2_2026: Question[] = [
+  {
+    id: "q-l2-qm-1",
+    subjectId: "quant",
+    moduleId: "qm-l2-1",
+    question: "An analyst runs a multiple regression model and calculates a Durbin-Watson statistic of 0.55. This value most likely indicates:",
+    options: [
+      "No serial correlation in the regression residuals.",
+      "Significant positive serial correlation in the residuals.",
+      "Significant negative serial correlation in the residuals.",
+      "Extreme multicollinearity among the independent variables."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "A Durbin-Watson statistic near 2.0 indicates no serial correlation. A value significantly below 2.0 (like 0.55) indicates positive serial correlation, whereas a value significantly above 2.0 indicates negative serial correlation."
+  },
+  {
+    id: "q-l2-ec-1",
+    subjectId: "econ",
+    moduleId: "ec-l2-1",
+    question: "Under the Uncovered Interest Rate Parity (UIP) theory, if the nominal interest rate is 5% in Country A and 2% in Country B, the currency of Country A is expected to:",
+    options: [
+      "Appreciate by approximately 3% against Country B's currency.",
+      "Depreciate by approximately 3% against Country B's currency.",
+      "Remain stable because of arbitrage equilibrium.",
+      "Depreciate by exactly 5% due to inflation differentials."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "According to UIP, the currency of the country with the higher interest rate (Country A, 5%) is expected to depreciate relative to the currency of the country with the lower interest rate (Country B, 2%) by approximately the interest rate differential (5% - 2% = 3%)."
+  },
+  {
+    id: "q-l2-fsa-1",
+    subjectId: "fsa",
+    moduleId: "fsa-l2-1",
+    question: "Under the equity method of accounting for an intercorporate investment, which of the following best describes the effect of receiving a cash dividend from the investee?",
+    options: [
+      "It increases the investor's net income for the period.",
+      "It has no effect on the investment account on the balance sheet.",
+      "It decreases the investment account asset on the balance sheet.",
+      "It is recorded as an increase in interest income."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Under the equity method, cash dividends received from the investee are treated as a return of capital, which reduces the carrying value of the investment asset on the investor's balance sheet. Net income is only affected by the investor's share of the investee's earnings, not by dividends."
+  },
+  {
+    id: "q-l2-ci-1",
+    subjectId: "corporate",
+    moduleId: "ci-l2-1",
+    question: "Which share repurchase method is characterized by a company offering to buy back a specific number of shares where shareholders specify the minimum price they are willing to accept?",
+    options: [
+      "Open market share repurchase",
+      "Dutch auction tender offer",
+      "Fixed-price tender offer",
+      "Direct negotiation repurchase"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "In a Dutch auction tender offer, the company specifies a price range and the number of shares it wants to repurchase. Shareholders submit bids indicating how many shares they are willing to sell and at what price. The company then determines the single lowest price that allows it to buy back the desired number of shares."
+  },
+  {
+    id: "q-l2-eq-1",
+    subjectId: "equity",
+    moduleId: "eq-l2-2",
+    question: "Using the Gordon Growth Model, if a stock just paid a dividend (D0) of $2.00, has a required rate of return of 10%, and dividends are expected to grow at a constant rate of 6% forever, what is the intrinsic value?",
+    options: ["$50.00", "$53.00", "$20.00", "$47.17"],
+    correctAnswerIndex: 1,
+    explanation: "V0 = D1 / (r - g) = [D0 * (1 + g)] / (r - g) = [$2.00 * (1.06)] / (0.10 - 0.06) = $2.12 / 0.04 = $53.00."
+  },
+  {
+    id: "q-l2-fi-1",
+    subjectId: "fixed",
+    moduleId: "fi-l2-3",
+    question: "For a callable bond, as interest rates decrease, the value of the embedded call option held by the issuer:",
+    options: [
+      "Decreases, causing the callable bond to outperform an otherwise identical straight bond.",
+      "Increases, putting a ceiling on the callable bond's price appreciation.",
+      "Remains constant since the option strike price is fixed.",
+      "Decreases, which increases the option adjusted spread (OAS)."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "As interest rates fall, the value of the call option to the issuer increases because the issuer can refinance at lower rates. This increases option value, which reduces the value of the callable bond (Price_callable = Price_straight - Price_call), capping price appreciation."
+  },
+  {
+    id: "q-l2-de-1",
+    subjectId: "derivatives",
+    moduleId: "de-l2-1",
+    question: "Which of the following is most accurate regarding the difference between the pricing and valuation of a forward commitment?",
+    options: [
+      "Pricing remains constant throughout the contract, whereas value changes as spot prices move.",
+      "Pricing changes daily with market parameters, while value remains at zero.",
+      "Both pricing and valuation remain constant over the life of the contract.",
+      "Value is determined at inception, whereas pricing is determined at maturity."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The forward price (pricing) is fixed at inception and remains constant. The value of the contract is zero at inception but fluctuates during the contract's life as market spot prices and interest rates change."
+  },
+  {
+    id: "q-l2-ai-1",
+    subjectId: "alt",
+    moduleId: "ai-l2-4",
+    question: "A hedge fund that takes long positions in undervalued equities and short positions in overvalued equities within the same sector to eliminate systematic market risk is utilizing which strategy?",
+    options: [
+      "Distressed securities strategy",
+      "Global macro strategy",
+      "Equity market neutral strategy",
+      "Merger arbitrage strategy"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "An equity market neutral strategy seeks to eliminate systematic market risk (beta) by matching long and short exposures in undervalued and overvalued stocks, typically within similar sectors or industries, to profit purely from stock selection."
+  },
+  {
+    id: "q-l2-et-1",
+    subjectId: "ethics",
+    moduleId: "et-l2-2",
+    question: "Under the CFA Institute Standards of Professional Conduct, an analyst is permitted to use nonpublic and nonmaterial information in conjunction with public information to arrive at an investment thesis. This is known as:",
+    options: [
+      "The Material Information Doctrine",
+      "The Mosaic Theory",
+      "The Plagiarism Safe Harbor",
+      "The Fair Dealing Exception"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The Mosaic Theory allows CFA charterholders and candidates to use nonpublic, nonmaterial information alongside public material information to build a comprehensive investment analysis without violating Standard II(A) Material Nonpublic Information."
+  }
+];
+
+export const SAMPLE_QUESTIONS_L2_2027: Question[] = [
+  {
+    id: "q-27-l2-qm-1",
+    subjectId: "quant",
+    moduleId: "qm-l2-27-1",
+    question: "An analyst runs a multiple regression model and calculates a Durbin-Watson statistic of 0.55. This value most likely indicates:",
+    options: [
+      "No serial correlation in the regression residuals.",
+      "Significant positive serial correlation in the residuals.",
+      "Significant negative serial correlation in the residuals.",
+      "Extreme multicollinearity among the independent variables."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "A Durbin-Watson statistic near 2.0 indicates no serial correlation. A value significantly below 2.0 (like 0.55) indicates positive serial correlation, whereas a value significantly above 2.0 indicates negative serial correlation."
+  },
+  {
+    id: "q-27-l2-ec-1",
+    subjectId: "econ",
+    moduleId: "ec-l2-27-1",
+    question: "Under the Uncovered Interest Rate Parity (UIP) theory, if the nominal interest rate is 5% in Country A and 2% in Country B, the currency of Country A is expected to:",
+    options: [
+      "Appreciate by approximately 3% against Country B's currency.",
+      "Depreciate by approximately 3% against Country B's currency.",
+      "Remain stable because of arbitrage equilibrium.",
+      "Depreciate by exactly 5% due to inflation differentials."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "According to UIP, the currency of the country with the higher interest rate (Country A, 5%) is expected to depreciate relative to the currency of the country with the lower interest rate (Country B, 2%) by approximately the interest rate differential (5% - 2% = 3%):"
+  },
+  {
+    id: "q-27-l2-fsa-1",
+    subjectId: "fsa",
+    moduleId: "fsa-l2-27-1",
+    question: "Under the equity method of accounting for an intercorporate investment, which of the following best describes the effect of receiving a cash dividend from the investee?",
+    options: [
+      "It increases the investor's net income for the period.",
+      "It has no effect on the investment account on the balance sheet.",
+      "It decreases the investment account asset on the balance sheet.",
+      "It is recorded as an increase in interest income."
+    ],
+    correctAnswerIndex: 2,
+    explanation: "Under the equity method, cash dividends received from the investee are treated as a return of capital, which reduces the carrying value of the investment asset on the investor's balance sheet. Net income is only affected by the investor's share of the investee's earnings, not by dividends."
+  },
+  {
+    id: "q-27-l2-ci-1",
+    subjectId: "corporate",
+    moduleId: "ci-l2-27-1",
+    question: "Which share repurchase method is characterized by a company offering to buy back a specific number of shares where shareholders specify the minimum price they are willing to accept?",
+    options: [
+      "Open market share repurchase",
+      "Dutch auction tender offer",
+      "Fixed-price tender offer",
+      "Direct negotiation repurchase"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "In a Dutch auction tender offer, the company specifies a price range and the number of shares it wants to repurchase. Shareholders submit bids indicating how many shares they are willing to sell and at what price. The company then determines the single lowest price that allows it to buy back the desired number of shares."
+  },
+  {
+    id: "q-27-l2-eq-1",
+    subjectId: "equity",
+    moduleId: "eq-l2-27-1",
+    question: "Using the Gordon Growth Model, if a stock just paid a dividend (D0) of $2.00, has a required rate of return of 10%, and dividends are expected to grow at a constant rate of 6% forever, what is the intrinsic value?",
+    options: ["$50.00", "$53.00", "$20.00", "$47.17"],
+    correctAnswerIndex: 1,
+    explanation: "V0 = D1 / (r - g) = [D0 * (1 + g)] / (r - g) = [$2.00 * (1.06)] / (0.10 - 0.06) = $2.12 / 0.04 = $53.00."
+  },
+  {
+    id: "q-27-l2-fi-1",
+    subjectId: "fixed",
+    moduleId: "fi-l2-27-1",
+    question: "For a callable bond, as interest rates decrease, the value of the embedded call option held by the issuer:",
+    options: [
+      "Decreases, causing the callable bond to outperform an otherwise identical straight bond.",
+      "Increases, putting a ceiling on the callable bond's price appreciation.",
+      "Remains constant since the option strike price is fixed.",
+      "Decreases, which increases the option adjusted spread (OAS)."
+    ],
+    correctAnswerIndex: 1,
+    explanation: "As interest rates fall, the value of the call option to the issuer increases because the issuer can refinance at lower rates. This increases option value, which reduces the value of the callable bond (Price_callable = Price_straight - Price_call), capping price appreciation."
+  },
+  {
+    id: "q-27-l2-de-1",
+    subjectId: "derivatives",
+    moduleId: "de-l2-27-1",
+    question: "Which of the following is most accurate regarding the difference between the pricing and valuation of a forward commitment?",
+    options: [
+      "Pricing remains constant throughout the contract, whereas value changes as spot prices move.",
+      "Pricing changes daily with market parameters, while value remains at zero.",
+      "Both pricing and valuation remain constant over the life of the contract.",
+      "Value is determined at inception, whereas pricing is determined at maturity."
+    ],
+    correctAnswerIndex: 0,
+    explanation: "The forward price (pricing) is fixed at inception and remains constant. The value of the contract is zero at inception but fluctuates during the contract's life as market spot prices and interest rates change."
+  },
+  {
+    id: "q-27-l2-ai-1",
+    subjectId: "alt",
+    moduleId: "ai-l2-27-4",
+    question: "A hedge fund that takes long positions in undervalued equities and short positions in overvalued equities within the same sector to eliminate systematic market risk is utilizing which strategy?",
+    options: [
+      "Distressed securities strategy",
+      "Global macro strategy",
+      "Equity market neutral strategy",
+      "Merger arbitrage strategy"
+    ],
+    correctAnswerIndex: 2,
+    explanation: "An equity market neutral strategy seeks to eliminate systematic market risk (beta) by matching long and short exposures in undervalued and overvalued stocks, typically within similar sectors or industries, to profit purely from stock selection."
+  },
+  {
+    id: "q-27-l2-et-1",
+    subjectId: "ethics",
+    moduleId: "et-l2-27-2",
+    question: "Under the CFA Institute Standards of Professional Conduct, an analyst is permitted to use nonpublic and nonmaterial information in conjunction with public information to arrive at an investment thesis. This is known as:",
+    options: [
+      "The Material Information Doctrine",
+      "The Mosaic Theory",
+      "The Plagiarism Safe Harbor",
+      "The Fair Dealing Exception"
+    ],
+    correctAnswerIndex: 1,
+    explanation: "The Mosaic Theory allows CFA charterholders and candidates to use nonpublic, nonmaterial information alongside public material information to build a comprehensive investment analysis without violating Standard II(A) Material Nonpublic Information."
+  }
+];
+
 export const SAMPLE_QUESTIONS = SAMPLE_QUESTIONS_2026;
 
-export function getSampleQuestions(targetExamDate?: string): Question[] {
-  return getExamYear(targetExamDate) === 2027 ? SAMPLE_QUESTIONS_2027 : SAMPLE_QUESTIONS_2026;
+export function getSampleQuestions(targetExamDate?: string, cfaLevel?: number): Question[] {
+  const level = cfaLevel || 1;
+  const year = getExamYear(targetExamDate);
+  if (level === 2) {
+    return year === 2027 ? SAMPLE_QUESTIONS_L2_2027 : SAMPLE_QUESTIONS_L2_2026;
+  }
+  return year === 2027 ? SAMPLE_QUESTIONS_2027 : SAMPLE_QUESTIONS_2026;
 }
