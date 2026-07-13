@@ -244,7 +244,7 @@ export default function StudyCalendar({
         <div>
           <h2 className="text-xl font-semibold text-[var(--theme-text-dark)] tracking-tight">Curriculum Calendar</h2>
           <p className="text-xs text-[var(--theme-text-main)] mt-1.5 opacity-75 max-w-xl leading-relaxed">
-            Map out milestones, assign progress states, and log study cycles to coordinate your Level I review timeline.
+            Map out milestones, assign progress states, and log study cycles to coordinate your Level {userProfile.cfaLevel === 2 ? "II" : "I"} review timeline.
           </p>
         </div>
         
