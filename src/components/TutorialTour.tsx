@@ -46,6 +46,7 @@ interface TutorialTourProps {
   activeTab: "dashboard" | "curriculum" | "quiz" | "growth" | "calendar" | "flashcards" | "todo";
   currentTheme: AppTheme;
   onThemeChange: (theme: AppTheme) => void;
+  cfaLevel?: number;
 }
 
 interface TourStep {
@@ -58,7 +59,7 @@ interface TourStep {
   actionTip: string;
 }
 
-export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab, currentTheme, onThemeChange }: TutorialTourProps) {
+export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab, currentTheme, onThemeChange, cfaLevel = 1 }: TutorialTourProps) {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
 
@@ -69,7 +70,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       title: "WELCOME TO AAERA! 🚀",
       icon: <Sparkles size={20} />,
       iconColor: "text-amber-500",
-      text: "AAERA is your personal companion for mastering the CFA Level I curriculum through structured planning, progress tracking, and focused revision. Built around five core pillars, Aim • Analyze • Execute • Reflect • Elevate, it helps you stay organized, strengthen your understanding, and build consistent momentum every day. From your first module to exam day, AAERA keeps your preparation focused, measurable, and moving forward.",
+      text: `AAERA is your personal companion for mastering the CFA Level ${cfaLevel === 2 ? "II" : "I"} curriculum through structured planning, progress tracking, and focused revision. Built around five core pillars, Aim • Analyze • Execute • Reflect • Elevate, it helps you stay organized, strengthen your understanding, and build consistent momentum every day. From your first module to exam day, AAERA keeps your preparation focused, measurable, and moving forward.`,
       actionTip: "Tip: Complete the workspace tour to discover everything AAERA has to offer."
     },
     {
@@ -87,7 +88,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       title: "ACTIVE CURRICULUM NOTES 📚",
       icon: <BookOpen size={20} />,
       iconColor: "text-emerald-500",
-      text: "The Curriculum is organized into all 93 CFA Level I readings, making it easy to study one topic at a time. Mark each reading as Active, Review, or Completed, keep your personal notes alongside every module, and pick up exactly where you left off across all your devices.",
+      text: "The Curriculum is organized into your active CFA syllabus readings, making it easy to study one topic at a time. Mark each reading as Active, Review, or Completed, keep your personal notes alongside every module, and pick up exactly where you left off across all your devices.",
       actionTip: "Tip: Update the status of each reading as you progress to maintain an accurate view of your syllabus coverage."
     },
     {
@@ -96,7 +97,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       title: "ADAPTIVE PRACTICE QUIZZES ✍️",
       icon: <HelpCircle size={20} />,
       iconColor: "text-violet-500",
-      text: "Generate personalized quizzes for any CFA Level I topic and challenge yourself at the right difficulty. Every question includes detailed explanations and step by step solutions to help you learn from every attempt.",
+      text: "Generate personalized quizzes for any CFA curriculum topic and challenge yourself at the right difficulty. Every question includes detailed explanations and step by step solutions to help you learn from every attempt.",
       actionTip: "Tip: Use Practice Quizzes after completing each reading to measure retention and build confidence before revision."
     },
     {
@@ -105,7 +106,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       title: "KNOWLEDGE TREE 🌳",
       icon: <TrendingUp size={20} />,
       iconColor: "text-teal-500",
-      text: "Visualize your progress as you work through the CFA Level I curriculum. Every completed reading, quiz, and milestone contributes to the growth of your Knowledge Tree, giving you a clear picture of how far you've come and what still lies ahead.",
+      text: "Visualize your progress as you work through your active CFA curriculum. Every completed reading, quiz, and milestone contributes to the growth of your Knowledge Tree, giving you a clear picture of how far you've come and what still lies ahead.",
       actionTip: "Tip: Visit your Knowledge Tree regularly to monitor your progress and celebrate every milestone."
     },
     {
@@ -114,7 +115,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
       title: "SMART STUDY CALENDAR 📅",
       icon: <Calendar size={20} />,
       iconColor: "text-rose-500",
-      text: "Build a personalized study plan in seconds. Simply enter your target exam date, and AAERA automatically schedules all 93 CFA Level I readings across your available study days. Your plan updates dynamically, helping you stay consistent while leaving enough time for revision before exam day.",
+      text: "Build a personalized study plan in seconds. Simply enter your target exam date, and AAERA automatically schedules all active CFA readings across your available study days. Your plan updates dynamically, helping you stay consistent while leaving enough time for revision before exam day.",
       actionTip: "Tip: Keep your target exam date up to date so your study schedule remains accurate and balanced."
     },
     {
