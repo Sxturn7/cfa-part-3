@@ -240,6 +240,90 @@ const DEFAULT_FLASHCARDS: Flashcard[] = [
   }
 ];
 
+// High-yield preloaded CFA Level II flashcards (10 premium cards matching provided syllabus)
+const DEFAULT_L2_FLASHCARDS: Flashcard[] = [
+  {
+    id: "pre_l2_quant_1",
+    moduleId: "quant",
+    front: "What are the key assumptions of Multiple Linear Regression?",
+    back: "1. Linearity: Relationship between Y and X's is linear.\n2. Homoscedasticity: Variance of residuals is constant.\n3. Independence: Residuals are uncorrelated (no serial correlation).\n4. Normality: Residuals are normally distributed.\n5. No multicollinearity: Independent variables are not perfectly correlated.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_econ_1",
+    moduleId: "econ",
+    front: "What is the formula for the Forward Premium or Discount?",
+    back: "Forward Premium / Discount = (F - S0) / S0\n\nWhere:\n• F = Forward exchange rate\n• S0 = Spot exchange rate\n\nIf positive, the base currency trades at a forward premium. If negative, it trades at a forward discount.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_fsa_1",
+    moduleId: "fsa",
+    front: "Compare Equity Method vs Consolidation Method.",
+    back: "• Equity Method (Significant Influence, 20%-50%): Investor reports its share of investee's earnings on a single line in income statement and balance sheet (Investment in Associate).\n• Consolidation (Control, >50%): Investor combines all revenues, expenses, assets, and liabilities of the investee, reporting a Non-Controlling Interest (NCI) for the portion not owned.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_corporate_1",
+    moduleId: "corporate",
+    front: "What are the main types of Corporate Restructurings?",
+    back: "1. Divestitures: Selling a business unit.\n2. Spin-offs: Creating a new independent company with shares distributed to existing shareholders.\n3. Equity Carve-outs: Selling shares of a subsidiary to the public.\n4. Split-offs: Shareholders exchange parent shares for subsidiary shares.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_equity_1",
+    moduleId: "equity",
+    front: "What is Free Cash Flow to Equity (FCFE) starting from FCFF?",
+    back: "FCFE = FCFF - Int * (1 - Tax Rate) + Net Borrowing\n\nWhere:\n• Net Borrowing = Debt Issued - Debt Repaid\n\nFCFE represents cash available to common shareholders after all operating expenses, taxes, working capital, CapEx, and net debt transactions are settled.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_fixed_1",
+    moduleId: "fixed",
+    front: "What is Credit Default Swap (CDS) and how does it work?",
+    back: "A CDS is a financial derivative that transfers credit risk from the protection buyer to the protection seller.\n• Buyer pays a periodic premium (CDS spread).\n• Seller agrees to pay the face value of the reference obligation if a credit event (default, restructuring, failure to pay) occurs.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_derivatives_1",
+    moduleId: "derivatives",
+    front: "What are the pricing formulas for Forward Contracts?",
+    back: "Forward Price (F0) = S0 * (1 + r)^T\n\nWith cash dividends (D) or costs (θ):\nF0 = (S0 - PV_div) * (1 + r)^T\nF0 = (S0 + PV_costs) * (1 + r)^T",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_alt_1",
+    moduleId: "alt",
+    front: "Explain the types of Real Estate Investment Trusts (REITs).",
+    back: "1. Equity REITs: Own and manage income-producing real estate properties (e.g. offices, apartments).\n2. Mortgage REITs: Provide financing for real estate by purchasing or originating mortgages.\n3. Hybrid REITs: Engage in both owning properties and holding mortgages.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_portfolio_1",
+    moduleId: "portfolio",
+    front: "What is the key difference between Macro and Micro Attribution?",
+    back: "• Macro Attribution: Carried out at the sponsor level. Evaluates the impact of asset allocation decisions (policy weights vs actual weights).\n• Micro Attribution: Carried out at the manager level. Evaluates the value added by security selection within specific asset classes.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  },
+  {
+    id: "pre_l2_ethics_1",
+    moduleId: "ethics",
+    front: "What are the requirements for soft commission / soft dollar practices?",
+    back: "Under Standard III(A) Loyalty, Prudence, and Care, soft commissions must directly benefit the client. Research purchased must be used to aid in the investment decision-making process for the client, and must be fully disclosed.",
+    box: 1,
+    nextReview: new Date().toISOString()
+  }
+];
+
 interface FlashcardsPaneProps {
   userProfile: UserProfile;
   setUserProfile: (profile: UserProfile) => void;
@@ -249,7 +333,9 @@ interface FlashcardsPaneProps {
 export default function FlashcardsPane({ userProfile, setUserProfile, subjects }: FlashcardsPaneProps) {
   // Combine preloaded default flashcards and custom candidate ones
   const customCards = userProfile.customFlashcards || [];
-  const allCards = [...DEFAULT_FLASHCARDS, ...customCards];
+  const activeLevel = userProfile.cfaLevel || 1;
+  const defaultCards = activeLevel === 2 ? DEFAULT_L2_FLASHCARDS : DEFAULT_FLASHCARDS;
+  const allCards = [...defaultCards, ...customCards];
 
   // Subject options
   const subjectList = [
@@ -388,7 +474,7 @@ export default function FlashcardsPane({ userProfile, setUserProfile, subjects }
         <div>
           <h2 className="text-xl font-semibold text-[var(--theme-text-dark)] tracking-tight">Active Recall Review</h2>
           <p className="text-xs text-[var(--theme-text-main)] mt-1.5 opacity-75 max-w-xl leading-relaxed">
-            Review core CFA Level I formulas, definitions, and high-yield concepts using spaced repetition and active recall.
+            Review core CFA Level {userProfile.cfaLevel === 2 ? "II" : "I"} formulas, definitions, and high-yield concepts using spaced repetition and active recall.
           </p>
         </div>
 
