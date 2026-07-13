@@ -29,19 +29,20 @@ export default function SpotlightCard({
 
   // Extract padding, background, and borders from className to put them on the inner container
   const classList = className.split(" ");
+  const isBgTransparent = className.includes("bg-transparent");
   
   // Sizing, grid, translation, flex, transition, shadow classes stay on the outer wrapper
   const outerClasses = classList.filter(c => 
     !c.startsWith("p-") && 
     !c.startsWith("bg-") && 
-    !c.startsWith("border")
+    (isBgTransparent ? true : !c.startsWith("border"))
   ).join(" ");
   
   // Padding, background, and specific internal borders go to the inner container
   const innerClasses = classList.filter(c => 
     c.startsWith("p-") || 
     c.startsWith("bg-") || 
-    c.startsWith("border")
+    (!isBgTransparent && c.startsWith("border"))
   ).join(" ");
 
   const finalInnerClasses = innerClasses || "bg-[var(--theme-card)] p-6";
@@ -55,7 +56,7 @@ export default function SpotlightCard({
       className={`relative p-[1.5px] overflow-hidden transition-all duration-300 ${outerClasses}`}
       style={{
         borderRadius: borderRadius,
-        backgroundColor: "rgba(var(--theme-border), 0.12)",
+        backgroundColor: isBgTransparent ? "transparent" : "rgba(var(--theme-border), 0.12)",
       }}
       {...props}
     >
@@ -67,6 +68,13 @@ export default function SpotlightCard({
           background: `radial-gradient(${glowRadius}px circle at ${coords.x}px ${coords.y}px, var(--theme-accent) 0%, transparent 100%)`,
           borderRadius: borderRadius,
           zIndex: 0,
+          ...(isBgTransparent ? {
+            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            maskComposite: "exclude",
+            padding: "1.5px", // matches the p-[1.5px] border width!
+          } : {})
         }}
       />
       
