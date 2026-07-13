@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Subject, ModuleStatus, ModuleProgress, LearningModule } from "../types";
-import { Search, ChevronDown, ChevronRight, CheckCircle, BookOpen, Clock, FileText, RotateCw, Check, AlertCircle } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, CheckCircle, BookOpen, Clock, FileText, RotateCw, Check } from "lucide-react";
 import SpotlightCard from "./SpotlightCard";
 
 interface ModuleListProps {
@@ -244,6 +244,7 @@ export default function ModuleList({
                           className="flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold text-[var(--theme-accent)] hover:text-[var(--theme-bg)] hover:bg-[var(--theme-accent)] bg-[var(--theme-accent-light)]/25 border border-[var(--theme-accent)]/20 rounded-xl transition duration-200 cursor-pointer select-none"
                           title={`Mark all ${subj.modules.length} readings in ${subj.name} as completed`}
                         >
+                          <CheckCircle size={12} />
                           <span>Check All</span>
                         </button>
                       )}
