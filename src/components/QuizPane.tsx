@@ -10,6 +10,7 @@ interface QuizPaneProps {
   progress: Record<string, ModuleProgress>;
   onRecordQuizScore: (moduleId: string, score: number) => void;
   targetExamDate?: string;
+  cfaLevel?: number;
 }
 
 const DIFFICULTIES = ["easy", "medium", "hard", "expert", "superhuman"] as const;
@@ -31,7 +32,7 @@ const DIFFICULTY_COLORS: Record<Difficulty, string> = {
   superhuman: "bg-rose-50 text-rose-800 border-rose-100"
 };
 
-export default function QuizPane({ subjects, progress, onRecordQuizScore, targetExamDate }: QuizPaneProps) {
+export default function QuizPane({ subjects, progress, onRecordQuizScore, targetExamDate, cfaLevel = 1 }: QuizPaneProps) {
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>("all");
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -142,7 +143,7 @@ export default function QuizPane({ subjects, progress, onRecordQuizScore, target
               Curriculum Diagnostic Quiz
             </h3>
             <p className="text-xs text-[var(--theme-text-main)] mt-1.5 opacity-75">
-              Formulate conceptual vignette questions across the active CFA Level I syllabus.
+              Formulate conceptual vignette questions across the active CFA Level {cfaLevel === 2 ? "II" : "I"} syllabus.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
