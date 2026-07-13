@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import ClickSpark from "./components/ClickSpark";
 import { UserProfile, Subject, ModuleProgress, ActivityLog, ModuleStatus, AppNotification } from "./types";
 import { CURRICULUM, FLAT_MODULES, getModuleById, getCurriculum, getFlatModules } from "./curriculum";
@@ -73,14 +73,14 @@ export default function App() {
   const [isDesignCustomizerOpen, setIsDesignCustomizerOpen] = useState<boolean>(false);
   const [showSignOutConfirm, setShowSignOutConfirm] = useState<boolean>(false);
 
-  // Dynamic Curriculum Selection based on User Profile Target Exam Date
+  // Dynamic Curriculum Selection based on User Profile Target Exam Date and Level
   const currentCurriculum = useMemo(() => {
-    return getCurriculum(userProfile.targetExamDate);
-  }, [userProfile.targetExamDate]);
+    return getCurriculum(userProfile.targetExamDate, userProfile.cfaLevel || 1);
+  }, [userProfile.targetExamDate, userProfile.cfaLevel]);
 
   const currentFlatModules = useMemo(() => {
-    return getFlatModules(userProfile.targetExamDate);
-  }, [userProfile.targetExamDate]);
+    return getFlatModules(userProfile.targetExamDate, userProfile.cfaLevel || 1);
+  }, [userProfile.targetExamDate, userProfile.cfaLevel]);
 
   // Global Focus Timer States
   const [timerSeconds, setTimerSeconds] = useState<number>(0);
@@ -89,6 +89,7 @@ export default function App() {
   const [timerModuleId, setTimerModuleId] = useState<string>("");
   const [timerStartTime, setTimerStartTime] = useState<number | null>(null);
   const [timerAccumulated, setTimerAccumulated] = useState<number>(0);
+  const preventAccumulateRef = useRef<boolean>(false);
 
 
 
@@ -122,6 +123,7 @@ export default function App() {
 
   // Handle play/pause transition to compute accurate accumulated seconds
   useEffect(() => {
+    if (preventAccumulateRef.current) return;
     if (isTimerRunning) {
       setTimerStartTime(Date.now());
     } else {
@@ -158,10 +160,14 @@ export default function App() {
   }, [isTimerRunning, timerStartTime, timerAccumulated]);
 
   const handleResetTimer = () => {
+    preventAccumulateRef.current = true;
     setTimerStartTime(null);
     setTimerAccumulated(0);
     setTimerSeconds(0);
     setIsTimerRunning(false);
+    setTimeout(() => {
+      preventAccumulateRef.current = false;
+    }, 100);
   };
 
   const handleSaveUnifiedSession = () => {
@@ -175,12 +181,21 @@ export default function App() {
     handleLogStudySession(timerModuleId, studyMins, "study");
     
     // Clear all timer states completely so the useEffect doesn't calculate/overwrite
+    preventAccumulateRef.current = true;
     setTimerStartTime(null);
     setTimerAccumulated(0);
     setTimerSeconds(0);
     setIsTimerRunning(false);
-    setIsFullscreenTimerOpen(false);
-    setActiveAmbientId(null); // Stop ambient sound when session ends!
+    
+    addNotification(
+      "completed",
+      "✓ Study Session Logged",
+      `Successfully logged ${studyMins} minutes of high-focus study to your progress report!`
+    );
+
+    setTimeout(() => {
+      preventAccumulateRef.current = false;
+    }, 100);
   };
 
   // Supabase Sync configuration states
@@ -194,6 +209,7 @@ export default function App() {
   const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
   const [tempOnboardDate, setTempOnboardDate] = useState<string>("");
   const [tempOnboardHours, setTempOnboardHours] = useState<number>(2);
+  const [tempOnboardLevel, setTempOnboardLevel] = useState<number>(1);
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
   const [justRegistered, setJustRegistered] = useState<boolean>(false);
 
@@ -277,6 +293,7 @@ export default function App() {
         targetExamDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         studyStartDate: new Date().toISOString().split("T")[0],
         dailyTargetHours: 2,
+        cfaLevel: 1,
       };
       setUserProfile(defaultProfile);
       localStorage.setItem(profileKey, JSON.stringify(defaultProfile));
@@ -302,7 +319,7 @@ export default function App() {
         id: "welcome",
         type: "achievement",
         title: "Study Plan Activated",
-        message: `Your Level I study plan has loaded! All 93 readings are loaded. Mark them complete to build your interactive tree.`,
+        message: `Your curriculum study plan has loaded! All curriculum readings are fully active. Mark them complete to build your interactive tree.`,
         timestamp: new Date().toISOString(),
         read: false,
       };
@@ -320,6 +337,7 @@ export default function App() {
     if (signedIn && !isOnboarded && userProfile) {
       setTempOnboardDate(userProfile.targetExamDate);
       setTempOnboardHours(userProfile.dailyTargetHours);
+      setTempOnboardLevel(userProfile.cfaLevel || 1);
     }
   }, [signedIn, isOnboarded, userProfile]);
 
@@ -420,13 +438,14 @@ export default function App() {
           targetExamDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
           studyStartDate: new Date().toISOString().split("T")[0],
           dailyTargetHours: 2,
+          cfaLevel: 1,
         };
 
         const defaultNotif: AppNotification = {
           id: "welcome",
           type: "achievement",
           title: "Study Plan Activated",
-          message: `Your Level I study plan has loaded! All 93 readings are loaded. Mark them complete to build your interactive tree.`,
+          message: `Your curriculum study plan has loaded! All curriculum readings are fully active. Mark them complete to build your interactive tree.`,
           timestamp: new Date().toISOString(),
           read: false,
         };
@@ -921,7 +940,7 @@ export default function App() {
             <h1 className="text-sm font-bold text-[var(--theme-text-dark)] tracking-[0.12em] flex items-center gap-2 select-none">
               AAERA
               <span className="text-[9px] bg-[var(--theme-accent-light)]/60 text-[var(--theme-accent)] font-semibold px-2.5 py-0.5 rounded-full select-none border border-[var(--theme-accent)]/15">
-                CFA Level I
+                CFA Level {userProfile?.cfaLevel === 2 ? "II" : "I"}
               </span>
             </h1>
             <p className="text-[10px] text-[var(--theme-text-main)] opacity-70 font-normal">Aim • Analyze • Execute • Reflect • Achieve</p>
@@ -932,7 +951,7 @@ export default function App() {
           <div className="flex items-center gap-3.5">
             <div className="hidden sm:flex flex-col text-right">
               <span className="text-xs text-[var(--theme-text-dark)] font-medium max-w-[150px] truncate">{userProfile.email}</span>
-              <span className="text-[9px] text-[var(--theme-accent)] font-semibold tracking-wider uppercase opacity-85">CFA Level 1 Candidate</span>
+              <span className="text-[9px] text-[var(--theme-accent)] font-semibold tracking-wider uppercase opacity-85">CFA Level {userProfile?.cfaLevel === 2 ? "2" : "1"} Candidate</span>
             </div>
 
             {/* Premium Button Deck with unified aesthetics */}
@@ -1183,9 +1202,9 @@ export default function App() {
 
                 <div className="mt-4 text-center text-[10px] text-[var(--theme-text-main)] opacity-60 leading-relaxed">
                   {authMode === "login" ? (
-                    <span>Sign in to access your dashboard, monitor your progress, and continue preparing for the CFA Level I exam.</span>
+                    <span>Sign in to access your dashboard, monitor your progress, and continue preparing for the CFA Level {(userProfile?.cfaLevel || tempOnboardLevel || 1) === 2 ? "II" : "I"} exam.</span>
                   ) : (
-                    <span>Create an account to organize your CFA Level I preparation, track every completed module, and monitor your overall progress.</span>
+                    <span>Create an account to organize your CFA Level {(userProfile?.cfaLevel || tempOnboardLevel || 1) === 2 ? "II" : "I"} preparation, track every completed module, and monitor your overall progress.</span>
                   )}
                 </div>
               </div>
@@ -1210,7 +1229,8 @@ export default function App() {
                 const updatedProfile = {
                   ...userProfile,
                   targetExamDate: tempOnboardDate,
-                  dailyTargetHours: tempOnboardHours
+                  dailyTargetHours: tempOnboardHours,
+                  cfaLevel: tempOnboardLevel
                 };
                 setUserProfile(updatedProfile);
                 setIsOnboarded(true);
@@ -1223,6 +1243,36 @@ export default function App() {
               }}
               className="space-y-4"
             >
+              <div>
+                <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
+                  Select CFA Level
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setTempOnboardLevel(1)}
+                    className={`p-4 rounded-xl border text-center transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                      tempOnboardLevel === 1
+                        ? "bg-[var(--theme-accent-light)] border-[var(--theme-accent)] text-[var(--theme-accent)] font-black text-sm"
+                        : "bg-[var(--theme-card)] border-[var(--theme-border)]/60 text-[var(--theme-text-dark)] opacity-70 hover:opacity-100 text-xs"
+                    }`}
+                  >
+                    <span>Level I</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTempOnboardLevel(2)}
+                    className={`p-4 rounded-xl border text-center transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                      tempOnboardLevel === 2
+                        ? "bg-[var(--theme-accent-light)] border-[var(--theme-accent)] text-[var(--theme-accent)] font-black text-sm"
+                        : "bg-[var(--theme-card)] border-[var(--theme-border)]/60 text-[var(--theme-text-dark)] opacity-70 hover:opacity-100 text-xs"
+                    }`}
+                  >
+                    <span>Level II</span>
+                  </button>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-[10px] uppercase font-mono font-bold tracking-wider text-[var(--theme-text-main)] opacity-80 mb-1.5">
                   CFA Target Exam Date
@@ -1357,6 +1407,7 @@ export default function App() {
                 progress={progress}
                 onRecordQuizScore={handleRecordQuizScore}
                 targetExamDate={userProfile.targetExamDate}
+                cfaLevel={userProfile.cfaLevel || 1}
               />
             )}
 
@@ -1365,6 +1416,7 @@ export default function App() {
                 subjects={currentCurriculum}
                 progress={progress}
                 totalStudyTime={activityLogs.reduce((sum, log) => sum + log.durationMinutes, 0)}
+                cfaLevel={userProfile.cfaLevel || 1}
               />
             )}
 
@@ -1449,6 +1501,7 @@ export default function App() {
         setActiveAmbientId={setActiveAmbientId}
         ambientVolume={ambientVolume}
         setAmbientVolume={setAmbientVolume}
+        cfaLevel={userProfile.cfaLevel || 1}
       />
 
       {/* Floating Timer Corner Widget (counting in corner, can maximize or pause/reset/save) */}
@@ -1720,6 +1773,7 @@ export default function App() {
         activeTab={activeTab}
         currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
+        cfaLevel={userProfile.cfaLevel || 1}
       />
     </div>
     </ClickSpark>
