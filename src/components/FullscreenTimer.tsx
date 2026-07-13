@@ -29,6 +29,7 @@ interface FullscreenTimerProps {
   setActiveAmbientId: React.Dispatch<React.SetStateAction<string | null>>;
   ambientVolume: number;
   setAmbientVolume: React.Dispatch<React.SetStateAction<number>>;
+  cfaLevel?: number;
 }
 
 const STUDY_SOUNDS = [
@@ -62,7 +63,8 @@ export default function FullscreenTimer({
   activeAmbientId,
   setActiveAmbientId,
   ambientVolume,
-  setAmbientVolume
+  setAmbientVolume,
+  cfaLevel = 1
 }: FullscreenTimerProps) {
   const [breathingStep, setBreathingStep] = useState<"inhale" | "hold" | "exhale" | "rest">("inhale");
   const [breathingProgress, setBreathingProgress] = useState(0); // 0 to 100 for visual scaling
@@ -267,7 +269,7 @@ export default function FullscreenTimer({
               <span>Diagnostic Mindfulness</span>
             </div>
             <p className="text-xs text-[var(--theme-text-dark)] leading-relaxed italic opacity-90">
-              "{STUDY_QUOTES[activeQuoteIdx]}"
+              "{STUDY_QUOTES[activeQuoteIdx].replace("Level I", cfaLevel === 2 ? "Level II" : "Level I")}"
             </p>
           </div>
 
@@ -333,7 +335,7 @@ export default function FullscreenTimer({
 
       {/* 3. Footer branding */}
       <div className="text-center text-[var(--theme-text-main)] text-[10px] font-mono tracking-wider opacity-50 z-10 relative">
-        CFA LEVEL I PREP • MINDFUL STUDY ENVELOPE
+        CFA LEVEL {cfaLevel === 2 ? "II" : "I"} PREP • MINDFUL STUDY ENVELOPE
       </div>
     </div>
   );
