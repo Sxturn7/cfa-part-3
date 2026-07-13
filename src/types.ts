@@ -43,6 +43,7 @@ export interface UserProfile {
   targetExamDate: string;
   studyStartDate: string;
   dailyTargetHours: number;
+  cfaLevel?: number; // 1 or 2
   checkpoints?: StudyCheckpoint[];
   customFlashcards?: Flashcard[];
   todos?: TodoItem[];
