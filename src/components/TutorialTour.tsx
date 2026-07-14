@@ -386,7 +386,7 @@ export default function TutorialTour({ isOpen, onClose, setActiveTab, activeTab,
                 {currentStepData.text}
               </p>
 
-              {(currentStep === 7 || currentStepData.title.toUpperCase().includes("PERSONALIZE")) && (
+              {currentStepData.title.toUpperCase().includes("PERSONALIZE") && (
                 <div className="space-y-4 pt-3.5 border-t border-[var(--theme-border)]/15">
                   {/* Base Mode Options */}
                   <div className="space-y-2">
